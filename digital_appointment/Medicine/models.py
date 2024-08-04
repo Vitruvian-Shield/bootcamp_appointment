@@ -16,7 +16,7 @@ class Service(models.Model):
 
 class Provider(models.Model):
     id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    user_id = models.OneToOneField('User', on_delete=models.CASCADE)
     specialty = models.CharField(max_length=50)
     location_id = models.ForeignKey('Locations', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
