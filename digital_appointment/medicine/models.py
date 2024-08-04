@@ -16,3 +16,11 @@ class Provider(models.Model):
     location = models.ForeignKey(to=Location, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(default='django.utils.timezone.now')
+
+class Service(models.Model):
+    name = models.CharField(max_length=20)
+    description = models.TextField()
+    duration = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(default='django.utils.timezone.now')
