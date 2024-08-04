@@ -31,3 +31,31 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
+
+class Appointment(models.Model):
+    STATUS_CHOICES = (
+        ('scheduled', 'scheduled'),
+        ('canceled', 'canceled'),
+        ('completed', 'completed'),
+    )
+
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    provider_id = models.ForeignKey('Provider', on_delete=models.CASCADE)
+    service_id = models.ForeignKey('Service', on_delete=models.CASCADE)
+    appointment_date = models.DateTimeField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='scheduled')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+
+class Service(models.Model):
+    pass
+
+
+class Provider(models.Model):
+    pass
+
+
+class Location(models.Model):
+    pass
