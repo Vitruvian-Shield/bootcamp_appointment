@@ -12,3 +12,8 @@ class AppointmentAdmin(admin.ModelAdmin):
 @admin.register(models.Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'duration')
+
+
+@admin.register(models.Provider)
+class ProviderAdmin(admin.ModelAdmin):
+    list_display = ('user_id', 'specialty')

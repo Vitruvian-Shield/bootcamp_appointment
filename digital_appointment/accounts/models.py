@@ -37,6 +37,7 @@ class Appointment(models.Model):
         ('scheduled', 'scheduled'),
         ('canceled', 'canceled'),
         ('completed', 'completed'),
+        ('other', 'other'),
     )
 
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -58,7 +59,11 @@ class Service(models.Model):
 
 
 class Provider(models.Model):
-    pass
+    user_id = models.OneToOneField(User, on_delete=models.CASCADE)
+    specialty = models.CharField(max_length=100)
+    location_id = models.ForeignKey('Location', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Location(models.Model):
