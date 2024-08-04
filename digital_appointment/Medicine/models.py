@@ -16,7 +16,7 @@ class Service(models.Model):
 
 class Provider(models.Model):
     id = models.AutoField(primary_key=True)
-    user_id = models.OneToOneField('User', on_delete=models.CASCADE)
+    user_id = models.OneToOneField('accounts.User', on_delete=models.CASCADE)
     specialty = models.CharField(max_length=50)
     location_id = models.ForeignKey('Locations', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -29,10 +29,10 @@ class Provider(models.Model):
 class Locations(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    address = models.CharField()
+    address = models.CharField(max_length=50)
     city = models.CharField(max_length=15)
     state = models.CharField(max_length=2)
-    zip_code = models.CharField()
+    zip_code = models.CharField(max_length=5)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
