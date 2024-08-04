@@ -17,3 +17,8 @@ class ServiceAdmin(admin.ModelAdmin):
 @admin.register(models.Provider)
 class ProviderAdmin(admin.ModelAdmin):
     list_display = ('user_id', 'specialty')
+
+
+@admin.register(models.Location)
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ('city', 'name')
