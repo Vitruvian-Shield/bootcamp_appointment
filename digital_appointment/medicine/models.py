@@ -11,7 +11,7 @@ class Location(models.Model):
     updated_at = models.DateTimeField(default='django.utils.timezone.now')
 
 class Provider(models.Model):
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user = models.OneToOneField(to=User, on_delete=models.CASCADE)
     specialty = models.CharField(max_length=20)
     location = models.ForeignKey(to=Location, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
