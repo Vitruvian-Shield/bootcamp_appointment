@@ -22,6 +22,10 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = []
     objects = managers.UserManager()
 
+    @property
+    def appointments(self):
+        return self.appointments.all()
+
     def __str__(self):
         return self.username
 
@@ -30,4 +34,3 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
-

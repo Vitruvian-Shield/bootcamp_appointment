@@ -28,6 +28,10 @@ class Service(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def appointments(self):
+        return self.appointments.all()
+
     def __str__(self):
         return f"{self.name}"
 
@@ -41,6 +45,10 @@ class Provider(models.Model):
     # can also be good for sorting and indexing
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def appointments(self):
+        return self.appointments.all()
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} - {self.specialty}"
