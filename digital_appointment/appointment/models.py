@@ -4,7 +4,6 @@ from django.db import models
 class Appointment(models.Model):
     """
     this appointment model is used to store appointment details
-
     """
     class Status(models.TextChoices):
         """
