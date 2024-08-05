@@ -1,4 +1,6 @@
 from django.db import models
+from accounts.models import User
+from medicine.models import Provider, Service
 
 
 class Appointment(models.Model):
@@ -13,6 +15,9 @@ class Appointment(models.Model):
         cancelled = "Cancelled"
         completed = "Completed"
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
     appointment_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=Status.choices, default=Status.sceduled, max_length=9)
     created_date = models.DateTimeField(auto_now_add=True)
