@@ -1,24 +1,7 @@
 from django.contrib import admin
 from . import models
 
-admin.site.register(models.User)
 
-
-@admin.register(models.Appointment)
-class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'provider_id', 'service_id', 'status', 'appointment_date')
-
-
-@admin.register(models.Service)
-class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'duration')
-
-
-@admin.register(models.Provider)
-class ProviderAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'specialty')
-
-
-@admin.register(models.Location)
-class LocationAdmin(admin.ModelAdmin):
-    list_display = ('city', 'name')
+@admin.register(models.User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name')
