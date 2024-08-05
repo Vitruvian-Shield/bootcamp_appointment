@@ -1,5 +1,5 @@
 from django.db import models
-
+from accounts.models import User
 
 class Service(models.Model):
     """
@@ -14,6 +14,10 @@ class Service(models.Model):
 
 
 class Provider(models.Model):
+    """
+    this provider model is used to store the provider details
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     specialty = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
