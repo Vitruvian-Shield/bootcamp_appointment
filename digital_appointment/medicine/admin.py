@@ -4,7 +4,10 @@ from .models import Provider, Service, Location
 
 @admin.register(Provider)
 class ProviderAdmin(admin.ModelAdmin):
-    pass
+    """
+    this for displaying the Provider model and there attribute in DataBase
+    """
+    list_display = ('id', 'user', 'location', 'specialty', 'created_at', 'updated_at')
 
 
 @admin.register(Service)
