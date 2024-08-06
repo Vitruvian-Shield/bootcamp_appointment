@@ -6,8 +6,8 @@ from django.http import JsonResponse
 def get_users(request):
     if request.method == "GET":
 
-        user = models.User.objects.get(username="ali")
-        user.delete()
+        user = models.User.objects.get(username="reza")
+        # user.delete()
 
         users = models.User.objects.all().order_by("-id")
         users = [
