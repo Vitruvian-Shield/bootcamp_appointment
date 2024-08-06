@@ -18,6 +18,9 @@ class Appointment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    """
+    attribute
+    """
     appointment_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=Status.choices, default=Status.sceduled, max_length=9)
     created_date = models.DateTimeField(auto_now_add=True)
