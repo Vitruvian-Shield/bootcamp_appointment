@@ -1,3 +1,17 @@
 from django.contrib import admin
+from .models import Provider, Service, Location
 
-# Register your models here.
+
+@admin.register(Provider)
+class ProviderAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    pass
