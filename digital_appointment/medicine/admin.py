@@ -20,4 +20,7 @@ class ServiceAdmin(admin.ModelAdmin):
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
-    pass
+    """
+        this for displaying the Location model and there attribute in DataBase
+    """
+    list_display = ('id', 'name', 'address', 'city', 'state', 'zip_code', 'created_at', 'updated_at')
