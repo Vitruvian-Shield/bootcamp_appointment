@@ -12,7 +12,10 @@ class ProviderAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    pass
+    """
+        this for displaying the Service model and there attribute in DataBase
+    """
+    list_display = ('id', 'name', 'duration', 'price', 'created_at', 'updated_at')
 
 
 @admin.register(Location)
