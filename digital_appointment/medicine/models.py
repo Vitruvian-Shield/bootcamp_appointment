@@ -33,6 +33,9 @@ class Provider(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    """
+    attribute
+    """
     specialty = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
