@@ -39,3 +39,4 @@ class Provider(BaseModel):
 
      def __str__(self):
          return f"{self.speciality} - {self.user}"
+
