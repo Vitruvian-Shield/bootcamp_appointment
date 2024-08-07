@@ -31,8 +31,8 @@ class Services(models.Model):
 
 class Providers(models.Model):
    id = models.AutoField(primary_key=True)
-   user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-   specialty = models.CharField()
+   user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+   specialty = models.CharField(max_length=60)
    location_id = models.ForeignKey(Locations, on_delete=models.CASCADE)
    created_at = models.DateTimeField(auto_now_add=True)
    updated_at = models.DateTimeField(auto_now=True)

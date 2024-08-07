@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'Appointment.apps.AppointmentConfig',
+    'Medicine.apps.MedicineConfig'
 ]
 
 MIDDLEWARE = [
