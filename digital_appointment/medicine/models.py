@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from accounts.models import User
+
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(_("Record creation timestamp"), auto_now_add=True)
@@ -28,3 +30,12 @@ class Location(BaseModel):
 
     def __str__(self):
         return self.name
+
+
+class Provider(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    speciality = models.CharField(_("Provider`s speciality"), max_length=128)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+
+     def __str__(self):
+         return f"{self.speciality} - {self.user}"
