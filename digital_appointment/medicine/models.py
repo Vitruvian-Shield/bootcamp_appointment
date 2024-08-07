@@ -12,7 +12,7 @@ class BaseModel(models.Model):
 class Service(BaseModel):
     name = models.CharField(_("Name of the service"), max_length=128)
     description = models.TextField(_("Description of the service"))
-    duration = models.DurationField(_("Duration of the service in minutes"))
+    duration = models.PositiveIntegerField(_("Duration of the service in minutes"))
     price = models.DecimalField(_("Price of the service"), max_digits=12, decimal_places=2)
 
     def __str__(self):
