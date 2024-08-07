@@ -34,3 +34,6 @@ class Providers(models.Model):
     locations_id = models.ForeignKey(Locations, on_delete=models.DO_NOTHING)  # khode location behtar nist mohem nist kheali
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user_id
