@@ -1,9 +1,9 @@
 from django.db import models
 
-from digital_appointment.accounts.models import User
+from accounts.models import User
 
 
-class Locations(models.Model):
+class Location(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=500)
     city = models.CharField(max_length=100)
@@ -16,7 +16,7 @@ class Locations(models.Model):
         return self.name
 
 
-class Services(models.Model):
+class Service(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=500)
     duration = models.IntegerField()
@@ -28,12 +28,12 @@ class Services(models.Model):
         return self.name
 
 
-class Providers(models.Model):
+class Provider(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     speciality = models.CharField(max_length=200)
-    locations_id = models.ForeignKey(Locations, on_delete=models.DO_NOTHING)  # khode location behtar nist mohem nist kheali
+    locations_id = models.ForeignKey(Location, on_delete=models.DO_NOTHING)  # khode location behtar nist mohem nist kheali
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user_id
+        return str(self.user_id)
