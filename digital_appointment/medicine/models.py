@@ -1,20 +1,22 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-# Create your models here.
 
 
 class BaseModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(_("Record creation timestamp"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("Record last update timestamp"), auto_now=True)
     class Meta:
         abstract = True
 
 
 class Service(BaseModel):
-     name = models.CharField(max_length=128)
-     description = models.TextField()
-     duration = models.DurationField()
-     price = models.DecimalField(max_digits=12, decimal_places=2)
+    name = models.CharField(_("Name of the service"), max_length=128)
+    description = models.TextField(_("Description of the service"))
+    duration = models.DurationField(_("Duration of the service in minutes"))
+    price = models.DecimalField(_("Price of the service"), max_digits=12, decimal_places=2)
+
+    def __str__(self):
+        return self.name
 
 
 class Location(BaseModel):
