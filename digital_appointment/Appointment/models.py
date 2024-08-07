@@ -3,7 +3,11 @@ from accounts.models import User
 from Medicine.models import Services, Providers
 
 class Appointments(models.Model):
-   STATUS_CHOICES  = {'SC': 'Scheduled', 'CO': 'Completed', 'CA': 'Canceled'}
+   STATUS_CHOICES = [
+      ('SCH', 'Scheduled'),
+      ('COM', 'Completed'),
+      ('CAN', 'Canceled'),
+]
    
    id = models.AutoField(primary_key=True)
    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -15,4 +19,4 @@ class Appointments(models.Model):
    updated_at = models.DateTimeField(auto_now=True)    # last update
    
    def __str__(self):
-      return f"Id: {self.id}, UserId: {self.user_id}, Status: {self.status}"
+      return f"UserId: {self.user_id}, ProviderId: {self.provider_id}, AppointmentDate: {self.appointment_date}"
