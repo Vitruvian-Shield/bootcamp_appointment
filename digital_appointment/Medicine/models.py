@@ -12,7 +12,7 @@ class Services(models.Model):
    updated_at = models.DateTimeFiled(auto_now=True)
    
    def __str__(self):
-      return f"Name: {self.name}, Description: {self.description}"
+      return f"Name: {self.name}, Price: {self.price}, Description: {self.description}"
 
 
 class Providers(models.Model):
