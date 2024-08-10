@@ -11,7 +11,7 @@ class Appointment(BaseModel):
         COMPLETED = "com", 'completed'
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    provider = models.OneToOneField(Provider, on_delete=models.CASCADE)
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     appointment_date = models.DateTimeField()
     status = models.CharField(max_length=4, choices=Status.choices)
