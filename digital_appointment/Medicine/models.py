@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import User
-
+# foreign key is one to many relationship
 
 class Locations(models.Model):
    id = models.AutoField(primary_key=True)
@@ -31,7 +31,7 @@ class Services(models.Model):
 
 class Providers(models.Model):
    id = models.AutoField(primary_key=True)
-   user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+   user_id = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
    specialty = models.CharField(max_length=60)
    location_id = models.ForeignKey(Locations, on_delete=models.CASCADE)
    created_at = models.DateTimeField(auto_now_add=True)
