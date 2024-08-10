@@ -33,7 +33,7 @@ class Location(BaseModel):
 
 
 class Provider(BaseModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     speciality = models.CharField(_("Provider`s speciality"), max_length=128)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
 
