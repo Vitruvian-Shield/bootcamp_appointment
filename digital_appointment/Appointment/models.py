@@ -9,6 +9,9 @@ status_choices = (
 
 
 class Appointment(models.Model):
+    """
+    Model representing an appointment for receiving a service.
+    """
     id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     provider_id = models.ForeignKey('Medicine.Provider', on_delete=models.CASCADE)

@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Service(models.Model):
+    """
+    Model representing a service offered.
+    """
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     description = models.TextField()
@@ -15,6 +18,9 @@ class Service(models.Model):
 
 
 class Provider(models.Model):
+    """
+    Model representing a service provider.
+    """
     id = models.AutoField(primary_key=True)
     user_id = models.OneToOneField('accounts.User', on_delete=models.CASCADE)
     specialty = models.CharField(max_length=50)
@@ -27,6 +33,9 @@ class Provider(models.Model):
 
 
 class Locations(models.Model):
+    """
+    Model representing a location where services are provided.
+    """
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
