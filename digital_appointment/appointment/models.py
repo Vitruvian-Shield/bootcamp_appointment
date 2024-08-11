@@ -1,7 +1,7 @@
 from django.db import models
 from accounts.models import User
 from medicine.models import Provider, Service
-
+import datetime
 
 class Appointment(models.Model):
     """
@@ -19,9 +19,9 @@ class Appointment(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     """
-    attribute
+    attributea
     """
-    appointment_date = models.DateTimeField(auto_now_add=True)
+    appointment_date = models.DateTimeField(default=datetime.datetime.now())
     status = models.CharField(choices=Status.choices, default=Status.sceduled, max_length=9)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
