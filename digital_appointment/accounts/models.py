@@ -4,6 +4,9 @@ from . import managers
 
 
 class User(AbstractBaseUser):
+    """
+    Define The Detail Of User
+    """
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     username = models.CharField(max_length=100, unique=True)
