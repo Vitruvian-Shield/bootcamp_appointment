@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'digital_appointment.wsgi.application'
 
 DATABASES = {
    'default': {
-       'ENGINE': 'django.db.backends.postgresql',
+       'ENGINE': 'django.db.backends.postgresql_psycopg2',
        'NAME': 'verna',
        'USER': 'postgres',
        'PASSWORD': 'verna',
