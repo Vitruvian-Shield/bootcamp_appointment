@@ -12,7 +12,7 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(max_length=200, unique=True)
     phone_number = models.CharField(max_length=20, unique=True)
-    birth_data = models.DateTimeField(null=True, blank=True)
+    birth_data = models.DateTimeField(null=True, blank=True, db_index=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
