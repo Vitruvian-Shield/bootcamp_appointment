@@ -3,10 +3,12 @@ from accounts.models import User
 from medicine.models import Provider, Service
 import datetime
 
+
 class Appointment(models.Model):
     """
     this appointment model is used to store appointment details
     """
+
     class Status(models.TextChoices):
         """
         this enum is used to define the appointment status
@@ -19,9 +21,9 @@ class Appointment(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     """
-    attributea
+    attribute
     """
     appointment_date = models.DateTimeField(default=datetime.datetime.now())
     status = models.CharField(choices=Status.choices, default=Status.sceduled, max_length=9)
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
