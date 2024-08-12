@@ -7,6 +7,8 @@ from . import models, serializers
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 
+from rest_framework import mixins
+from rest_framework import generics
 
 class UserList(APIView, PageNumberPagination):
     def get(self, request):
@@ -23,25 +25,23 @@ class UserList(APIView, PageNumberPagination):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserDetail(APIView):
-    def get(self, request, pk):
-        user = get_object_or_404(models.User, pk=pk)
-        serializer = serializers.UserSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+class UserDetail(mixins.RetrieveModelMixin,
+                 mixins.DestroyModelMixin,
+                 mixins.UpdateModelMixin,
+                 generics.GenericAPIView):
+    queryset = models.User.objects.all()
+    serializer_class = serializers.UserSerializer
 
-    def put(self, request, pk):
-        user = get_object_or_404(models.User, pk=pk)
-        serializer = serializers.UserSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.update(user, serializer.validated_data)  # serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk):
-        user = get_object_or_404(models.User, pk=pk)
-        user.delete()
-        return Response({'delete': 'deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+    
 
 class ProfileView(APIView):
     authentication_classes = [JWTAuthentication]
