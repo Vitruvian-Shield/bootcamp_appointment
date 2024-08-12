@@ -16,6 +16,9 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        db_table = 'service'
+
 
 class Provider(models.Model):
     """
@@ -29,6 +32,9 @@ class Provider(models.Model):
 
     def __str__(self):
         return self.specialty
+
+    class Meta:
+        db_table = 'provider'
 
 
 class Location(models.Model):
@@ -45,3 +51,6 @@ class Location(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        db_table = 'location'
