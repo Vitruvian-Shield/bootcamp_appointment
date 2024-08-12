@@ -1,7 +1,8 @@
 from django.db import models
 from accounts.models import User
-# foreign key is one to many relationship
+# foreign key have one to many relationship
 
+#  create Locations table
 class Locations(models.Model):
    id = models.AutoField(primary_key=True)
    name = models.CharField(max_length=35)
@@ -16,6 +17,7 @@ class Locations(models.Model):
       return f"Name: {self.name}, city: {self.city}, Address: {self.address}, ZipCode: {self.zip_code}"
 
 
+#  create Services table
 class Services(models.Model):
    id = models.AutoField(primary_key=True)
    name = models.CharField(max_length=35)
@@ -29,9 +31,10 @@ class Services(models.Model):
       return f"Name: {self.name}, Price: {self.price}, Description: {self.description}"
 
 
+#  create Providers table
 class Providers(models.Model):
    id = models.AutoField(primary_key=True)
-   user_id = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+   user_id = models.OneToOneField(User, on_delete=models.CASCADE, null=True)  # here i def ono to one rel
    specialty = models.CharField(max_length=60)
    location_id = models.ForeignKey(Locations, on_delete=models.CASCADE)
    created_at = models.DateTimeField(auto_now_add=True)

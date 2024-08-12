@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'digital_appointment.wsgi.application'
 #     }
 # }
 
-
+# here i set postgresql settings for connecting postgresql to django
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
