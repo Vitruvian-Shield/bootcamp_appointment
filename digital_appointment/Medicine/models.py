@@ -13,8 +13,11 @@ class Locations(models.Model):
    created_at = models.DateTimeField(auto_now_add=True)
    updated_at = models.DateTimeField(auto_now=True)
    
-   def __str__(self):
+   def __str__(self):   # readable representation for the model instance
       return f"Name: {self.name}, city: {self.city}, Address: {self.address}, ZipCode: {self.zip_code}"
+   
+   class Meta: # specifies the name of the database table
+      db_table = "locations"
 
 
 #  create Services table
@@ -27,8 +30,11 @@ class Services(models.Model):
    created_at = models.DateTimeField(auto_now_add=True)
    updated_at = models.DateTimeField(auto_now=True)
    
-   def __str__(self):
+   def __str__(self):   # readable representation for the model instance
       return f"Name: {self.name}, Price: {self.price}, Description: {self.description}"
+   
+   class Meta: # specifies the name of the database table
+      db_table = "services"
 
 
 #  create Providers table
@@ -40,7 +46,8 @@ class Providers(models.Model):
    created_at = models.DateTimeField(auto_now_add=True)
    updated_at = models.DateTimeField(auto_now=True)
    
-   def __str__(self):
+   def __str__(self):   # readable representation for the model instance
       return f"UserId: {self.user_id}, Specialty: {self.specialty}"
    
-   
+   class Meta: # specifies the name of the database table
+      db_table = "providers"

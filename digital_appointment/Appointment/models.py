@@ -21,3 +21,6 @@ class Appointments(models.Model):
    
    def __str__(self):   # the thing (str) have to show default in shell or admin page
       return f"UserId: {self.user_id}, ProviderId: {self.provider_id}, AppointmentDate: {self.appointment_date}"
+   
+   class Meta: # specifies the name of the database table
+      db_table = "appointments"
