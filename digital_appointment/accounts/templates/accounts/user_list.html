@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+	Users
+{% endblock %}
+
+{% block content %}
+	{% for user in users %}
+        <img src="{{ user.image.url }}" alt="{{ user.fist_name }}" style="height: 100px;">
+            <br>
+	{% endfor %}
+
+{% endblock %}

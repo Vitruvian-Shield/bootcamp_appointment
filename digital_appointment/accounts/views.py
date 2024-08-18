@@ -5,17 +5,19 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
 from . import models, serializers
 from rest_framework.views import APIView
-from django.shortcuts import get_object_or_404
-
+from django.shortcuts import get_object_or_404, render
 from rest_framework import mixins
 from rest_framework import generics
 
+
 class UserList(APIView, PageNumberPagination):
+    template_name = 'accounts/user_list.html'
+
     def get(self, request):
         users = models.User.objects.all().order_by('created_at')
         page = self.paginate_queryset(users, request)
         serializer = serializers.UserSerializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
+        return render(request, self.template_name, {'users': users, 'serializer': serializer})
 
     def post(self, request):
         serializer = serializers.UserSerializer(data=request.data)
@@ -31,7 +33,6 @@ class UserDetail(mixins.RetrieveModelMixin,
                  generics.GenericAPIView):
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
-
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
