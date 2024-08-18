@@ -20,6 +20,7 @@ class User(AbstractBaseUser):
     update_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
     expire_at = models.DateTimeField(null=True, blank=True)
+    image = models.ImageField(upload_to="media/%Y/%m/%d/", null=True, blank=True)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
