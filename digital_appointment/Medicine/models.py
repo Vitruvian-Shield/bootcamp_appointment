@@ -4,6 +4,7 @@ from accounts.models import User
 
 
 class Location(models.Model):
+    """a class to represent the location of the appointment"""
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=500)
     city = models.CharField(max_length=100)
@@ -17,6 +18,7 @@ class Location(models.Model):
 
 
 class Service(models.Model):
+    """a class to represent the service of the appointment"""
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=500)
     duration = models.IntegerField()
@@ -29,6 +31,7 @@ class Service(models.Model):
 
 
 class Provider(models.Model):
+    """a class to represent the provider of the appointment"""
     user_id = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     speciality = models.CharField(max_length=200)
     locations_id = models.ForeignKey(Location, on_delete=models.DO_NOTHING)  # khode location behtar nist mohem nist kheali
