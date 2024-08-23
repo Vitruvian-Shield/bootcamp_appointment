@@ -38,3 +38,19 @@ class UserSerializer(serializers.ModelSerializer):
         if password:
             instance.set_password(password)
             return super().update(instance, validated_data)
+
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError('passwords do not match')
+        return data
+
+
+class UserRegisterSerializer(serializers.Serializer):
+    first_name = serializers.CharField(max_length=30, min_length=3, required=True)
+    last_name = serializers.CharField(max_length=30, min_length=3, required=True)
+    email = serializers.EmailField(max_length=254, required=True)
+    phone_number = serializers.CharField(max_length=11, min_length=11, required=True)
+    username = serializers.CharField(max_length=30, min_length=3, required=True)
+    birth_data = serializers.DateField(format='%Y-%m-%d', required=True)
+    password = serializers.CharField()
+    password2 = serializers.CharField(write_only=True, label='Confirm Password')

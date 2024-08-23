@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load rest_framework %}
+{% load static %}
+{% block title %}
+	Register
+{% endblock %}
+{% block content %}
+	<h1>Register Form</h1>
+    <form action="" method="post" novalidate class="col-md-4">
+    {% csrf_token %}
+    {% render_form ser_data %}
+        <input type="submit" value="Register">
+    </form>
+{% endblock %}
