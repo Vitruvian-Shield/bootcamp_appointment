@@ -20,4 +20,9 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls'))
+
+    # more options
+
+    # if you want use rest login logout views u can use path below
+    # path('api-auth/', include('rest_framework.urls'))
 ]
