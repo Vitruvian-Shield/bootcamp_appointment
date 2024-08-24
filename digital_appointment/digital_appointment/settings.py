@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'medicine.apps.MedicineConfig',
     'appointment.apps.AppointmentConfig',
+    'home.apps.HomeConfig',
     # THIRD PARTY
     'rest_framework',
 ]
