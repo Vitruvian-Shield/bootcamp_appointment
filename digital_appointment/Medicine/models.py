@@ -2,6 +2,8 @@ from django.db import models
 
 from accounts.models import User
 
+from .extras import Choices
+
 
 class Location(models.Model):
     """a class to represent the location of the appointment"""
@@ -33,7 +35,7 @@ class Service(models.Model):
 class Provider(models.Model):
     """a class to represent the provider of the appointment"""
     user_id = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    speciality = models.CharField(max_length=200)
+    speciality = models.CharField(max_length=200,choices=Choices.provider_speciality())
     locations_id = models.ForeignKey(Location, on_delete=models.DO_NOTHING)  # khode location behtar nist mohem nist kheali
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
