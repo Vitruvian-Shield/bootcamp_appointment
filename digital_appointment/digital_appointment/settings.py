@@ -83,10 +83,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'bootcamp',
-        'USER': 'bootcamp',
-        'PASSWORD': 'bootcamp',
+        'USER': 'postgres',
+        'PASSWORD': 'reza0011001',
         'HOST': 'localhost',
-        'PORT': '5432',
     },
 }
 
