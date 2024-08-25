@@ -56,7 +56,7 @@ class Footer extends React.Component{
             backgroundColor: '#0C2D54',
             border: '0px 50px 0px 0px black',
         }
-        
+
         return(
 
             <Box sx={mainfooterstyle}>
