@@ -1,0 +1,111 @@
+*{
+    width: 100%;
+    box-sizing: border-box;
+    font-family:Arial, Helvetica, sans-serif;
+    scroll-behavior:smooth;
+    
+
+}
+
+.main div{
+    /* min-width: 1010px; */
+    overflow: auto;
+    margin-right: -8px;
+    width: 100%;
+    height:700px;
+    background: linear-gradient(180deg, rgba(31, 31, 31, 0.72) 100%, rgba(31, 31, 31, 0.18) 150%),url('/src/assets//images//Alinea+Soma_small.jpg') lightgray 50% / cover no-repeat;
+    position: relative;
+    background-attachment:fixed;
+    text-align: center;
+    background-repeat: no-repeat;
+    text-shadow: 1.7px 1.7px 1.7px black;
+    font-size: larger;
+    
+}
+
+.main #search{
+    padding-top: 200px;
+    width: 100%;
+    height: 700px;
+    text-align: right;
+    padding-right: 25px;
+    position: relative;
+    background: linear-gradient(270deg, rgba(70, 69, 69, 0.72) 30%, rgba(31, 31, 31, 0.18) 100%),url('/src/assets/images/bgcontent.svg') lightgray 50% / cover no-repeat ;
+}
+
+input{
+    width: 70%;
+    min-width: 150px;
+    height: 70px;
+    text-align: right;
+    border-radius: 8px;
+    color: rgb(174, 195, 226);
+    border: none; 
+    opacity: 0.8;
+    background: none;
+    position:static;
+
+}
+
+input::placeholder{
+    color: rgb(254, 254, 255);
+    font-size:22px;
+    padding-right: 5px;
+}
+
+
+h1{
+    padding-top: 50mm !important;
+    background-attachment: fixed;
+    height: auto;
+    width: auto;
+}
+p{
+    background-attachment: fixed;
+}
+
+
+#searchbutton{
+    width: 0%;
+    min-width: 70px;
+    height: 70px;
+    margin-left: 2px;
+    border-radius: 8px;
+    color:white;
+    background-color: rgb(1, 1, 126);
+    justify-content: space-evenly;
+    text-shadow: 1px 1px 1px  rgb(48, 49, 50);
+    border: none;
+    display: inline-flex;
+    opacity: 0.8;
+    align-content: center;
+    align-items: center;
+    flex-direction: column-reverse;
+
+}
+
+#searchbutton:hover{
+    background: none;
+    color:rgb(255, 255, 255);
+}
+
+#searchspan{
+    width: 40%;
+    min-width:250px ;
+    height: max-content;
+    display:inline-flex;
+    background-color: rgb(157, 158, 158);
+    opacity: 0.8;
+    border-radius: 8px;
+    box-sizing: border-box;
+    
+}
+
+#searchicon{
+    display: inline;
+    position:sticky;
+    margin-right: -40px;
+    position: static;
+    width: 30%;
+    margin-left: -40px;
+}
