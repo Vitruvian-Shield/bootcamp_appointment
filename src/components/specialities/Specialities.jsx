@@ -23,7 +23,7 @@ import { GiIntricateNecklace } from "react-icons/gi";
 
 
 
-import internaldoc from '../../assets/images/icons8-doctor-50.png'
+// import internaldoc from '../../assets/images/icons8-doctor-50.png'
 
 
 class Specialities extends React.Component{
