@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Appointment(models.Model):
+    """ a class that represent appointment itself """
     STATUS = (
         (0, "scheduled"),
         (1, "cancelled"),
@@ -17,7 +18,7 @@ class Appointment(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.date
+        return str(self.date)
 
     class Meta:
         db_table = "appointment"
