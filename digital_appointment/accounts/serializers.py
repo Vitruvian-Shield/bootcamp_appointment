@@ -31,7 +31,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
-        fields = "__all__"
+        exclude = ('is_superuser', 'is_staff', 'is_active', 'is_admin')
         extra_kwargs = {
             'password': {'write_only': True}
         }

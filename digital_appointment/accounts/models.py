@@ -19,7 +19,7 @@ class User(AbstractBaseUser):
     expire_at = models.DateTimeField(null=True, blank=True)
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["phone_number", "email", "first_name", "last_name"]
     objects = managers.UserManager()
 
     def __str__(self):
