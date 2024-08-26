@@ -51,8 +51,8 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        specialities = models.Provider.objects.values_list(
-            'speciality', flat=True).distinct()
+        specialities = models.Provider.objects.values(
+            'speciality').distinct()
         page = self.paginate_queryset(specialities, request)
 
         serializer = serializers.SpecialitySerializer(page, many=True)

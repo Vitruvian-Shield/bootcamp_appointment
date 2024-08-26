@@ -30,5 +30,4 @@ class ProviderSerializer(serializers.ModelSerializer):
 
 
 class SpecialitySerializer(serializers.Serializer):
-    def to_representation(self, obj):
-        return obj
+    speciality = serializers.CharField(max_length=255)
