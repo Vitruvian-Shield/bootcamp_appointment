@@ -1,6 +1,31 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from . import models
 import string
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'username'
+
+    def validate(self, attrs):
+        username = attrs.get('username', None)
+
+        if '@' in username:
+            self.username_field = 'email'
+        elif username.isdigit():
+            self.username_field = 'phone_number'
+        else:
+            self.username_field = 'username'
+
+        if self.username_field != 'username':
+            username = models.User.objects.filter(
+                **{self.username_field: username}
+            ).values_list('username', flat=True).first()
+            self.username_field = 'username'
+            attrs['username'] = username
+
+        data = super().validate(attrs)
+        return data
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -38,4 +63,5 @@ class UserSerializer(serializers.ModelSerializer):
         if password:
             instance.set_password(password)
         return super().update(instance, validated_data)
+
 
