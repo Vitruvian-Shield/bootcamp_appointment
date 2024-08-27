@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import footer from './footer.css'
 import { Box } from "@mui/material";
 import { FaSquareInstagram } from "react-icons/fa6";
 import { FaTelegram } from "react-icons/fa";
@@ -19,6 +18,7 @@ class Footer extends React.Component{
             textDecoration: 'none',
             width: 'fit-content',
             lineHeight: '25px',
+            color:"azure"
         }    
 
         const acontactusstyle ={
@@ -30,6 +30,7 @@ class Footer extends React.Component{
             textDecoration: 'none',
             width: 'fit-content',
             lineHeight: '25px',
+            color:"azure"
         }
 
         const footertitlesstyle = {
@@ -49,12 +50,17 @@ class Footer extends React.Component{
             textDecoration: 'none',
             width: 'fit-content',
             lineHeight: '25px',
+            color:'azure'
         }
 
         const mainfooterstyle = {
             margin: '-8px',
             backgroundColor: '#0C2D54',
             border: '0px 50px 0px 0px black',
+            boxSizing:'border-box',
+            width:'100%',
+            fontFamily:'Times New Roman',
+            color:'azure'
         }
 
         return(
