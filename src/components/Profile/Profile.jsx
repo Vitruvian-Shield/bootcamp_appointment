@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, Rating, Select, TextField, Typography } from '@mui/material'
+import { Box, Button, Grid, MenuItem, Rating, Select, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Phoneicon from "../../assets/images/icons8-phone-50.png"
@@ -72,7 +72,13 @@ const Profile = () => {
             username: 'نام کاربری',
             date: '1403/02/16',
             comment: "فکر نکنم",
-            rate: 5
+            rate: 2
+        },
+        {
+            username: 'نام کاربری',
+            date: '1403/02/16',
+            comment: 'این پزشک را پیشنهاد میکنم',
+            rate: 4
         },
         {
             username: 'نام کاربری',
@@ -84,13 +90,7 @@ const Profile = () => {
             username: 'نام کاربری',
             date: '1403/02/16',
             comment: 'این پزشک را پیشنهاد میکنم',
-            rate: 5
-        },
-        {
-            username: 'نام کاربری',
-            date: '1403/02/16',
-            comment: 'این پزشک را پیشنهاد میکنم',
-            rate: 5
+            rate: 3
         },
         {
             username: 'نام کاربری',
@@ -135,8 +135,8 @@ const Profile = () => {
                 backgroundColor: '#fff',
                 minHeight: '1000px',
                 boxSizing: 'border-box',
-                px: { xs: '10px', sm: '30px', md: '50px', lg: '60px', xl: '80px' },
-                pt: { xs: '20px', sm: '30px', md: '40px', lg: '50px', xl: '64px' },
+                paddingX: { xs: '10px', sm: '30px', md: '50px', lg: '60px', xl: '80px' },
+                paddingTop: { xs: '20px', sm: '30px', md: '40px', lg: '50px', xl: '64px' },
 
             }}
         >
@@ -288,31 +288,33 @@ const Profile = () => {
                         gap: '8px',
                         lineHeight: '22px',
                         marginTop: '8px'
+                        
                     }}>
 
-                        {/* <img src={rate} alt='' style={{width:"25%"}} /> */}
-                        <Rating sx={{backgroundColor:`${fcfc00}`}} readOnly defaultValue={4} />
+                        <Rating value={3} readOnly />
+                        
                         1099
                         نفر
+                    
                     </Box>
                     <Box>
                         <Typography
                             sx={{
-                                mt: '44px',
+                                marginTop: '20px',
                                 color: `${c4c4c4c}`,
                                 fontSize: { xs: '13px', sm: '14px', md: '14.22px', lg: '16px' },
                                 fontFamily: 'ykan',
                                 fontWeight: 700,
                                 letterSpacing: '0.2px',
                                 lineHeight: '24px',
-                                marginBottom: '20px'
+                                marginBottom: '10px'
                             }}
                         >
                             نظــرات
                         </Typography>
                         <Box
                             sx={{
-                                maxHeight: '312px',
+                                maxHeight: '250px',
                                 overflow: 'auto',
                                 direction: 'ltr',
                                 paddingRight: '10px',
@@ -339,13 +341,13 @@ const Profile = () => {
                                         <Box
                                             key={index}
                                             sx={{
-                                                marginTop: '24px',
+                                                marginTop: '20px',
                                                 direction: 'rtl'
                                             }}
                                         >
 
                                             <Box sx={{ display: 'flex', alignContent: 'center', justifyContent: 'space-between', width: '100%', }}>
-                                                <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center',  }}>
+                                                <Box sx={{ display: 'flex', gap: '5px', alignItems: 'center',  }}>
                                                     <img src={commenticon} alt="" style={{width:"20px",height:"20px"}} />
                                                     <Typography
                                                         sx={{
@@ -354,7 +356,7 @@ const Profile = () => {
                                                             fontFamily: 'ykan',
                                                             fontWeight: 400,
                                                             letterSpacing: '0.2px',
-                                                            lineHeight: '24px',
+                                                            lineHeight: '20px',
                                                             width:"100%"
                                                         }}
                                                     >
@@ -368,14 +370,14 @@ const Profile = () => {
                                                             fontFamily: 'ykan',
                                                             fontWeight: 400,
                                                             letterSpacing: '0.2px',
-                                                            lineHeight: '24px',
+                                                            lineHeight: '20px',
                                                         }}
                                                     >
                                                         {item.date}
                                                     </Typography>
                                                 </Box>
                                                 <Box>
-                                                    <Rating name="half-rating-read" defaultValue={item.rate} readOnly />
+                                                    <Rating defaultValue={item.rate} readOnly />
                                                 </Box>
                                             </Box>
                                             <Typography
@@ -386,7 +388,7 @@ const Profile = () => {
                                                     fontWeight: 400,
                                                     letterSpacing: '0.2px',
                                                     lineHeight: '24px',
-                                                    marginTop: '8px',
+                                                    marginTop: '5px',
                                                     
                                                 }}
                                             >
@@ -401,6 +403,62 @@ const Profile = () => {
                         </Box>
 
                     </Box>
+
+                    <Grid container sx={{justifyContent:"space-between",alignItems:"center", marginRight:"10px"}}>
+                        <Typography sx={{
+                           marginTop: '20px',
+                           color: `${c4c4c4c}`,
+                           fontSize: { xs: '13px', sm: '14px', md: '14.22px', lg: '16px' },
+                           fontFamily: 'ykan',
+                           fontWeight: 700,
+                           letterSpacing: '0.2px',
+                           lineHeight: '24px',
+                           marginBottom: '10px',
+                           width:"fit-content"
+                        }}>ثبت نظر</Typography>
+                        <Rating dir='ltr'></Rating>
+                        <TextField placeholder={"نظر خود را اینجا به اشتراک بگذارید"} sx={{
+                            marginY:"10px",
+                            width:"100%",
+                            borderRadius: '8px',
+                                                    // direction: `${item.name === 'phoneNumber' ? 'ltr' : 'rtl'}`,
+                            "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+                                display: "none",
+                            },
+                            "& input[type=number]":{
+                                    MozAppearance: "textfield",
+                            },
+                            "& input": {
+                                borderRadius: '8px',
+                                fontFamily: 'ykan',
+                                padding: '0!important',
+                                height: '38px',
+                                paddingX: '10px!important',
+                                paddingBottom: '5px!important',
+                            },
+                            "& input::placeHolder": {
+                                fontFamily: 'ykan!important',
+                                fontSize: '14px!important',
+                            },    
+                            "& fieldset": {
+                                borderRadius: '8px',
+                                fontFamily: 'ykan',
+                                height: '46px',
+                                boxSizing: 'border-box'
+                            },
+                        }}>
+                        </TextField>
+                        
+                        
+                        
+                        <Button sx={{
+                            color:"azure",
+                            width:"100%",
+                            backgroundColor:"#217CE6"
+                        }}>ثبت نظر</Button>
+                        
+                    </Grid>
+
                 </Box>
                 <Box
                     sx={{
