@@ -10,9 +10,6 @@ from rest_framework import mixins
 from rest_framework import generics
 from django.contrib import messages
 from accounts.models import User
-from django.contrib.auth import authenticate, login, logout
-from .forms import LoginForm
-from django.views import View
 
 
 class UserList(APIView, PageNumberPagination):
@@ -37,6 +34,8 @@ class UserRegister(APIView):
     serializer_class = serializers.UserRegisterSerializer
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('home')
         ser_data = self.serializer_class()
         return render(request, self.template_name, {'ser_data': ser_data})
 
@@ -56,21 +55,6 @@ class UserRegister(APIView):
             messages.success(request, 'congratulations!, you registered successfully!', 'success')
             return redirect('accounts:register')
         return render(request, self.template_name, {'ser_data': ser_data})
-
-
-class UserLogin(APIView):
-    template_name = 'accounts/user_login.html'
-    serializer_class = serializers.UserRegisterSerializer
-
-    def get(self, request):
-        ser_data = self.serializer_class()
-        return render(request, self.template_name, {'ser_data': ser_data})
-
-    def post(self, request):
-        ser_data = self.serializer_class(data=request.POST)
-        if ser_data.is_valid():
-            user = ser_data.validated_data['username']
-            password = ser_data.validated_data['password']
 
 
 class UserDetail(mixins.RetrieveModelMixin,
@@ -98,31 +82,3 @@ class ProfileView(APIView):
         user = models.User.objects.get(pk=request.user.id)
         serializer = serializers.UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class UserLoginView(View):
-    def get(self, request):
-        if request.user.is_authenticated:
-            messages.warning(request, 'You are already logged in', 'warning')
-            return redirect('home:home')
-        form = LoginForm
-        return render(request, 'accounts/user_login.html', {'form': form})
-
-    def post(self, request):
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            user = authenticate(username=cd['username'], password=cd['password'])
-            if user is not None:
-                login(request, user)
-                messages.success(request, 'You are now logged in!', 'success')
-                return redirect('home:home')
-            messages.error(request, 'Incorrect username or password!', 'error')
-        return render(request, 'accounts/user_login.html', {'form': form})
-
-
-class UserLogoutView(View):
-    def get(self, request):
-        logout(request)
-        messages.success(request, 'You are now logged out!', 'success')
-        return redirect('home:home')

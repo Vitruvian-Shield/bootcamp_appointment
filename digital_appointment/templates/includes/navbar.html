@@ -1,14 +1,12 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <div class="navbar-nav">
-
-                <a class="nav-link active" href="{% url 'home:home' %}">Home</a>
+                <a class="nav-link active" href="#">Home</a>
                 {% if request.user.is_authenticated %}
-                    <p style="color: aqua">{{ request.user.username }}</p>
-                    <a class="nav-link active" href="{% url 'accounts:logout' %}">Logout</a>
+                    <a class="nav-link active" href="#">Logout</a>
                 {% else %}
-                    <a class="nav-link active" href="{% url 'accounts:register' %}">Register</a>
-                    <a class="nav-link active" href="{% url 'accounts:login' %}">Login</a>
+                    <a class="nav-link active" href="#">Register</a>
+                    <a class="nav-link active" href="#">Login</a>
                 {% endif %}
             </div>
         </div>
