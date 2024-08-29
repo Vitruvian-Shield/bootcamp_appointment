@@ -1,0 +1,133 @@
+@font-face {
+    font-family: 'persian';
+    src: url('../assets/fonts/BYekan+.ttf');
+}
+
+#background-container {
+    background-color: #fff;
+    direction: rtl;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#content-container {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    width: 100%;
+    max-width: 1200px;
+    justify-content: center;
+}
+
+#picLogo {
+    flex-shrink: 0;
+}
+
+#login-main {
+    background-color: rgba(180, 225, 255, 0.623);
+    color: #000;
+    font-family: 'persian', sans-serif;
+    border-radius: 20px;
+    text-align: center;
+    padding: 40px 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+#mobile-text {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+#number-input {
+    font-size: 1.2rem;
+    color: #000;
+    background-color: rgba(249, 249, 252, 0.521);
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+#submit-btn {
+    font-family: 'persian', sans-serif;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    background-color: rgba(81, 150, 240, 0.63);
+    color: #f0f8ff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, color 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#submit-btn img {
+    margin-left: 8px;
+}
+
+#submit-btn:hover {
+    color: #000;
+    background-color: rgba(127, 182, 255, 0.233);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    #content-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    #login-main {
+        max-width: 90%;
+    }
+}
+
+#google-btn {
+    font-family: 'persian', sans-serif;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    background-color: #4285F4;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, color 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+#google-btn img {
+    margin-left: 8px;
+    width: 20px; /* Adjust size as needed */
+    height: 20px; /* Adjust size as needed */
+}
+
+#google-btn{
+    background-color: #357AE8 ;
+}
+
+#google-btn:hover {
+    background-color: #357ae8a4;
+}

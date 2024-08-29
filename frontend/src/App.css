@@ -1,0 +1,12 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    filter: grayscale(10%);
+    filter: blur(20%);
+    filter: contrast(90%);
+    filter: brightness(95%);
+    opacity: 95%;
+}

@@ -1,0 +1,23 @@
+.footer {
+    background-color: #282c34;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: -25px;
+}
+
+.footer-content a {
+    color: #61dafb;
+    margin: 0 5px;
+    text-decoration: none;
+}
+
+.footer-content a:hover {
+    text-decoration: underline;
+}
