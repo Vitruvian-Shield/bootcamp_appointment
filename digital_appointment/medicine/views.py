@@ -65,6 +65,15 @@ class LocationApi(APIView):
     """
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        """
+        get locations for select a provider
+        """
+        locations = models.Location.objects.all()
+        serializer = serializers.LocationSerializer(locations, many=True)
+        return Response(serializer.data)
+
     def post(self, request):
         """
         serializer.is_valid(raise_exception=True) this code for
@@ -75,11 +84,3 @@ class LocationApi(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def get(self, request):
-        """
-        get locations for select a provider
-        """
-        locations = models.Location.objects.all()
-        serializer = serializers.LocationSerializer(locations, many=True)
-        return Response(serializer.data)
