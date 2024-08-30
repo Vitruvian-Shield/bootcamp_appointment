@@ -12,7 +12,7 @@ class Comment(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
     """attributes"""
     comment = models.TextField()
-    stars = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    stars = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], blank=True, null=True)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     def __str__(self):
