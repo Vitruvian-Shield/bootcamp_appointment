@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
+import random
 from . import managers
 
 
@@ -34,3 +35,21 @@ class User(AbstractBaseUser):
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
 
+
+
+def myRandom():
+    return str(random.randrange(10000000,99999999))
+
+class ConfirmCode(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='confirm_code')
+    code = models.CharField(max_length=8, default=myRandom)
+    update_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'confirm_code'
+    
+    @classmethod
+    def get_code(cls, user):
+        return cls.objects.filter(user=user).latest('created_at').code
+    
