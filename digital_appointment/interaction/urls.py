@@ -1,4 +1,7 @@
 from django.urls import path
-urlpatterns = [
 
+from interaction import views
+
+urlpatterns = [
+    path('post_comment/', views.Comment.as_view(), name='post_comment'),
 ]
