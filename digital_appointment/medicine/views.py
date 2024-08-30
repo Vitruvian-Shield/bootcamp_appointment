@@ -76,4 +76,10 @@ class Location(APIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
+    def get(self, request):
+        """
+        get locations for select a provider
+        """
+        locations = models.Location.objects.all()
+        serializer = serializers.LocationSerializer(locations, many=True)
+        return Response(serializer.data)
