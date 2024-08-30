@@ -1,6 +1,8 @@
 from django.db import models
 from accounts.models import User
 from medicine.models import Provider
+
+
 class Comment(models.Model):
     """
     this model be used to store comments
@@ -10,6 +12,8 @@ class Comment(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
     """attributes"""
     comment = models.TextField()
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.comment
 
