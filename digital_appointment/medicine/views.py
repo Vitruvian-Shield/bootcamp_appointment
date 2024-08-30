@@ -46,6 +46,8 @@ class Provider(APIView, pagination.PageNumberPagination):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
 class SpecialtyListView(APIView, pagination.PageNumberPagination):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]

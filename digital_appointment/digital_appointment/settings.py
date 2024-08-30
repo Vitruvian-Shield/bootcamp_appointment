@@ -16,7 +16,6 @@ import datetime
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ SECRET_KEY = 'django-insecure-rzy)%wc4vz(-zh_a3u4e1+-hh&n+ni(k$e_trm4bq+hcbn_kc8
 DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "appointment.vitruvianshield.com"]
-
 
 # Application definition
 
@@ -41,9 +39,11 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'appointment.apps.AppointmentConfig',
     'medicine.apps.MedicineConfig',
+    "interaction.apps.InteractionConfig",
     # third party
     'rest_framework',
     'rest_framework.authtoken',
+
 ]
 
 MIDDLEWARE = [
@@ -76,7 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'digital_appointment.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -90,7 +89,6 @@ DATABASES = {
         'PORT': '5432',
     },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -123,7 +121,6 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=1),
 }
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -134,7 +131,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
