@@ -57,3 +57,23 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
 
         serializer = serializers.SpecialitySerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
+
+
+class Location(APIView):
+    """
+    Location Api to interact with locations data
+    """
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self, request):
+        """
+        serializer.is_valid(raise_exception=True) this code for
+        validate serializer and not different with code in line 43
+        """
+        data = request.data
+        serializer = serializers.LocationSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
