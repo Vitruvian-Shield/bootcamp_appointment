@@ -57,3 +57,4 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
 
         serializer = serializers.SpecialitySerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
+

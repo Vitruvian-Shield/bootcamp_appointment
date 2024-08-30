@@ -23,12 +23,10 @@ class Location(models.Model):
     zip_code = models.CharField(max_length=10)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
-
+    
     class Meta:
         db_table = "location"
+
 
 
 class Service(models.Model):
@@ -39,8 +37,6 @@ class Service(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         db_table = "service"
+

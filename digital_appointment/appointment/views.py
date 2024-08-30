@@ -64,3 +64,4 @@ class AppointmentView(APIView, pagination.PageNumberPagination):
                 return Response({"status": "appointment not found"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"status": "id is required"}, status=status.HTTP_400_BAD_REQUEST)
+
