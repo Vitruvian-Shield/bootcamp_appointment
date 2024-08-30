@@ -29,6 +29,13 @@ class Provider(APIView, pagination.PageNumberPagination):
                 Q(location__city__icontains=location) |
                 Q(location__state__icontains=location)
             )
+        """
+        search provider with high satisfaction
+       
+        stars = request.query_params.get("stars")
+        if stars:
+            providers = providers.order_by('-stars_average')
+         """
 
         if isinstance(providers, Manager):
             providers = providers.all()
@@ -48,6 +55,40 @@ class Provider(APIView, pagination.PageNumberPagination):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ProviderSearch(APIView, pagination.PageNumberPagination):
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request):
+        providers = models.Provider.objects
+        query = request.query_params.get("query")
+
+        if query:
+            providers = models.Provider.objects.filter(Q(first_name__icontains=query) |
+                                                     Q(last_name__icontains=query) |
+                                                     Q(speciality__icontains=query)|
+                                                     Q(location__icontains=query) |
+                                                     Q(location__address__icontains=query) |
+                                                     Q(location__city__icontains=query) |
+                                                     Q(location__state__icontains=query))
+        """
+        search provider with high or low satisfaction can be do it with 
+        this code 
+        
+        high_satisfaction = request.query_params.get("high_satisfaction")
+        if high_satisfaction:
+            providers = models.Provider.objects.order_by('-stars_average')
+        
+        low_satisfaction = request.query_params.get("low_satisfaction")
+        if low_satisfaction:
+            results = models.Provider.objects.order_by('stars_average')
+        """
+        if isinstance(providers, Manager):
+            providers = providers.all()
+
+        page = self.paginate_queryset(providers.order_by('-stars_average'), request)
+        serializer = serializers.ProviderSerializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
 class ProviderDetail(APIView):
     authentication_classes = [authentication.JWTAuthentication]
