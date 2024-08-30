@@ -1,10 +1,12 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions, pagination
 from rest_framework_simplejwt import authentication
 from django.db.models import Q
 from django.db.models.manager import Manager
-
+from interaction.models import Comment
+from interaction.serializers import CommentSerializer
 from . import models, serializers
 
 
@@ -47,6 +49,27 @@ class Provider(APIView, pagination.PageNumberPagination):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ProviderDetail(APIView):
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self, pk):
+        """Retrieve the provider object or raise a 404 error if not found."""
+        return get_object_or_404(models.Provider, pk=pk)
+
+    def get(self, request, pk):
+        """Handle GET requests to retrieve provider details along with comments."""
+        provider = self.get_object(pk)
+        comments = Comment.objects.filter(provider=provider)
+
+        serializer_comment = CommentSerializer(comments, many=True) if comments.exists() else []
+        serializer_provider = serializers.ProviderSerializer(provider)
+
+        response_data = {
+            'provider': serializer_provider.data,
+            'comments': serializer_comment.data,
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
 
 
 class SpecialtyListView(APIView, pagination.PageNumberPagination):
