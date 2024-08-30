@@ -62,7 +62,7 @@ class ProviderDetail(APIView):
         provider = self.get_object(pk)
         comments = Comment.objects.filter(provider=provider)
 
-        serializer_comment = CommentSerializer(comments, many=True) if comments.exists() else []
+        serializer_comment = CommentSerializer(comments, many=True)
         serializer_provider = serializers.ProviderSerializer(provider)
 
         response_data = {
