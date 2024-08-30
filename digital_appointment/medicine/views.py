@@ -59,7 +59,7 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
         return self.get_paginated_response(serializer.data)
 
 
-class Location(APIView):
+class LocationApi(APIView):
     """
     Location Api to interact with locations data
     """
