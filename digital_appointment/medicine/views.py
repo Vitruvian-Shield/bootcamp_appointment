@@ -64,7 +64,7 @@ class LocationApi(APIView):
     Location Api to interact with locations data
     """
     authentication_classes = [authentication.JWTAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         """
