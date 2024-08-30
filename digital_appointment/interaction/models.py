@@ -12,3 +12,17 @@ class Comment(models.Model):
     comment = models.TextField()
     def __str__(self):
         return self.comment
+
+
+"""
+we can stored the OnlineCounseling in database 
+for manage the count of Counseling of patient 
+with According to the included policy of site
+"""
+"""
+class OnlineCounseling(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    def __str__(self):
+        return f"{self.user} on {self.date}"
+"""
