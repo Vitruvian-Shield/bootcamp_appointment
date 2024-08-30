@@ -1,9 +1,8 @@
 from django.contrib import admin
-from .models import Service, Location, Provider
-
-# Register your models here.
+from . import models
 
 
-admin.site.register(Service)
-admin.site.register(Location)
-admin.site.register(Provider)
+admin.site.register(models.Service)
+admin.site.register(models.Provider)
+admin.site.register(models.Location)
+

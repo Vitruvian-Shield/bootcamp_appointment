@@ -1,42 +1,42 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
-
-from accounts.models import User
 
 
-class BaseModel(models.Model):
-    created_at = models.DateTimeField(_("Record creation timestamp"), auto_now_add=True)
-    updated_at = models.DateTimeField(_("Record last update timestamp"), auto_now=True)
+class Provider(models.Model):
+    user = models.OneToOneField('accounts.User', on_delete=models.CASCADE)
+    speciality = models.CharField(max_length=255)
+    location = models.ForeignKey('medicine.Location', on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.speciality
+
     class Meta:
-        abstract = True
+        db_table = "provider"
 
 
-class Service(BaseModel):
-    name = models.CharField(_("Name of the service"), max_length=128)
-    description = models.TextField(_("Description of the service"))
-    duration = models.PositiveIntegerField(_("Duration of the service in minutes"))
-    price = models.DecimalField(_("Price of the service"), max_digits=12, decimal_places=2)
-
-    def __str__(self):
-        return self.name
-
-
-class Location(BaseModel):
-    name = models.CharField(_("Name of the location"), max_length=128)
-    address = models.TextField(_("Address of the location"))
-    city = models.CharField(_("City"), max_length=128)
-    state = models.CharField(_("State"), max_length=128)
-    zip_code = models.CharField(_("Zip code"), max_length=128)
-
-    def __str__(self):
-        return self.name
+class Location(models.Model):
+    name = models.CharField(max_length=255)
+    address = models.TextField()
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    zip_code = models.CharField(max_length=10)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = "location"
 
 
-class Provider(BaseModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    speciality = models.CharField(_("Provider`s speciality"), max_length=128)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
 
-     def __str__(self):
-         return f"{self.speciality} - {self.user}"
+class Service(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    duration = models.IntegerField(default=30)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "service"
 

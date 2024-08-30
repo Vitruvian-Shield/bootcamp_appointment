@@ -19,7 +19,7 @@ class User(AbstractBaseUser):
     expire_at = models.DateTimeField(null=True, blank=True)
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["phone_number", "email", "first_name", "last_name"]
     objects = managers.UserManager()
 
     def __str__(self):
@@ -30,4 +30,7 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
 
