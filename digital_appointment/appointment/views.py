@@ -24,6 +24,7 @@ class AppointmentView(APIView, pagination.PageNumberPagination):
                  data["provider"] = Provider.objects.get(pk=provider_id)
             except Provider.DoesNotExist:
                 return Response({"error":"provider does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
         
         serializer = serializers.AppointmentSerializer(data=data)
         
@@ -64,3 +65,20 @@ class AppointmentView(APIView, pagination.PageNumberPagination):
                 return Response({"status": "appointment not found"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"status": "id is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class DoctorAppointmentView(APIView, pagination.PageNumberPagination):
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        provider = None
+        try:
+            provider = request.user.provider.all().first()
+        except AttributeError:
+            return Response({"status":"error:you are not Authorized as a Docotr."}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        appointments = provider.appointments.all()
+        page = self.paginate_queryset(appointments.order_by("-created_date"), request)
+        serializer = serializers.AppointmentSerializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
