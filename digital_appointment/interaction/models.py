@@ -1,7 +1,7 @@
 from django.db import models
 from accounts.models import User
 from medicine.models import Provider
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Comment(models.Model):
     """
@@ -12,6 +12,7 @@ class Comment(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
     """attributes"""
     comment = models.TextField()
+    stars = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     def __str__(self):
