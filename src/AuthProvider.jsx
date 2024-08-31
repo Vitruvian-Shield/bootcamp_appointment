@@ -1,33 +1,39 @@
+import { useContext, useState, createContext, useEffect } from "react";
 import axios from "axios";
-import {useContext, useState, createContext, useEffect} from "react";
 
-const Auth = createContext()
+const Auth = createContext();
 
-const AuthProvider = ({ children} ) => {
-    const [acctoken, setAcctoken_] = useState(localStorage.getItem('token'))
-    const [reftoken, setReftoken_] = useState()
+const AuthProvider = ({ children }) => {
+  
+    /*  managing json web tokens  */
 
-    useEffect(() =>{
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
+
+  const [acctoken, setAcctoken_] = useState(localStorage.getItem("acctoken"));
+  const [reftoken, setReftoken_] = useState(localStorage.getItem("reftoken"));
+
+  useEffect(() => {
+    if (acctoken) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${acctoken}`;
     }
-    )
+  }, [acctoken]);
 
-    const setReftoken = reftoken => {
-        setReftoken_(reftoken)
-        localStorage.setItem('reftoken', reftoken)
-    }
+  const setAcctoken = (token) => {
+    setAcctoken_(token);
+    localStorage.setItem("acctoken", token);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  };
 
-    const setAcctoken = acctoken => {
-        setAcctoken_(acctoken)
-        axios.defaults.headers.common["Authorization"] = `Bearer ${acctoken}`
-        localStorage.setItem('acctoken',acctoken)
-    }
-    (
-    <Auth.Provider value={{acctoken, setAcctoken, setReftoken}}>
-        {children}
+  const setReftoken = (token) => {
+    setReftoken_(token);
+    localStorage.setItem("reftoken", token);
+  };
+
+  return (
+    <Auth.Provider value={{ acctoken, setAcctoken, setReftoken }}>
+      {children}
     </Auth.Provider>
-)}
+  );
+};
 
-export default AuthProvider
-
-export const useAuth= () => useContext(Auth)
+export default AuthProvider;
+export const useAuth = () => useContext(Auth);
