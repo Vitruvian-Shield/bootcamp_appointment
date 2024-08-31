@@ -6,10 +6,47 @@ from . import serializers
 from rest_framework import permissions, pagination
 from rest_framework_simplejwt import authentication
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
+
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
+    
+
+class LoginCode(views.APIView):
+    def post(self, request):
+        print("hello")
+        phone_number = request.data["phone_number"]
+        try:
+            user = models.User.objects.get(phone_number=phone_number)
+            models.ConfirmCode(user=user).save()
+            return Response({"status": "code sent."}, status=status.HTTP_200_OK)
+            
+        except:
+            return Response({"status": "error:phone number not found."}, status=status.HTTP_404_NOT_FOUND)
 
 
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = serializers.CustomTokenObtainPairSerializer
+class Login(views.APIView):
+    def post(self, request):
+        phone_number = request.data["phone_number"]
+        code = request.data["code"]
+        try:
+            user = models.User.objects.get(phone_number=phone_number)
+            code_ = models.ConfirmCode.get_code(user)
+            if code == code_:
+                data = get_tokens_for_user(user)
+                print(data)
+                return Response(data, status=status.HTTP_200_OK)
+            
+            
+        except:
+            return Response({"status": "error:invalid input."}, status=status.HTTP_404_NOT_FOUND)
+
+
 
 
 class User(views.APIView, pagination.PageNumberPagination):
@@ -30,6 +67,7 @@ class User(views.APIView, pagination.PageNumberPagination):
 
 
 class UserDetail(views.APIView):
+    
     def get(self, request, pk):
         user = models.User.objects.get(id=pk)
         serializer = serializers.UserSerializer(user)

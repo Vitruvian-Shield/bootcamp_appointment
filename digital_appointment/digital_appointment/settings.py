@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-rzy)%wc4vz(-zh_a3u4e1+-hh&n+ni(k$e_trm4bq+hcbn_kc8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "appointment.vitruvianshield.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # third party
     'rest_framework',
     'rest_framework.authtoken',
+    "corsheaders"
 ]
 
 MIDDLEWARE = [
@@ -54,7 +55,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'digital_appointment.urls'
 
@@ -81,14 +86,18 @@ WSGI_APPLICATION = 'digital_appointment.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bootcamp',
-        'USER': 'mahdi',
-        'PASSWORD': 'mahdi',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'bootcamp',
+    #     'USER': 'mahdi',
+    #     'PASSWORD': 'mahdi',
+    #     'HOST': 'localhost',
+    #     'PORT': '5432',
+    # },
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "sqlite3.db"
+    }
 }
 
 
