@@ -6,8 +6,7 @@ from accounts import serializers as accounts_serializers
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Location
-        fields = "__all__"
-
+        fields = ['id', 'name', 'city', 'state', 'zip_code', 'address']
 
 class ProviderSerializer(serializers.ModelSerializer):
     user = accounts_serializers.UserSerializer()
