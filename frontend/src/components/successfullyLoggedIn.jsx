@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { FaCheckCircle } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { FaCheckCircle } from 'react-icons/fa'; // Importing an icon from react-icons
+import { useNavigate } from 'react-router-dom'; // Assuming you're using react-router for navigation
 
 const SuccessLogin = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const SuccessLogin = () => {
   return (
     <div style={styles.container}>
       <FaCheckCircle style={styles.icon} />
-      <h2 style={styles.message}>ورود موفقیت آمیز!</h2>
+      <h2 style={styles.message} dir='rtl'>ورود موفقیت آمیز!</h2>
       
     </div>
   );

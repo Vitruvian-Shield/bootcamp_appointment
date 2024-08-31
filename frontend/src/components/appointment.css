@@ -1,0 +1,173 @@
+@font-face {
+    font-family: 'persian';
+    src: url('../assets/fonts/BYekan+.ttf');
+}
+
+#root {
+    min-height: 130vh;
+}
+
+#caution {
+    background-color: #3A5F80;
+    color: #ffffff;
+    font-family: 'persian';
+    font-size: larger;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+}
+
+#docDetail {
+    margin-left: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#docimg {
+    width: 100px;
+    height: 100px;
+}
+
+#content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#list-container {
+    width: 40%;
+    background-color: #b8aee7;
+    color: #000000;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#list-container h3 {
+    font-family: 'persian';
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#list-container ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#list-container ul li {
+    font-family: 'persian';
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#list-container ul li:hover {
+    background-color: #e0e0e0;
+}
+
+#form-container {
+    font-family: 'persian';
+    width: 350px;
+    padding: 25px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#form-container h1 {
+    font-size: 1.8em;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#form-container label {
+    display: block;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+#form-container input[type="text"],
+#form-container input[type="email"],
+#form-container input[type="number"],
+#form-container select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    color: #333;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+}
+
+#form-container input[type="text"]:focus,
+#form-container input[type="email"]:focus,
+#form-container input[type="number"]:focus,
+#form-container select:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+#form-container input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#form-container input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+#error-message {
+    color: red;
+    font-size: 0.9em;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#labelInputInARow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+#year, #month, #day, #serviceId {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+#comments {
+    background-color: #6bacf1bd;
+    color: #000000;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    height: 900px;
+    border-style: groove;
+    border-color: #000000;
+    border-radius: 6px;
+}
+#comments h1 {
+    font-family: 'persian';
+    margin: 10px;
+    margin-right: 30px;
+}

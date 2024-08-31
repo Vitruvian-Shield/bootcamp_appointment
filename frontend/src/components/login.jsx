@@ -39,7 +39,7 @@ function Login() {
                 window.location.href = "/successfullyLoggedIn";
             }
             else{
-                alert("something went wrong");
+                alert("wrong username or password!");
             }
             
             // Handle successful login

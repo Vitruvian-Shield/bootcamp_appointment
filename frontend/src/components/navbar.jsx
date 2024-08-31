@@ -23,7 +23,7 @@ function Navbar() {
       <ul className="navbar-right navbar-menu">
         <li className="navbar-item"><a href="/Specialties">تخصص ها</a></li>
         <li className="navbar-item"><a href="/doctors">پزشکان</a></li>
-        <li className="navbar-item"><a href="/appointments">نوبت‌گیری</a></li>
+        <li className="navbar-item"><a href="/appointment">نوبت‌گیری</a></li>
         <li className="navbar-item"><a href="/search">جستجو</a></li>
         <li className="navbar-item"><a href="/">خانه</a></li>
       </ul>

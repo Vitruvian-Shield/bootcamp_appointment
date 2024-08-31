@@ -20,6 +20,7 @@
     padding: 20px;
     transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    height: fit-content;
 }
 
 #profile:hover {
@@ -42,8 +43,8 @@
     margin: 0;
     color: #17325A;
 }
-#assign:hover{
+button:hover{
     color: rgb(0, 0, 0);
-    background-color: rgba(23, 50, 90, 0.418);
+    background-color: rgba(0, 0, 0, 0.418);
     border-color: aliceblue;
 }
