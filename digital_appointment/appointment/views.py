@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions, pagination
 from rest_framework_simplejwt import authentication
 from . import models, serializers
-from medicine.models import Provider
+from medicine.models import Provider, Service
 
 
 class AppointmentAdd(APIView):
@@ -15,12 +15,21 @@ class AppointmentAdd(APIView):
         data = request.data
         data["user"] = request.user
         provider_id = self.kwargs.get("provider",None)
+        service_id = data.get("service", None)
+        
         if provider_id:
             try:
                  data["provider"] = Provider.objects.get(pk=provider_id)
             except Provider.DoesNotExist:
-                return Response({"error":"provider does not exist"}, status=status.HTTP_404_NOT_FOUND)
-            
+                return Response({"status":"error:provider does not exist"}, status=status.HTTP_404_NOT_FOUND)
+        
+        if service_id:
+            try:
+                data["service"] = data["provider"].services.get(pk=service_id)
+            except Service.DoesNotExist:
+                return Response({"status":"error:service does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+
         serializer = serializers.AppointmentSerializer(data=data)
         
         if serializer.is_valid():
