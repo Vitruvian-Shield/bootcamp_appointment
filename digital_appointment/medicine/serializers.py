@@ -3,6 +3,14 @@ from . import models
 from accounts import serializers as accounts_serializers
 
 
+class ServiceSerializer:
+    class Meta:
+        model = models.Service
+        fields = '__all__'
+
+
+
+
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Location

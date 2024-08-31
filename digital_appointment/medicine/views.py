@@ -72,3 +72,12 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
 
         serializer = serializers.SpecialitySerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
+
+class ServiceListView(APIView):
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request):
+        data = request.user.provider.services.all()
+        serializers = serializers.ServiceSerializer(data)
+        return Response(serializers.data, status=status.HTTP_200_OK)
+    
