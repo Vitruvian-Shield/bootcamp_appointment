@@ -1,14 +1,16 @@
-import { Box, Button, Grid, MenuItem, Rating, Select, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Box, Button, Grid, MenuItem, Modal, Rating, Select, Switch, TextField, Typography } from '@mui/material'
+import React, { useState , useEffect} from 'react'
+import { useAsyncError, useParams } from 'react-router-dom'
 import Phoneicon from "../../assets/images/icons8-phone-50.png"
 import lociconblack from '../../assets/images/icons8-location-50.png'
 // import rate from '../../img/pngtree-four-star-rating-sign-png-image_8436650.png'
 import drImg from '../../assets/images/41808433_l.jpg'
 import commenticon from '../../assets/images/icons8-comment-50.png'
+import axios from 'axios'
+// import {DataPicker} from '@mui/'
 
 const Profile = () => {
-    const { id } = useParams()
+
 
     //colors for styling
     const c144278 = '#144278'
@@ -22,12 +24,23 @@ const Profile = () => {
     const c3771C8 = '#3771C8'
     const fcfc00 = '#fcfc00'
 
-    // state with hook
+    // state with hook for reservation
     const [name, setName] = useState('')
     const [lastName, setLastName] = useState('')
+    const [username,setUsername] = useState()
     const [phoneNumber, setPhoneNumber] = useState()
     const [nationalCode, setNationalCode] = useState()
     const [dateValue, setDateValue] = useState()
+    const [sex,setSex] = useState(Boolean)
+
+    // state with hook for profile and comments
+    const [addedcomment , setAddedcomment] = useState()
+    const [comment, setComments] = useState([])
+    const [commentdate, setCommentdate] = useState()
+    const [commentrate, setCommentrate] = useState(0)
+    const [doctor, setDoctor] = useState({})
+    
+    
 
     //data for inputs
     const inputs = [
@@ -99,7 +112,6 @@ const Profile = () => {
             rate: 5
         },
     ]
-
     // style for date input 
     const dateinputstyle ={
         height: '60px',
@@ -122,7 +134,7 @@ const Profile = () => {
         border: { xs: `1px solid #595959`, md: `1px solid #595959` },
     },
 
-    '&:focus-within fieldset, &:focus-visible fieldset': {
+    '&:focusWithin fieldset, &:focusVisible fieldset': {
         border: { xs: `1px solid #545454!important`, md: `1px solid #545454!important` },
         borderRadius: { xs: '5px', sm: '8px' },
 
@@ -140,6 +152,10 @@ const Profile = () => {
 
             }}
         >
+
+            {/* /////// doctor profile field //////// */}
+
+
             <Typography
                 sx={{
                     color: `${c144278}`,
@@ -151,7 +167,7 @@ const Profile = () => {
                     whiteSpace: 'nowrap',
                 }}
             >
-                نوبت‌دهی اینترنتی مطب دکتر حاج محمد
+                نوبت‌دهی اینترنتی مطب دکتر {doctor.first_name}
             </Typography>
             <Box
                 sx={{
@@ -175,7 +191,7 @@ const Profile = () => {
                             mb: '20px'
                         }}
                     >
-                        <img src={drImg} alt="" style={{
+                        <img src={doctor.image} alt="" style={{
                             width:"100px",
                             height:"100px",
                             borderRadius:"50%",
@@ -192,7 +208,7 @@ const Profile = () => {
                                     lineHeight: '24px',
                                     whiteSpace: 'nowrap',
                                 }}
-                            >دکتر  حاج محمد</Typography>
+                            >دکتر  {doctor.name}</Typography>
                             <Typography
                                 sx={{
                                     color: `${c217CE6}`,
@@ -204,7 +220,7 @@ const Profile = () => {
                                     whiteSpace: 'nowrap',
                                 }}
                             >
-                                تخصص کودکان و نوزادان
+                               {doctor.speciality}
                             </Typography>
                         </Box>
                     </Box>
@@ -219,7 +235,7 @@ const Profile = () => {
                             lineHeight: '24px',
                         }}
                     >
-                        <b style={{color:`${c5f5f5f}`,textShadow:"none"}}>خدمات:</b>  درمان اختلالات رشد و کوتاهی قد، بلوغ رودرس و تاخیر بلوغ ، درمان دیابت نوع 1 و 2 به همراه آموزش مصرف انسولین های جدید ، کم کاری و پرکاری تیرویید، چاقی و لاغری و بیماریهای متابولیک ارثی، تغذیه و رژیم درمانی.
+                        <b style={{color:`${c5f5f5f}`,textShadow:"none"}}>خدمات:</b> {doctor.description}
                     </Typography>
                     <Box
                         sx={{
@@ -243,7 +259,7 @@ const Profile = () => {
                                 lineHeight: '24px',
                                 textAlign:"right"
                             }}
-                        >0911 222 33 44 - 0912 111 34 56
+                            >{doctor.docphonenumber}
                         </Typography>
 
 
@@ -271,8 +287,8 @@ const Profile = () => {
                                 display:"flex"
                             }}
                         >
-                            
-                            تهران، خیابان شریعتی، کوچه صدرا، پلاک 20، طبقه ی اول
+
+                        {doctor.loc}                            
                         </Typography>
 
 
@@ -297,6 +313,10 @@ const Profile = () => {
                         نفر
                     
                     </Box>
+
+
+                    {/* //////// comment section //////// */}
+
                     <Box>
                         <Typography
                             sx={{
@@ -361,7 +381,7 @@ const Profile = () => {
                                                         }}
                                                     >
 
-                                                        {item.comment}
+                                                        {item.name}
                                                     </Typography>
                                                     <Typography
                                                         sx={{
@@ -373,11 +393,11 @@ const Profile = () => {
                                                             lineHeight: '20px',
                                                         }}
                                                     >
-                                                        {item.date}
+                                                        {item.year}
                                                     </Typography>
                                                 </Box>
                                                 <Box>
-                                                    <Rating defaultValue={item.rate} readOnly />
+                                                    <Rating defaultValue={item.id} readOnly />
                                                 </Box>
                                             </Box>
                                             <Typography
@@ -393,7 +413,7 @@ const Profile = () => {
                                                 }}
                                             >
                                                 {
-                                                    item.comment
+                                                    item.color
                                                 }
                                             </Typography>
                                         </Box>
@@ -416,12 +436,12 @@ const Profile = () => {
                            marginBottom: '10px',
                            width:"fit-content"
                         }}>ثبت نظر</Typography>
-                        <Rating dir='ltr'></Rating>
+                        <Rating dir='ltr' onChange={(e) => setCommentrate(e.target.value)}></Rating>
                         <TextField placeholder={"نظر خود را اینجا به اشتراک بگذارید"} sx={{
                             marginY:"10px",
                             width:"100%",
                             borderRadius: '8px',
-                                                    // direction: `${item.name === 'phoneNumber' ? 'ltr' : 'rtl'}`,
+                            // direction: `${item.name === 'phoneNumber' ? 'ltr' : 'rtl'}`,
                             "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
                                 display: "none",
                             },
@@ -446,7 +466,8 @@ const Profile = () => {
                                 height: '46px',
                                 boxSizing: 'border-box'
                             },
-                        }}>
+                        }}
+                        onChange={(e) => setAddedcomment(e.target.value)}>
                         </TextField>
                         
                         
@@ -455,11 +476,17 @@ const Profile = () => {
                             color:"azure",
                             width:"100%",
                             backgroundColor:"#217CE6"
-                        }}>ثبت نظر</Button>
+                        }}
+                       /* onSubmit={(e) => commentapi}*/>ثبت نظر</Button>
                         
                     </Grid>
 
                 </Box>
+
+
+                {/* //////// appointment section //////// */}
+
+
                 <Box
                     sx={{
                         width: { xs: '100%', md: '50%', lg: '55%' },
@@ -596,11 +623,11 @@ const Profile = () => {
                                 <Box>
 
 
-                                <input type="date" style={dateinputstyle}></input>
+                                <input type="date" style={dateinputstyle} value={dateValue}></input>
 
                                 </Box>
                             </Box>
-                            <Box sx={{ display: 'flex', gap: {xs:'56px',md:'0px',lg:'10px',xl:'40px'}, alignItems: 'center' }}>
+                            {/* <Box>
                                 <Typography
                                     sx={{
                                         color: `${c4c4c4c}`,
@@ -611,11 +638,34 @@ const Profile = () => {
                                         lineHeight: '22px',
                                         marginBottom: '8px'
                                     }}
+                                >ساعت  *</Typography>
+                                <Box>
+
+
+                                ///////<input type="time" style={dateinputstyle} value={dateValue}></input> 
+                                ///////<DatePicker></DatePicker>
+
+                                </Box> 
+                            </Box>*/}
+                            <Box sx={{ display: 'flex', gap: {xs:'50px',md:'0px',lg:'5px',xl:'5px'},
+                                    alignItems: 'center',
+                                }}>
+                                <Typography
+                                    sx={{
+                                        color: `${c4c4c4c}`,
+                                        fontSize: { xs: '12px', sm: '14px', md: '15px', lg: '17px' },
+                                        fontFamily: 'ykan',
+                                        fontWeight: 700,
+                                        letterSpacing: '0.2px',
+                                        lineHeight: '22px',
+                                        marginBottom: '8px'
+                                    }}
                                 >جنسیت: </Typography>
                                 
                                 <Select sx={{
-                                    color:`${c4c4c4c}`, backgroundClip:`${c1f1f1f}`, marginRight:"-80%", width:"50%"
-                                    }}
+                                    color:`${c4c4c4c}`, backgroundClip:`${c1f1f1f}`, marginRight:"-80%", width:"50%",
+                                    minWidth:"33%"}}
+                                    onChange={setSex}
                                     >
                                     <MenuItem value="خانم" sx={{color: `${c4c4c4c}`}}>
                                                     خانم
@@ -624,6 +674,7 @@ const Profile = () => {
                                                     آقا
                                         </MenuItem>
                                 </Select>
+
                             </Box>
                             
                         </Box>
@@ -649,6 +700,7 @@ const Profile = () => {
                                         }
 
                                     }}
+                                    // onClick={reseverapi}
                                 >
                                     ثبت اطلاعات
                                 </Button>
