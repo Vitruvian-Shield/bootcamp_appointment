@@ -1,4 +1,6 @@
-import React from "react"
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 import { MdToys } from "react-icons/md";
 import { GiKidneys } from "react-icons/gi";
 import { FaTooth } from "react-icons/fa";
@@ -9,7 +11,7 @@ import { IoIosEye } from "react-icons/io";
 import { IoEar } from "react-icons/io5";
 import { PiBone } from "react-icons/pi";
 import { RiUserVoiceLine } from "react-icons/ri";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { RiPsychotherapyLine } from "react-icons/ri";
 import { FaUserDoctor } from "react-icons/fa6";
 import { RiBrainLine } from "react-icons/ri";
@@ -22,13 +24,17 @@ import { FaHandSparkles } from "react-icons/fa";
 import { GiIntricateNecklace } from "react-icons/gi";
 
 
+const Specialities = ()=> {
 
-// import internaldoc from '../../assets/images/icons8-doctor-50.png'
+    const [speciality, setSpeciality] = useState({})
+
+    // useEffect(() =>
+    // axios.get(`localhost:3000/api/medicine/speciality/list/`).then(({ data }) => setSpeciality(data)).catch(err => console.log(err)),[])
 
 
-class Specialities extends React.Component{
-    state={
-        speciality:[
+    // data for speciality fields
+    const state={
+        specialities:[
             {
                 name: 'متخصص اطفال',
                 icon: <MdToys />
@@ -53,7 +59,7 @@ class Specialities extends React.Component{
             },
             {
                 name: 'متخصص مامایی',
-                icon: <FaChildReaching enableBackground={"black"} />
+                icon: <FaChildReaching />
             },
             {
                 name: 'متخصص چشم پزشک',
@@ -117,9 +123,9 @@ class Specialities extends React.Component{
            },
         ]
     }
-    
-    render(){
         
+    const navigate = useNavigate()
+
         return(
             <Box sx={{
                 width:"100%",
@@ -127,9 +133,13 @@ class Specialities extends React.Component{
                 backgroundColor: "white",
                 justifyContent:"center",
                 alignContent:"center",
-                margin:"-8px"
+                margin:"-8px",
+                color:"azure"
             }}>
-                <Box sx={{textAlign:"center"}}>
+
+                {/* ///// header ////// */}
+
+                <Box  sx={{textAlign:"center"}}>
                     <Typography variant="h3" color={"rgb(0,0,0)"}>تخصص مد نظر خود را برای ارتباط با دکتران و مختصصان انتخاب کنید</Typography>
                 </Box>
 
@@ -142,27 +152,32 @@ class Specialities extends React.Component{
                     alignItems:"center",
                     marginRight:"15%"
                 }}>
-                    {this.state.speciality.map((item, index) => {
+
+
+                    {/* ///// speciality fields /////// */}
+
+                    {state.specialities.map((item, index) => {
                         return (
                              
-                                <Grid item spacing={3} key={index} sx={{
-                                    
+                                <Button onClick={() => navigate(`/search`)} sx={{
                                     width:"30%",
                                     height:"10%",
-                                    // margin:"2% 1%",
                                     boxShadow:"1px 1px 1px rgba(171,171,171,0.5)",
                                     backgroundColor:"rgb(1, 33, 79)",
+                                    color:"azure",
                                     borderRadius:"8px",
                                     display:"flex",
                                     alignItems:"center",
+                                    textAlign:"right",
                                     paddingBottom:"1%",
                                     fontSize:"larger",
                                     ':hover':{
                                         width:"29.5%",
                                         height:"9.5%",
-                                        opacity:"0.95"
+                                        opacity:"0.95",
+                                        backgroundColor:"rgb(1, 33, 79)",
                                     }
-                                    
+
                                 }}>
                                     <Grid sx={{
                                         width:"30%",
@@ -177,11 +192,10 @@ class Specialities extends React.Component{
                                     }}>
                                         {item.name}
                                     </Typography>
-                                </Grid>
+                                </Button>
                                 
                                 )
                                 }
-                            
                         )
                     }
                 </Grid>
@@ -189,6 +203,5 @@ class Specialities extends React.Component{
             </Box>
         )
     }
-}
 
 export default Specialities
