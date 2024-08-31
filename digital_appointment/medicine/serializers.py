@@ -31,3 +31,9 @@ class ProviderSerializer(serializers.ModelSerializer):
 
 class SpecialitySerializer(serializers.Serializer):
     speciality = serializers.CharField(max_length=255)
+
+
+class ServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Service
+        fields = '__all__'

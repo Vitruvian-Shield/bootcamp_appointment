@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions, pagination
 from rest_framework_simplejwt import authentication
 from django.db.models import Q
+from .models import Service
 from django.db.models.manager import Manager
 from . import models, serializers
 
@@ -57,3 +58,9 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
 
         serializer = serializers.SpecialitySerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
+
+class ServiceListView(APIView):
+    def get(self, request):
+        services = Service.objects.all()
+        serializer = serializers.ServiceSerializer(services, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

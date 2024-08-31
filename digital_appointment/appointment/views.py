@@ -30,3 +30,13 @@ class AppointmentCreateView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request):
+        user_info = {'pk': request.user.pk,
+                     'email': request.user.email,
+                     'username': request.user.username,
+                     'first_name': request.user.first_name,
+                     'last_name': request.user.last_name,
+                     'phone_number': request.user.phone_number
+                     }
+        return Response(data=user_info, status=status.HTTP_200_OK)
