@@ -5,7 +5,7 @@ import docimg from "../assets/images/person-circle.svg";
 function Appointment() {
     const [data, setData] = useState(null);
     const [service, setService] = useState([]);
-    const [selectedServiceId, setSelectedServiceId] = useState(''); // New state to track selected service
+    const [selectedServiceId, setSelectedServiceId] = useState('');
     const token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -132,7 +132,7 @@ function Appointment() {
                     <input type="email" id="email" readOnly />
                     <div id='labelInputInARow'>
                         <label htmlFor="serviceId"> سرویس:</label>
-                        <input type="number" id="serviceId" name="service" value={selectedServiceId} readOnly /> {/* Bind to selected service ID */}
+                        <input type="number" id="serviceId" name="service" value={selectedServiceId} readOnly />
                     </div>
                     <div id='labelInputInARow'>
                         <label htmlFor="year">سال:</label>
