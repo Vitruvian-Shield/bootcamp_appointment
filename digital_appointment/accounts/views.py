@@ -6,6 +6,7 @@ from . import serializers
 from rest_framework import permissions, pagination
 from rest_framework_simplejwt import authentication
 from rest_framework_simplejwt.views import TokenObtainPairView
+from drf_spectacular.utils import extend_schema
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -13,6 +14,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 
 class User(views.APIView, pagination.PageNumberPagination):
+    @extend_schema(tags=['User'], responses=serializers.UserSerializer)
     def get(self, request):
         users = models.User.objects.all().order_by("-created_at")
 
@@ -30,6 +32,7 @@ class User(views.APIView, pagination.PageNumberPagination):
 
 
 class UserDetail(views.APIView):
+    @extend_schema(tags=['User'], responses=serializers.UserSerializer)
     def get(self, request, pk):
         user = models.User.objects.get(id=pk)
         serializer = serializers.UserSerializer(user)
@@ -58,6 +61,7 @@ class ProfileView(views.APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
+    @extend_schema(tags=['User'], responses=serializers.UserSerializer)
     def get(self, request):
         user = request.user
         serializer = serializers.UserSerializer(user)

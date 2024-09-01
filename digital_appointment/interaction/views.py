@@ -4,11 +4,14 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt import authentication
 from . import serializers, models
+from drf_spectacular.utils import extend_schema
 
 
 class Comment(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
+    @extend_schema(tags=['Comments'], responses=serializers.CommentSerializer)
     def post(self, request):
         serializer = serializers.CommentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

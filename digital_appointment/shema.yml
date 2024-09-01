@@ -62,23 +62,31 @@ paths:
     get:
       operationId: accounts_profile_retrieve
       tags:
-      - accounts
+      - User
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
   /api/accounts/user/:
     get:
       operationId: accounts_user_retrieve
       tags:
-      - accounts
+      - User
       security:
       - jwtAuth: []
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
     post:
       operationId: accounts_user_create
       tags:
@@ -99,13 +107,17 @@ paths:
           type: integer
         required: true
       tags:
-      - accounts
+      - User
       security:
       - jwtAuth: []
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
     put:
       operationId: accounts_user_update
       parameters:
@@ -142,12 +154,16 @@ paths:
     post:
       operationId: interaction_post_comment_create
       tags:
-      - interaction
+      - Comments
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
   /api/medicine/ProviderDetail/{id}/:
     get:
       operationId: medicine_ProviderDetail_retrieve
@@ -170,13 +186,17 @@ paths:
       operationId: medicine_locations_retrieve
       description: get locations for select a provider
       tags:
-      - medicine
+      - Location
       security:
       - jwtAuth: []
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+          description: ''
     post:
       operationId: medicine_locations_create
       description: |-
@@ -193,12 +213,16 @@ paths:
     get:
       operationId: medicine_provider_retrieve
       tags:
-      - medicine
+      - Provider
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provider'
+          description: ''
     post:
       operationId: medicine_provider_create
       tags:
@@ -212,14 +236,195 @@ paths:
     get:
       operationId: medicine_speciality_list_retrieve
       tags:
-      - medicine
+      - Specialty
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Speciality'
+          description: ''
+  /api/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
 components:
   schemas:
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        comment:
+          type: string
+        stars:
+          type: integer
+          maximum: 5
+          minimum: 1
+          nullable: true
+        create_date:
+          type: string
+          format: date-time
+          readOnly: true
+        update_date:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+        provider:
+          type: integer
+      required:
+      - comment
+      - create_date
+      - id
+      - provider
+      - update_date
+      - user
     CustomTokenObtainPair:
       type: object
       properties:
@@ -232,6 +437,84 @@ components:
       required:
       - password
       - username
+    Location:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        address:
+          type: string
+        city:
+          type: string
+          maxLength: 50
+        state:
+          type: string
+          maxLength: 50
+        zip_code:
+          type: string
+          maxLength: 10
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_date:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - address
+      - city
+      - created_date
+      - id
+      - name
+      - state
+      - updated_date
+      - zip_code
+    Provider:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+        location:
+          $ref: '#/components/schemas/Location'
+        speciality:
+          type: string
+          maxLength: 255
+        stars_average:
+          type: integer
+          maximum: 5
+          minimum: 1
+          nullable: true
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_date:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_date
+      - id
+      - location
+      - speciality
+      - updated_date
+      - user
+    Speciality:
+      type: object
+      properties:
+        speciality:
+          type: string
+          maxLength: 255
+      required:
+      - speciality
     TokenRefresh:
       type: object
       properties:
@@ -244,6 +527,62 @@ components:
       required:
       - access
       - refresh
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
+        first_name:
+          type: string
+          maxLength: 100
+        last_name:
+          type: string
+          maxLength: 100
+        username:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 200
+        phone_number:
+          type: string
+          maxLength: 20
+        birth_data:
+          type: string
+          format: date-time
+          nullable: true
+        update_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        expire_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - created_at
+      - email
+      - first_name
+      - id
+      - last_name
+      - password
+      - phone_number
+      - update_at
+      - username
   securitySchemes:
     jwtAuth:
       type: http

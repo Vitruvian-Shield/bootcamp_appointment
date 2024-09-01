@@ -8,12 +8,12 @@ from django.db.models.manager import Manager
 from interaction.models import Comment
 from interaction.serializers import CommentSerializer
 from . import models, serializers
-
+from drf_spectacular.utils import extend_schema
 
 class Provider(APIView, pagination.PageNumberPagination):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-
+    @extend_schema(tags=['Provider'], responses= serializers.ProviderSerializer)
     def get(self, request):
         providers = models.Provider.objects
 
@@ -93,11 +93,10 @@ class ProviderSearch(APIView, pagination.PageNumberPagination):
 class ProviderDetail(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-
+    @extend_schema(tags=['Provider'], responses= serializers.ProviderSerializer)
     def get_object(self, pk):
         """Retrieve the provider object or raise a 404 error if not found."""
         return get_object_or_404(models.Provider, pk=pk)
-
     def get(self, request, pk):
         """Handle GET requests to retrieve provider details along with comments."""
         provider = self.get_object(pk)
@@ -116,7 +115,7 @@ class ProviderDetail(APIView):
 class SpecialtyListView(APIView, pagination.PageNumberPagination):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-
+    @extend_schema(tags=['Specialty'], responses= serializers.SpecialitySerializer)
     def get(self, request):
         specialities = models.Provider.objects.values(
             'speciality').distinct()
@@ -132,7 +131,7 @@ class LocationApi(APIView):
     """
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
+    @extend_schema(tags=['Location'], responses= serializers.LocationSerializer)
     def get(self, request):
         """
         get locations for select a provider
