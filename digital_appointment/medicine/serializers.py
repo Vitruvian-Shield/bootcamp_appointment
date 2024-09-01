@@ -30,3 +30,8 @@ class ProviderSerializer(serializers.ModelSerializer):
 
 class SpecialitySerializer(serializers.Serializer):
     speciality = serializers.CharField(max_length=255)
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Comment
+        fields = ['date', 'user', 'comment']
