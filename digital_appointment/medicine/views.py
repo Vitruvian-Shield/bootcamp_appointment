@@ -76,8 +76,16 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
 class ServiceListView(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-    def get(self, request):
-        data = request.user.provider.services.all()
-        serializers = serializers.ServiceSerializer(data)
-        return Response(serializers.data, status=status.HTTP_200_OK)
-    
+
+    def get(self, request, id=None):
+        # Check if id is provided in the URL
+        print(id)
+        if id is not None:
+            try:
+                # Retrieve the object by ID
+                data = models.Provider.objects.get(pk=id).services.all()
+                print(data)
+                serializer = serializers.ServiceSerializer(data, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except models.Provider.DoesNotExist:
+                return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
