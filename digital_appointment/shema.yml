@@ -1,0 +1,251 @@
+openapi: 3.0.3
+info:
+  title: Digital Appointment API
+  version: 0.0.0
+  description: Accepting and setting appointments for patients
+paths:
+  /api/accounts/login/:
+    post:
+      operationId: accounts_login_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomTokenObtainPair'
+          description: ''
+  /api/accounts/login/refresh/:
+    post:
+      operationId: accounts_login_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/accounts/profile/:
+    get:
+      operationId: accounts_profile_retrieve
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/accounts/user/:
+    get:
+      operationId: accounts_user_retrieve
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: accounts_user_create
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/accounts/user/{id}/:
+    get:
+      operationId: accounts_user_retrieve_2
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: accounts_user_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: accounts_user_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/interaction/post_comment/:
+    post:
+      operationId: interaction_post_comment_create
+      tags:
+      - interaction
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/medicine/ProviderDetail/{id}/:
+    get:
+      operationId: medicine_ProviderDetail_retrieve
+      description: Handle GET requests to retrieve provider details along with comments.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - medicine
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/medicine/locations/:
+    get:
+      operationId: medicine_locations_retrieve
+      description: get locations for select a provider
+      tags:
+      - medicine
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: medicine_locations_create
+      description: |-
+        serializer.is_valid(raise_exception=True) this code for
+        validate serializer and not different with code in line 43
+      tags:
+      - medicine
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/medicine/provider/:
+    get:
+      operationId: medicine_provider_retrieve
+      tags:
+      - medicine
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: medicine_provider_create
+      tags:
+      - medicine
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/medicine/speciality/list/:
+    get:
+      operationId: medicine_speciality_list_retrieve
+      tags:
+      - medicine
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    CustomTokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
