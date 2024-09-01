@@ -46,5 +46,4 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_on', 'is_active']
 
     def create(self, validated_data):
-        # Custom logic can be added here if necessary before saving
         return super().create(validated_data)
