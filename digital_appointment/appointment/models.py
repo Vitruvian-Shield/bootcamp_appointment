@@ -22,7 +22,7 @@ class Appointment(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.date
+        return f"{self.date}"
 
     class Meta:
         db_table = "appointment"

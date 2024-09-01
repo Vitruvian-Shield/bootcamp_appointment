@@ -4,33 +4,36 @@ from rest_framework import status, permissions, pagination
 from rest_framework_simplejwt import authentication
 from . import models, serializers
 from medicine.models import Provider, Service
-
+from django.db import transaction
 
 class AppointmentAdd(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     
     def post(self, request):
-    
-        data = request.data
-        data["user"] = request.user
-        provider_id = self.kwargs.get("provider",None)
+        data = request.data.copy()  # Work on a copy of the request data
         
+        # Attach the logged-in user to the appointment
+        data["user"] = request.user.id  # Assuming 'user' is a ForeignKey to User model
+        
+        # Handle provider lookup and validation
+        provider_id = data.get("provider", None)
         if provider_id:
             try:
-                 data["provider"] = Provider.objects.get(pk=provider_id)
+                provider = Provider.objects.get(pk=provider_id)
+                data["provider"] = provider.id  # Assigning the provider ID
             except Provider.DoesNotExist:
-                return Response({"status":"error:provider does not exist"}, status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = serializers.AppointmentSerializer(data=data)
-        
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response({"status": "error: provider does not exist"}, status=status.HTTP_404_NOT_FOUND)
+        with transaction.atomic():
+            service = Service.objects.create(name=data["service"]["name"],description=data["service"]["description"])
+            data["service"] = service.id
+            
+            serializer = serializers.AppointmentSerializer(data=data)
+            
+            if serializer.is_valid():
+                serializer.save()  # Save the appointment with the validated data
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    
-
 
 class AppointmentView(APIView, pagination.PageNumberPagination):
     authentication_classes = [authentication.JWTAuthentication]

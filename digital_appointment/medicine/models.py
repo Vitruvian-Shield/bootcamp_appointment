@@ -33,9 +33,8 @@ class Location(models.Model):
 
 class Service(models.Model):
     name = models.CharField(max_length=255)
-    provider = models.ForeignKey(Provider, on_delete=models.CASCADE, related_name="services")
     description = models.TextField(null=True, blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     duration = models.IntegerField(default=30)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
