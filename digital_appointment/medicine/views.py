@@ -72,7 +72,7 @@ class CommentView(APIView):
 
     def post(self, request, provider_id):
         data = request.data
-        data['provider'] = provider_id  # Associate the comment with the provider
+        data['provider'] = provider_id 
         serializer = serializers.CommentSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
