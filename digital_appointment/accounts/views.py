@@ -8,6 +8,7 @@ from rest_framework_simplejwt import authentication
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
 
@@ -48,14 +49,14 @@ class Login(views.APIView):
 
 
 
+class User(views.APIView):
+    
+    # def get(self, request):
+    #     users = models.User.objects.all().order_by("-created_at")
 
-class User(views.APIView, pagination.PageNumberPagination):
-    def get(self, request):
-        users = models.User.objects.all().order_by("-created_at")
-
-        page = self.paginate_queryset(users, request)
-        serializer = serializers.UserSerializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
+    #     page = self.paginate_queryset(users, request)
+    #     serializer = serializers.UserSerializer(page, many=True)
+    #     return self.get_paginated_response(serializer.data)
 
     def post(self, request):
         data = request.data
@@ -65,16 +66,26 @@ class User(views.APIView, pagination.PageNumberPagination):
             return Response({"success": True}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UserNameIsAvalable(views.APIView):
+    def post(self, request, username=None):
+        if User.objects.filter(username__i_contains=username).exist():
+            return Response({"status":"bad"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"status":"ok"}, status=status.HTTP_200_OK)
+        
 
-class UserDetail(views.APIView):
     
-    def get(self, request, pk):
-        user = models.User.objects.get(id=pk)
+class UserDetail(views.APIView):
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        
+        user = request.user
         serializer = serializers.UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def put(self, request, pk):
-        user = models.User.objects.get(id=pk)
+    def put(self, request):
+        user = request.user
         data = request.data
         serializer = serializers.UserSerializer(user, data=data)
         if serializer.is_valid():
@@ -90,13 +101,4 @@ class UserDetail(views.APIView):
 
         user.delete()
         return Response({"success": True}, status=status.HTTP_200_OK)
-
-
-class ProfileView(views.APIView):
-    authentication_classes = [authentication.JWTAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        user = request.user
-        serializer = serializers.UserSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    
