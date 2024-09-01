@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Provider(models.Model):
     user = models.OneToOneField('accounts.User', on_delete=models.CASCADE)
@@ -20,6 +20,7 @@ class Comment(models.Model):
     name = models.CharField(max_length=80)
     email = models.EmailField()
     body = models.TextField()
+    rating = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], default=1)
     created_on = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)
 

@@ -37,3 +37,14 @@ class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Service
         fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Comment
+        fields = ['id', 'provider', 'rating', 'name', 'email', 'body', 'created_on', 'is_active']
+        read_only_fields = ['id', 'created_on', 'is_active']
+
+    def create(self, validated_data):
+        # Custom logic can be added here if necessary before saving
+        return super().create(validated_data)

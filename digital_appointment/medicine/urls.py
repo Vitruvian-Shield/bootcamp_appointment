@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import Provider, SpecialtyListView, ServiceListView
+from .views import ProviderView, SpecialtyListView, ServiceListView, CommentView
 
 urlpatterns = [
-    path('provider/', Provider.as_view()),
+    path('provider/', ProviderView.as_view()),
     path('speciality/list/', SpecialtyListView.as_view()),
     path('services/', ServiceListView.as_view(), name='service-list'),
+    path('provider/<int:provider_id>/comments/', CommentView.as_view(), name='comment-list-create')
 ]
