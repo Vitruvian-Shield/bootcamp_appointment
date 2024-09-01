@@ -73,3 +73,13 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
         serializer = serializers.SpecialitySerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
+class Comment(APIView, pagination.PageNumberPagination):
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request,provider_id=None):
+        comments = models.Comment.objects.filter(provider=provider_id)
+        page = self.paginate_queryset(comments, request)
+        serializer = serializers.CommentSerializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
