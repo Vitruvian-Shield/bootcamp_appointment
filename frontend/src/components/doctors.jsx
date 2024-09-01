@@ -8,7 +8,7 @@ function Doctors() {
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem('token'); // Get the token from localStorage
-  
+
       try {
         const response = await fetch('http://127.0.0.1:8000/api/medicine/provider/', {
           method: 'GET',
@@ -29,6 +29,7 @@ function Doctors() {
         
       } catch (error) {
         console.error('Error fetching data:', error);
+        alert('لطفا به اکانت خود وارد شوید...')
       }
     };
   

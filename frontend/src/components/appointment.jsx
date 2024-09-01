@@ -3,13 +3,16 @@ import './appointment.css';
 import docimg from "../assets/images/person-circle.svg";
 
 function Appointment() {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState({});
     const [service, setService] = useState([]);
+    const [comments, setComments] = useState([]);  // State for comments
     const [selectedServiceId, setSelectedServiceId] = useState('');
     const token = localStorage.getItem('token');
+    const docInfo = localStorage.getItem("doctorName");
+    const doctorId = localStorage.getItem("doctorId");
 
     useEffect(() => {
-        // Fetch appointment details
+        // Fetch user details
         fetch('http://127.0.0.1:8000/api/appointment/create/', {
             method: 'GET',
             headers: {
@@ -25,7 +28,6 @@ function Appointment() {
         })
         .then(data => {
             setData(data);
-            console.log(data); // only for debugging
             document.getElementById('accountInfo').innerHTML = `وارد شده به عنوان ${data.username}`;
             document.getElementById('username').value = `${data.username}`;
             document.getElementById('phone_number').value = `${data.phone_number}`;
@@ -39,7 +41,7 @@ function Appointment() {
     }, [token]);
 
     useEffect(() => {
-        // Fetch services data
+        // Fetch services
         fetch('http://127.0.0.1:8000/api/medicine/services/', {
             method: 'GET',
             headers: {
@@ -55,57 +57,113 @@ function Appointment() {
         })
         .then(service => {
             setService(service);
-            console.log("service:", service); // only for debugging
         })
         .catch(error => {
             console.error('Error:', error);
         });
-        
+
     }, [token]);
 
-    const docInfo = localStorage.getItem("doctorName");
-
-    function sendAppointment(){
-        const year = document.getElementById("year").value;
-        const month = document.getElementById("month").value;
-        const day = document.getElementById("day").value;
-
-        // Format the date
-        const appointmentDate = new Date(year, month - 1, day).toISOString().split('T')[0];
-
-        const appointmentData = {
-            "user": data.pk,
-            "provider": localStorage.getItem("doctorId"),
-            "service": selectedServiceId, // Use the selected service ID
-            "date": appointmentDate,
-            "patient_first_name": data.first_name,
-            "patient_last_name": data.last_name,
-            "patient_phone_number": document.getElementById("phone_number").value,
-            "patient_national_id": document.getElementById("nationalId").value,
-            "patient_gender": document.getElementById("gender").value
+    useEffect(() => {
+        // Fetch comments related to the selected provider
+        if (doctorId) {
+            fetch(`http://127.0.0.1:8000/api/medicine/provider/${doctorId}/comments/`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(comments => {
+                setComments(comments);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
+    }, [token, doctorId]);  
+
+    const sendAppointment = () => {
+        if(document.getElementById("nationalId").value && document.getElementById("day").value && document.getElementById("month").value && document.getElementById("year").value){ 
+            const year = document.getElementById("year").value;
+            const month = document.getElementById("month").value;
+            const day = document.getElementById("day").value;
+
+            const appointmentDate = new Date(year, month - 1, day).toISOString().split('T')[0];
+
+            const appointmentData = {
+                "user": data.pk,
+                "provider": doctorId,
+                "service": selectedServiceId,
+                "date": appointmentDate,
+                "patient_first_name": data.first_name,
+                "patient_last_name": data.last_name,
+                "patient_phone_number": document.getElementById("phone_number").value,
+                "patient_national_id": document.getElementById("nationalId").value,
+                "patient_gender": document.getElementById("gender").value
+            }
 
         fetch('http://127.0.0.1:8000/api/appointment/create/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(appointmentData),
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Success:', data); // remove this, only for debugging
+            console.log('Success:', data);
+            document.getElementById("day").value = ""
+            document.getElementById("month").value = ""
+            document.getElementById("year").value = ""
+            document.getElementById("nationalId").value = ""
+            document.getElementById("serviceId").value = ""
+            alert('با موفقیت رزرو شد...')
         })
         .catch(error => {
-            console.error('Error:', error); // remove this, only for debugging
+            console.error('Error:', error);
         });
     }
+    else{
+        alert("لطفا تمام اطلاعاتو وارد کنید!")
+    }
+}
 
     const handleServiceClick = (id) => {
-        setSelectedServiceId(id); // Update the selected service ID state
+        setSelectedServiceId(id); 
     }
 
+    function sendComment(){
+        const commentData = {
+            "user": data.id,
+            "email": data.email,
+            "name": `${data.first_name} ${data.last_name}`,
+            "body": document.getElementById('commentBody').value,
+            "rating": document.getElementById('rating').value
+        }
+        document.getElementById('commentBody').value = ""
+        fetch(`http://127.0.0.1:8000/api/medicine/provider/${doctorId}/comments/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(commentData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data); 
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });}
     return (
         <div id='root' dir='rtl'>
             <div id='caution'>
@@ -116,9 +174,31 @@ function Appointment() {
                 <h4>اگر پزشک مورد نظر شما نیست از بخش پزشکان پزشک دیگری انتخاب کنید</h4>
             </div>
             <div id='content'>
-                <div id='comments'>
-                    <h1>کامنت ها</h1>
-                </div>
+    <div id='comments'>
+        <h1>کامنت ها</h1>
+        <div id='commentAdd'>
+            <p><b>نام: {`${data.first_name} ${data.last_name}`}</b></p>
+            <p>ایمیل: {data.email}</p>
+            <textarea id="commentBody" placeholder='کامنتتو اینجا بزار'></textarea>
+            <div>
+                <button onClick={sendComment}>ارسال</button>
+                <label htmlFor="quantity" id='ratingLabel'>از 1 تا 5 به دکتر نمره دهید:</label>
+                <input type="number" id="rating" min="1" max="5"></input>
+            </div>
+        </div>
+        <ul id='allComments'>
+            {comments.map((comment, index) => (
+                <li key={index}>
+                    <p><b>{comment.name}:</b> {comment.body}</p>
+                    <p id='rating'>
+                        {Array.from({ length: comment.rating }, (_, i) => (
+                            <span key={i}>⭐</span>
+                        ))}
+                    </p>
+                </li>
+            ))}
+        </ul>
+    </div>
                 
                 <div id='form-container'>
                     <h1 id='accountInfo' dir='rtl'></h1>
