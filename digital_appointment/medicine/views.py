@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status, permissions, pagination
 from rest_framework_simplejwt import authentication
 from django.db.models import Q
-from .models import Service, Provider, Comment
+from .models import Service, Provider, Comment, Location
 from . import serializers
 
 
@@ -59,6 +59,13 @@ class ServiceListView(APIView):
         services = Service.objects.all()
         serializer = serializers.ServiceSerializer(services, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class LocationListView(APIView):
+    def get(self, request):
+        location = Location.objects.all()
+        serializer = serializers.LocationSerializer(location, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 class CommentView(APIView):
