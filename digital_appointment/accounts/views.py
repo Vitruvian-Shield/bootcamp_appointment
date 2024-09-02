@@ -43,10 +43,8 @@ class Login(views.APIView):
                 print(data)
                 return Response(data, status=status.HTTP_200_OK)
             
-            
         except:
             return Response({"status": "error:invalid input."}, status=status.HTTP_404_NOT_FOUND)
-
 
 
 class User(views.APIView):
@@ -66,15 +64,20 @@ class User(views.APIView):
             return Response({"success": True}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserNameIsAvalable(views.APIView):
     def post(self, request, username=None):
         if models.User.objects.filter(username=username).exists():
             return Response({"status":"bad"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"status":"ok"}, status=status.HTTP_200_OK)
         
+        
 class EmailIsAvalable(views.APIView):
     def post(self, request, email=None):
-        pass
+        if models.User.objects.filter(email=email).exists():
+            return Response({"status":"bad"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"status":"ok"}, status=status.HTTP_200_OK)
+    
     
 class UserDetail(views.APIView):
     authentication_classes = [authentication.JWTAuthentication]
@@ -97,12 +100,8 @@ class UserDetail(views.APIView):
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk):
-        try:
-            user = models.User.objects.get(id=pk)
-        except models.User.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        user.delete()
+    def delete(self, request):
+      
+        request.user.delete()
         return Response({"success": True}, status=status.HTTP_200_OK)
     

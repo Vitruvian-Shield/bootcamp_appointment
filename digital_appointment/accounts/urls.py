@@ -8,5 +8,6 @@ urlpatterns = [
     path("token/refresh/", TokenRefreshView.as_view()),
     path("userSignin/", views.User.as_view()),
     path("profile/", views.UserDetail.as_view()),
-    path("usernameisavalable/<str:username>/", views.UserNameIsAvalable.as_view())
+    path("usernameisavalable/<str:username>/", views.UserNameIsAvalable.as_view()),
+    path("emailisavalable/<str:email>/", views.EmailIsAvalable.as_view())
 ]
