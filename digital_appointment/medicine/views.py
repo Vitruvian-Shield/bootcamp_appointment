@@ -76,8 +76,6 @@ class Provider(APIView, pagination.PageNumberPagination):
 
 
 
-
-
 class ProviderDetail(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
@@ -116,7 +114,7 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
         return self.get_paginated_response(serializer.data)
 
 
-class LocationApi(APIView):
+class Location(APIView):
     """
     Location Api to interact with locations data
     """
