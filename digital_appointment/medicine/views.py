@@ -10,10 +10,12 @@ from interaction.serializers import CommentSerializer
 from . import models, serializers
 from drf_spectacular.utils import extend_schema
 
+
 class Provider(APIView, pagination.PageNumberPagination):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-    @extend_schema(tags=['Provider'], responses= serializers.ProviderSerializer)
+
+    @extend_schema(tags=['Provider'], responses=serializers.ProviderSerializer)
     def get(self, request):
         providers = models.Provider.objects
 
@@ -29,13 +31,30 @@ class Provider(APIView, pagination.PageNumberPagination):
                 Q(location__city__icontains=location) |
                 Q(location__state__icontains=location)
             )
+
         """
-        search provider with high satisfaction
-       
-        stars = request.query_params.get("stars")
-        if stars:
-            providers = providers.order_by('-stars_average')
-         """
+        search provider by input value
+        """
+        query = request.query_params.get("query")
+
+        if query:
+            providers = providers.filter(Q(first_name__icontains=query) |
+                                         Q(last_name__icontains=query) |
+                                         Q(speciality__icontains=query) |
+                                         Q(location__icontains=query) |
+                                         Q(location__address__icontains=query) |
+                                         Q(location__city__icontains=query) |
+                                         Q(location__state__icontains=query))
+        """
+        search provider with high or low satisfaction can be do it with 
+        this code 
+        """
+        satisfaction = request.query_params.get("satisfaction")
+        if satisfaction and satisfaction == 'high':
+            providers = models.Provider.objects.order_by('-stars_average')
+        elif satisfaction and satisfaction == 'low':
+            providers = models.Provider.objects.order_by('stars_average')
+
 
         if isinstance(providers, Manager):
             providers = providers.all()
@@ -56,47 +75,18 @@ class Provider(APIView, pagination.PageNumberPagination):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProviderSearch(APIView, pagination.PageNumberPagination):
-    authentication_classes = [authentication.JWTAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-    def get(self, request):
-        providers = models.Provider.objects
-        query = request.query_params.get("query")
 
-        if query:
-            providers = models.Provider.objects.filter(Q(first_name__icontains=query) |
-                                                     Q(last_name__icontains=query) |
-                                                     Q(speciality__icontains=query)|
-                                                     Q(location__icontains=query) |
-                                                     Q(location__address__icontains=query) |
-                                                     Q(location__city__icontains=query) |
-                                                     Q(location__state__icontains=query))
-        """
-        search provider with high or low satisfaction can be do it with 
-        this code 
-        
-        high_satisfaction = request.query_params.get("high_satisfaction")
-        if high_satisfaction:
-            providers = models.Provider.objects.order_by('-stars_average')
-        
-        low_satisfaction = request.query_params.get("low_satisfaction")
-        if low_satisfaction:
-            results = models.Provider.objects.order_by('stars_average')
-        """
-        if isinstance(providers, Manager):
-            providers = providers.all()
 
-        page = self.paginate_queryset(providers.order_by('-stars_average'), request)
-        serializer = serializers.ProviderSerializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
 
 class ProviderDetail(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-    @extend_schema(tags=['Provider'], responses= serializers.ProviderSerializer)
+
     def get_object(self, pk):
         """Retrieve the provider object or raise a 404 error if not found."""
         return get_object_or_404(models.Provider, pk=pk)
+
+    @extend_schema(tags=['Provider'], responses=serializers.ProviderSerializer)
     def get(self, request, pk):
         """Handle GET requests to retrieve provider details along with comments."""
         provider = self.get_object(pk)
@@ -115,7 +105,8 @@ class ProviderDetail(APIView):
 class SpecialtyListView(APIView, pagination.PageNumberPagination):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-    @extend_schema(tags=['Specialty'], responses= serializers.SpecialitySerializer)
+
+    @extend_schema(tags=['Specialty'], responses=serializers.SpecialitySerializer)
     def get(self, request):
         specialities = models.Provider.objects.values(
             'speciality').distinct()
@@ -131,7 +122,8 @@ class LocationApi(APIView):
     """
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    @extend_schema(tags=['Location'], responses= serializers.LocationSerializer)
+
+    @extend_schema(tags=['Location'], responses=serializers.LocationSerializer)
     def get(self, request):
         """
         get locations for select a provider
