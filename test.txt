@@ -1,8 +1,0 @@
-./Script/activate  # windows
-source env/bin/activate  # linux
-django-admin startproject {project_name}
-python manage.py runserver
-python manage.py startapp {app_name}
-
-git add .
-git commit -m "message"
