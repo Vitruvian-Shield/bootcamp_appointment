@@ -4,11 +4,13 @@ from . import managers
 
 
 class User(AbstractBaseUser):
+    """customized user model"""
+
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    username = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(max_length=200, unique=True)
-    phone_number = models.CharField(max_length=20, unique=True)
+    phone_number = models.CharField(max_length=11, unique=True)
+    email = models.EmailField(max_length=100, unique=True)
+    username = models.CharField(max_length=50, unique=True)
     birth_data = models.DateTimeField(null=True, blank=True)
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
