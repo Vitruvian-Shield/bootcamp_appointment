@@ -68,11 +68,13 @@ class User(views.APIView):
 
 class UserNameIsAvalable(views.APIView):
     def post(self, request, username=None):
-        if User.objects.filter(username__i_contains=username).exist():
+        if models.User.objects.filter(username=username).exists():
             return Response({"status":"bad"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"status":"ok"}, status=status.HTTP_200_OK)
         
-
+class EmailIsAvalable(views.APIView):
+    def post(self, request, email=None):
+        pass
     
 class UserDetail(views.APIView):
     authentication_classes = [authentication.JWTAuthentication]
@@ -87,10 +89,12 @@ class UserDetail(views.APIView):
     def put(self, request):
         user = request.user
         data = request.data
-        serializer = serializers.UserSerializer(user, data=data)
+        print(data)
+        serializer = serializers.UserSerializer(user, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response({"success": True}, status=status.HTTP_200_OK)
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
