@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'appointment.apps.AppointmentConfig',
     'medicine.apps.MedicineConfig',
+    'contactUs.apps.ContactusConfig',
     # third party
     'rest_framework',
     'rest_framework.authtoken',
