@@ -4,7 +4,6 @@ from rest_framework import status, permissions, pagination
 from rest_framework_simplejwt import authentication
 from . import models, serializers
 from medicine.models import Provider, Service
-from django.db import transaction
 
 class AppointmentAdd(APIView):
     authentication_classes = [authentication.JWTAuthentication]
@@ -24,15 +23,25 @@ class AppointmentAdd(APIView):
                 data["provider"] = provider.id  # Assigning the provider ID
             except Provider.DoesNotExist:
                 return Response({"status": "error: provider does not exist"}, status=status.HTTP_404_NOT_FOUND)
-        with transaction.atomic():
-            service = Service.objects.create(name=data["service"]["name"],description=data["service"]["description"])
-            data["service"] = service.id
+    
+        service = Service.objects.create(name=data["service"]["name"],description=data["service"]["description"])
+        data["service"] = service.id
+        
+        serializer = serializers.AppointmentSerializer(data=data)
+        if not models.Appointment.objects.filter(
             
-            serializer = serializers.AppointmentSerializer(data=data)
-            
+    patient_first_name=data["patient_first_name"],
+    patient_last_name=data["patient_last_name"],
+    patient_phone_number=data["patient_phone_number"],
+    user=data["user"],
+    provider=data["provider"],
+    patient_national_id=data["patient_national_id"]
+
+        ).exists():
             if serializer.is_valid():
                 serializer.save()  # Save the appointment with the validated data
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+        service.delete()
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class AppointmentView(APIView, pagination.PageNumberPagination):

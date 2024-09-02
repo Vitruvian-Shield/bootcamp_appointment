@@ -9,7 +9,7 @@ class Provider(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.speciality
+        return f'{self.user} - {self.speciality}'
 
     class Meta:
         db_table = "provider"
