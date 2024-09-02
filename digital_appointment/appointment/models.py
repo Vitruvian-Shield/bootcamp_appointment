@@ -9,8 +9,8 @@ class Appointment(models.Model):
     )
 
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
-    provider = models.ForeignKey('medicine.Provider', on_delete=models.CASCADE)
-    service = models.ForeignKey('medicine.Service', on_delete=models.CASCADE)
+    provider = models.ForeignKey('medicine.DoctorsModel', on_delete=models.CASCADE)
+    service = models.ForeignKey('medicine.ServiceModel', on_delete=models.CASCADE)
     patient_first_name = models.CharField(max_length=255, default="firstname")
     patient_last_name = models.CharField(max_length=255, default="lastname")
     patient_phone_number = models.CharField(max_length=20, default="1")

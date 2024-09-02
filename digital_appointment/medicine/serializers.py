@@ -1,33 +1,33 @@
 from rest_framework import serializers
 from . import models
-from accounts import serializers as accounts_serializers
 
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Location
+        model = models.LocationModel
         fields = "__all__"
 
 
-class ProviderSerializer(serializers.ModelSerializer):
-    user = accounts_serializers.UserSerializer()
+class ServiceSerializer(serializers.Serializer):
+    class Meta:
+        model = models.ServiceModel
+        fields = '__all__'
+
+
+class DoctorsSerializer(serializers.ModelSerializer):
+    """Doctors serializer: Convert data to json"""
+
     location = LocationSerializer()
+    speciality = ServiceSerializer()
 
     class Meta:
-        model = models.Provider
+        model = models.DoctorsModel
         fields = "__all__"
 
     def create(self, validated_data):
-        user_data = validated_data.pop("user")
         location_data = validated_data.pop("location")
-        user = accounts_serializers.UserSerializer.create(
-            accounts_serializers.UserSerializer(), validated_data=user_data)
-        location = LocationSerializer.create(
-            LocationSerializer(), validated_data=location_data)
-        provider, created = models.Provider.objects.update_or_create(
-            user=user, location=location, **validated_data)
+        speciality_data = validated_data.pop("speciality")
+        location = LocationSerializer.create(LocationSerializer(), validated_data=location_data)
+        speciality = ServiceSerializer.create(ServiceSerializer(), validated_data=speciality_data)
+        provider = models.DoctorsModel.objects.create(location=location, speciality=speciality, **validated_data)
         return provider
-
-
-class SpecialitySerializer(serializers.Serializer):
-    speciality = serializers.CharField(max_length=255)
