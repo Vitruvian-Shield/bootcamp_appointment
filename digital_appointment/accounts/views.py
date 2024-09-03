@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from . import models
@@ -5,16 +6,17 @@ from django.http import JsonResponse
 from rest_framework import views
 from rest_framework.response import Response
 from rest_framework import status
-from . import serializers
+from . import serializers, utils
 from rest_framework import permissions, pagination
 from rest_framework_simplejwt import authentication
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from drf_spectacular.utils import extend_schema
-#from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-#from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-#from dj_rest_auth.registration.views import SocialLoginView
+# from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+# from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+# from dj_rest_auth.registration.views import SocialLoginView
 from django.conf import settings
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 import requests
 
 """ 
@@ -28,6 +30,7 @@ class GoogleLogin(SocialLoginView):
     callback_url = 'http://127.0.0.1:8000/api/accounts/auth/google/callback/'
     client_class = OAuth2Client
     """
+
 
 @api_view(['GET'])
 def google_callback(request):
@@ -68,6 +71,19 @@ def google_callback(request):
     login(request, user)
     return Response({'message': 'Signup/Login successful', 'user': {'username': user.username, 'email': user.email}},
                     status=status.HTTP_200_OK)
+
+
+class SmsAuthentication(APIView):
+    permission_classes = [permissions.AllowAny]
+    @extend_schema(tags=['sms'])
+    def post(self, request):
+        mobile = request.data.get('mobile')
+        response = utils.send_quick_otp(mobile)
+        if response is not None:
+            return Response(response, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Failed to send quick otp'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
