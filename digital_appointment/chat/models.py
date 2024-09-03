@@ -6,6 +6,8 @@ class Comment(models.Model):
     comment = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
     update = models.BooleanField(default=False)
+    rate_sum = models.PositiveIntegerField(default=0)
+    rate_num = models.PositiveIntegerField(default=0)
     class Meta:
         ordering = ['date']
         
