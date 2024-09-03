@@ -15,9 +15,9 @@ class Comment(models.Model):
         return 'Comment {} by {}'.format(self.text, self.user)
     
 class Rate(models.Model):
-    provider = models.ForeignKey("medicine.Provider", on_delete=models.CASCADE, related_name="rates", null=True)
-    comment = models.ForeignKey("chat.Comment", on_delete=models.CASCADE, related_name="commet_rates", null=True)
-    reply = models.ForeignKey("chat.Reply", on_delete=models.CASCADE, related_name="reply_rates", null=True)
+    provider = models.ForeignKey("medicine.Provider", on_delete=models.CASCADE, related_name="rates", null=True, blank=True)
+    comment = models.ForeignKey("chat.Comment", on_delete=models.CASCADE, related_name="commet_rates", null=True, blank=True)
+    reply = models.ForeignKey("chat.Reply", on_delete=models.CASCADE, related_name="reply_rates", null=True, blank=True)
     score = models.PositiveSmallIntegerField(choices=[(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")])
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -25,13 +25,11 @@ class Rate(models.Model):
 
     class Meta:
         db_table = "rate"
-        constraint = [
+        constraints = [
             models.UniqueConstraint(fields=["provider", "user"], name="unique_rate"),
             models.UniqueConstraint(fields=["comment", "user"], name="unique_comment_rate"),
-            models.UniqueConstraint(fields=["reply","user"], name="unique_reply_rate")
+            models.UniqueConstraint(fields=["reply", "user"], name="unique_reply_rate")
         ]
-
-
 class Reply(models.Model):
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
     comment =models.ForeignKey("chat.Comment", on_delete=models.CASCADE, related_name="replies")
