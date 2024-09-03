@@ -7,9 +7,18 @@ class Provider(models.Model):
     location = models.ForeignKey('medicine.Location', on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+    rate_value = models.FloatField(default=0.0)  # Average rating
+    people_rated = models.IntegerField(default=0)  # Number of people who rated
 
     def __str__(self):
         return self.speciality
+
+    def update_rating(provider_id, new_rating):
+        provider = Provider.objects.get(id=provider_id)
+        provider.people_rated += 1
+        total_rating = (provider.rate_value * (provider.people_rated - 1)) + new_rating
+        provider.rate_value = total_rating / provider.people_rated
+        provider.save()
 
     class Meta:
         db_table = "provider"

@@ -23,13 +23,21 @@ class CityListView(APIView):
 
 
 
+from rest_framework import viewsets, status, filters, authentication, permissions
+from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import Provider
+from .serializers import ProviderSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
+
 class Provider(APIView, pagination.PageNumberPagination):
-    authentication_classes = [authentication.JWTAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        
-        providers = models.Provider.objects
+        # Queryset logic
+        providers = models.Provider.objects.all()
         speciality = request.query_params.get("speciality")
         if speciality:
             providers = providers.filter(speciality__icontains=speciality)
@@ -43,26 +51,33 @@ class Provider(APIView, pagination.PageNumberPagination):
                 Q(location__state__icontains=location)
             )
 
-        if isinstance(providers, Manager):
-            providers = providers.all()
-
-        page = self.paginate_queryset(
-            providers.order_by("-created_date"), request)
+        # Pagination
+        page = self.paginate_queryset(providers.order_by("-created_date"), request)
         serializer = serializers.ProviderSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
-    @user_passes_test(lambda u: u.is_admin)
     def post(self, request):
-        data = request.data
-        serializer = serializers.ProviderSerializer(data=data)
+        # Handle creating a new provider
+        serializer = serializers.ProviderSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def add_rating_to_provider(request, provider_id):
+        # Assuming new_rating is sent in the request data
+        new_rating = float(request.data.get('rating'))
+
+        try:
+            provider = Provider.objects.get(id=provider_id)
+            provider.update_rating(new_rating)
+            return Response({"message": "Rating updated successfully!"}, status=status.HTTP_200_OK)
+        except Provider.DoesNotExist:
+            return Response({"error": "Provider not found"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class SpecialtyListView(APIView, pagination.PageNumberPagination):
-    authentication_classes = [authentication.JWTAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
@@ -74,7 +89,7 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
         return self.get_paginated_response(serializer.data)
 
 class Comment(APIView, pagination.PageNumberPagination):
-    authentication_classes = [authentication.JWTAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request,provider_id=None):
