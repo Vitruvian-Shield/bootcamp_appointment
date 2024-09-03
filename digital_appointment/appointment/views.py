@@ -13,13 +13,18 @@ class Appointment(views.APIView, pagination.PageNumberPagination):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-
-            appointments = models.Appointment.objects.filter(user=request.user).order_by("-date")
-            page = self.paginate_queryset(appointments, request)
-            serializer = serializers.AppointmentSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+        """
+        Returns a list of appointments for the authenticated user.
+        """    
+        appointments = models.Appointment.objects.filter(user=request.user).order_by("-date")
+        page = self.paginate_queryset(appointments, request)
+        serializer = serializers.AppointmentSerializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
     def post(self, request):
+        """
+        Creates a new appointment for the authenticated user.
+        """
         data = request.data
         data["user"] = request.user
         
