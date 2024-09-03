@@ -76,6 +76,7 @@ class GoogleCallback(APIView):
             user.set_unusable_password()
             user.save()
         login(request, user)
+        """build jwt token for access user"""
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
 
@@ -90,11 +91,15 @@ class GoogleCallback(APIView):
 
 
 class SmsAuthentication(APIView):
+    """
+    generate authentication code for select mobile number
+    """
     permission_classes = [permissions.AllowAny]
 
     @extend_schema(tags=['sms'])
     def post(self, request):
         mobile = request.data.get('mobile')
+        """send sms message with auth code"""
         response = utils.send_quick_otp(mobile)
         if response is not None:
             return Response(response, status=status.HTTP_200_OK)
@@ -103,6 +108,9 @@ class SmsAuthentication(APIView):
 
 
 class VerifyCodeSmsAuthentication(APIView):
+    """
+    verify mobile number with code stored in cache
+    """
     permission_classes = [permissions.AllowAny]
 
     @extend_schema(tags=['sms'])
@@ -110,6 +118,7 @@ class VerifyCodeSmsAuthentication(APIView):
         code = request.data.get('code')
         mobile = request.data.get('mobile')
         if not code:
+            """compare user code send with code in cache"""
             if utils.verify_sms_code(mobile, code):
                 user, created = models.User.objects.get_or_create(
                     username=mobile,
@@ -120,7 +129,7 @@ class VerifyCodeSmsAuthentication(APIView):
                     user.save()
 
                 login(request, user)
-
+                """build jwt token for access user"""
                 refresh = RefreshToken.for_user(user)
                 access_token = str(refresh.access_token)
 
