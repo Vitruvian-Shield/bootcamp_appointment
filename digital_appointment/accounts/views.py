@@ -38,7 +38,7 @@ class UserDetail(views.APIView):
     def put(self, request, pk):
         user = models.User.objects.get(id=pk)
         data = request.data
-        serializer = serializers.UserSerializer(user, data=data)
+        serializer = serializers.UserSerializer(user, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response({"success": True}, status=status.HTTP_200_OK)

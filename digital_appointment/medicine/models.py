@@ -22,7 +22,7 @@ class Comment(models.Model):
     body = models.TextField()
     rating = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], default=1)
     created_on = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)  # only for debugging
 
     class Meta:
         ordering = ['created_on']
