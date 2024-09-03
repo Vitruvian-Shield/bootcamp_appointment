@@ -69,8 +69,20 @@ def google_callback(request):
         user.set_unusable_password()
         user.save()
     login(request, user)
-    return Response({'message': 'Signup/Login successful', 'user': {'username': user.username, 'email': user.email}},
-                    status=status.HTTP_200_OK)
+    refresh = RefreshToken.for_user(user)
+    access_token = str(refresh.access_token)
+
+    return Response({
+        'message': 'Signup/Login successful',
+        'user': {'username': user.username, 'email': user.email},
+        'tokens': {
+            'refresh': str(refresh),
+            'access': access_token,
+        }
+    }, status=status.HTTP_200_OK)
+
+
+
 
 
 class SmsAuthentication(APIView):
