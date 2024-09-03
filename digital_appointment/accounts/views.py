@@ -85,6 +85,36 @@ class SmsAuthentication(APIView):
             return Response({'error': 'Failed to send quick otp'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class VerifyCodeSmsAuthentication(APIView):
+    permission_classes = [permissions.AllowAny]
+    @extend_schema(tags=['sms'])
+    def post(self, request):
+        code = request.data.get('code')
+        mobile = request.data.get('mobile')
+        if not code:
+            if utils.verify_sms_code(mobile, code):
+                user, created = models.User.objects.get_or_create(
+                    username=mobile,
+                    phone_number=mobile,
+                )
+                if created:
+                    user.set_unusable_password()
+                    user.save()
+
+                login(request, user)
+
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+
+                return Response({
+                    'message': 'Signup/Login successful',
+                    'user': {'username': user.username, 'email': user.email},
+                    'tokens': {
+                        'refresh': str(refresh),
+                        'access': access_token,
+                    }
+                }, status=status.HTTP_200_OK)
+        return Response({'error': 'Failed to send quick otp'}, status=status.HTTP_400_BAD_REQUEST)
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = serializers.CustomTokenObtainPairSerializer
