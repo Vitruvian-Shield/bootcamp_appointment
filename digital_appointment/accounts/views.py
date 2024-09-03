@@ -32,67 +32,66 @@ class GoogleLogin(SocialLoginView):
     """
 
 
-@api_view(['GET'])
-def google_callback(request):
-    """
-    the get api for authenticate with google way
-    and do login if have exist account or signup
-    if we havent account in one api
-    """
-    code = request.GET.get('code')
-    if not code:
-        return JsonResponse({'error': 'No code provided'}, status=400)
-    """google token for get access token and work with AUTHORIZATION_CODE"""
-    token_url = 'https://oauth2.googleapis.com/token'
-    data = {
-        'code': code,
-        'client_id': settings.GOOGLE_CLIENT_ID,
-        'client_secret': settings.GOOGLE_CLIENT_SECRET,
-        'redirect_uri': 'http://127.0.0.1:8000/api/accounts/auth/google/callback/',
-        'grant_type': 'authorization_code',
-    }
-    try:
-        response = requests.post(token_url, data=data)
-    except ConnectionError:
-        return JsonResponse({'error': 'Connection error'}, status=400)
-    response_data = response.json()
-
-    access_token = response_data.get("access_token")
-    if not access_token:
-        return JsonResponse({'error': 'Failed to obtain access token'}, status=400)
-    """get me userinfo for every action we need it occur in database"""
-    user_info_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
-    try:
-        user_info_response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}'})
-    except ConnectionError:
-        return JsonResponse({'error': 'Failed to get userinfo'}, status=400)
-    user_info = user_info_response.json()
-    user, created = models.User.objects.get_or_create(
-        username=user_info['email'],
-        email=user_info['email'],
-    )
-    if created:
-        user.set_unusable_password()
-        user.save()
-    login(request, user)
-    refresh = RefreshToken.for_user(user)
-    access_token = str(refresh.access_token)
-
-    return Response({
-        'message': 'Signup/Login successful',
-        'user': {'username': user.username, 'email': user.email},
-        'tokens': {
-            'refresh': str(refresh),
-            'access': access_token,
+class GoogleCallback(APIView):
+    @extend_schema(tags=['GoogleAuth'])
+    def get(self, request):
+        """
+          the get api for authenticate with google way
+          and do login if have exist account or signup
+          if we have an account in one api
+          """
+        code = request.GET.get('code')
+        if not code:
+            return JsonResponse({'error': 'No code provided'}, status=400)
+        """google token for get access token and work with AUTHORIZATION_CODE"""
+        token_url = 'https://oauth2.googleapis.com/token'
+        data = {
+            'code': code,
+            'client_id': settings.GOOGLE_CLIENT_ID,
+            'client_secret': settings.GOOGLE_CLIENT_SECRET,
+            'redirect_uri': 'http://127.0.0.1:8000/api/accounts/auth/google/callback/',
+            'grant_type': 'authorization_code',
         }
-    }, status=status.HTTP_200_OK)
+        try:
+            response = requests.post(token_url, data=data)
+        except ConnectionError:
+            return JsonResponse({'error': 'Connection error'}, status=400)
+        response_data = response.json()
 
+        access_token = response_data.get("access_token")
+        if not access_token:
+            return JsonResponse({'error': 'Failed to obtain access token'}, status=400)
+        """get me userinfo for every action we need it occur in database"""
+        user_info_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
+        try:
+            user_info_response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}'})
+        except ConnectionError:
+            return JsonResponse({'error': 'Failed to get userinfo'}, status=400)
+        user_info = user_info_response.json()
+        user, created = models.User.objects.get_or_create(
+            username=user_info['email'],
+            email=user_info['email'],
+        )
+        if created:
+            user.set_unusable_password()
+            user.save()
+        login(request, user)
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
 
-
+        return Response({
+            'message': 'Signup/Login successful',
+            'user': {'username': user.username, 'email': user.email},
+            'tokens': {
+                'refresh': str(refresh),
+                'access': access_token,
+            }
+        }, status=status.HTTP_200_OK)
 
 
 class SmsAuthentication(APIView):
     permission_classes = [permissions.AllowAny]
+
     @extend_schema(tags=['sms'])
     def post(self, request):
         mobile = request.data.get('mobile')
@@ -105,6 +104,7 @@ class SmsAuthentication(APIView):
 
 class VerifyCodeSmsAuthentication(APIView):
     permission_classes = [permissions.AllowAny]
+
     @extend_schema(tags=['sms'])
     def post(self, request):
         code = request.data.get('code')
@@ -133,6 +133,7 @@ class VerifyCodeSmsAuthentication(APIView):
                     }
                 }, status=status.HTTP_200_OK)
         return Response({'error': 'Failed to send quick otp'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = serializers.CustomTokenObtainPairSerializer
