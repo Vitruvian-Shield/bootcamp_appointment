@@ -22,21 +22,11 @@ class CityListView(APIView):
         return Response(cities, status=status.HTTP_200_OK)
 
 
-
-from rest_framework import viewsets, status, filters, authentication, permissions
-from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
-from .models import Provider
-from .serializers import ProviderSerializer
-from rest_framework_simplejwt.authentication import JWTAuthentication
-
-
 class Provider(APIView, pagination.PageNumberPagination):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = authentication[authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        # Queryset logic
         providers = models.Provider.objects.all()
         speciality = request.query_params.get("speciality")
         if speciality:
@@ -56,16 +46,16 @@ class Provider(APIView, pagination.PageNumberPagination):
         serializer = serializers.ProviderSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
+    @user_passes_test(lambda u: u.is_superuser)
     def post(self, request):
-        # Handle creating a new provider
         serializer = serializers.ProviderSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
     def add_rating_to_provider(request, provider_id):
-        # Assuming new_rating is sent in the request data
         new_rating = float(request.data.get('rating'))
 
         try:
@@ -77,7 +67,7 @@ class Provider(APIView, pagination.PageNumberPagination):
 
 
 class SpecialtyListView(APIView, pagination.PageNumberPagination):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
@@ -88,34 +78,6 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
         serializer = serializers.SpecialitySerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
-class Comment(APIView, pagination.PageNumberPagination):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, provider_id=None):
-        if provider_id is None:
-            return Response({"detail": "Provider ID is required."}, status=400)
-
-        comments = models.Comment.objects.filter(provider=provider_id).order_by('-date')
-        serializer = serializers.CommentSerializerGET(comments, many=True)
-        print(serializer.data)
-        return Response(serializer.data)
-    
-    def post(self, request, provider_id=None):
-        if provider_id is None:
-            return Response({"detail": "Provider ID is required."}, status=400)
-        request.data["provider"] = provider_id
-        request.data["user"] = request.user.id
-        print(request.data)
-        serializer = serializers.CommentSerializer(data=request.data)
-        if serializer.is_valid():
-            print("valid")
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        
-        
 
 class ProviderDetail(APIView):
     authentication_classes = [authentication.JWTAuthentication]
