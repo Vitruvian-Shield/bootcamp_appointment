@@ -1,4 +1,3 @@
-#from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from . import models
@@ -11,6 +10,7 @@ from rest_framework import permissions, pagination
 from rest_framework_simplejwt import authentication
 from rest_framework_simplejwt.views import TokenObtainPairView
 from drf_spectacular.utils import extend_schema
+#from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 #from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 #from dj_rest_auth.registration.views import SocialLoginView
 from django.conf import settings
@@ -58,7 +58,6 @@ def google_callback(request):
     user_info_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
     user_info_response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}'})
     user_info = user_info_response.json()
-
     user, created = models.User.objects.get_or_create(
         username=user_info['email'],
         email=user_info['email'],
@@ -67,7 +66,6 @@ def google_callback(request):
         user.set_unusable_password()
         user.save()
     login(request, user)
-
     return Response({'message': 'Signup/Login successful', 'user': {'username': user.username, 'email': user.email}},
                     status=status.HTTP_200_OK)
 
