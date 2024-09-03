@@ -1,2 +1,2 @@
-url_patterns = [
+urlpatterns = [
 ]
