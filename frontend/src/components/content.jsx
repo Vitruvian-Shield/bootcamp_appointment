@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState }from 'react';
 import './content.css';
-import dataCities from '../helper/cities_list.json';
 import BasicModal from '../components/modal';
 import searchicon from '../assets/images/search.svg';
 import locicon from '../assets/images/locicon.svg';
 import backgroundImage from '../assets/images/bgcontent.png';
+import { useEffect } from 'react';
 
 function Content() {
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const [citiesData, setCitiesData] = useState([])
 
     const backgroundImageStyle = {
         backgroundImage: `url(${backgroundImage})`,
@@ -28,6 +30,33 @@ function Content() {
 
     const shouldShow = window.location.pathname === "/search";
 
+    useEffect(() => {
+        fetch(`http://127.0.0.1:8000/api/medicine/location/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(cities => {
+                console.log(cities);
+                setCitiesData(cities);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    , []);  
+
+    function searchFunc(){
+        localStorage.setItem('speciality', document.getElementById('searchInput').value)
+        window.location.href = "/doctors"
+    }
     return (
         <>
             <div className="background-container" id='home' style={backgroundImageStyle}>
@@ -42,7 +71,7 @@ function Content() {
                     <div className="box">                    
                         <div className="search-container">
                             <input type="search" id="searchInput" placeholder='...،جستجوی نام پزشک، تخصص، بیماری‌'/>
-                            <button type="submit" id="searchButton">جستجو<img src={searchicon} alt="" /></button>
+                            <button type="submit" id="searchButton" onClick={searchFunc}>جستجو<img src={searchicon} alt="" /></button>
                         </div>
                         <div className='white-box' dir='rtl'>
                             <p>
@@ -55,7 +84,7 @@ function Content() {
                     </div>
                 )}
             </div>
-            <BasicModal data={dataCities} open={open} handleClose={handleClose} handleOpen={handleOpen} />
+            <BasicModal data={citiesData} open={open} handleClose={handleClose} handleOpen={handleOpen} />
         </>
     );
 }

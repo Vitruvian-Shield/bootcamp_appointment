@@ -9,14 +9,13 @@ import { useNavigate } from 'react-router-dom';
 
 export default function BasicModal({ open, handleOpen, handleClose, data = [] }) {
 
-
-  const navigate=useNavigate()
-  const cffffff = '#ffffff'
-  const c0E0E0E = '#0E0E0E'
-  const c4C4C4C = '#4C4C4C'
-  const cE8F2FC = '#E8F2FC'
-  const c1F1F1F = '#1F1F1F'
-  const c8C8C8C = '#8C8C8C'
+  const navigate = useNavigate();
+  const cffffff = '#ffffff';
+  const c0E0E0E = '#0E0E0E';
+  const c4C4C4C = '#4C4C4C';
+  const cE8F2FC = '#E8F2FC';
+  const c1F1F1F = '#1F1F1F';
+  const c8C8C8C = '#8C8C8C';
 
   const style = {
     position: 'absolute',
@@ -33,12 +32,12 @@ export default function BasicModal({ open, handleOpen, handleClose, data = [] })
     overflow: 'hidden',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    boxShadow:' 0px 4px 15px 0px rgba(0, 0, 0, 0.32)'
+    boxShadow: '0px 4px 15px 0px rgba(0, 0, 0, 0.32)'
   };
 
-  const [search, setSearch] = React.useState()
+  const [search, setSearch] = React.useState('');
 
-  const filterData = data.filter((item, index) => item.city.toLowerCase().includes(search))
+  const filterData = data.filter((item) => item.city.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <Box>
@@ -58,7 +57,6 @@ export default function BasicModal({ open, handleOpen, handleClose, data = [] })
               fontWeight: 700,
               fontSize: { xs: '14.22px', sm: '16px', md: '18px', lg: '20px' },
               lineHeight: '22px',
-
             }}
           >انتخاب شهر</Typography>
           <Typography
@@ -84,16 +82,12 @@ export default function BasicModal({ open, handleOpen, handleClose, data = [] })
                 height: '38px',
                 px: '10px!important',
                 pb: '5px!important',
-
-
-
               },
               "& input::placeHolder": {
                 fontFamily: 'ykan!important',
                 fontSize: '14px!important',
               },
             }}
-            
           />
           <Box
             sx={{
@@ -122,9 +116,10 @@ export default function BasicModal({ open, handleOpen, handleClose, data = [] })
               return (
                 <Box
                   key={index}
-                  onClick={()=>{
-                    setSearch(item.city)
-                    navigate('/doctors')
+                  onClick={() => {
+                    setSearch(item.city);
+                    localStorage.setItem('selectedCity', item.city);
+                    navigate('/doctors');
                   }}
                   sx={{
                     direction: 'rtl',
@@ -133,7 +128,7 @@ export default function BasicModal({ open, handleOpen, handleClose, data = [] })
                     gap: '8px',
                     px: '16px',
                     py: '10px',
-                    cursor:'pointer'
+                    cursor: 'pointer'
                   }}
                 >
                   <img src={locationIcon} alt="" />
@@ -157,7 +152,7 @@ export default function BasicModal({ open, handleOpen, handleClose, data = [] })
                       lineHeight: '22px',
                     }}
                   >
-                    / {item.province}
+                    / {item.state}
                   </Typography>
                 </Box>
               )

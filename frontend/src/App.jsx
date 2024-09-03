@@ -8,8 +8,9 @@ import Footer from './components/footer';
 import Doctors from './components/doctors.jsx';
 import Speciality from './components/specials.jsx';
 import Login from './components/login.jsx';
-import SuccessLogin from './components/successfullyLoggedIn.jsx'
+import SuccessLogin from './components/successfullyLoggedIn.jsx';
 import Appointments from './components/appointment.jsx';
+import Profile from './components/profile.jsx';
 
 const Dashboard = () => {
   return (
@@ -49,6 +50,9 @@ function App() {
           </Route>
           <Route path="/appointment" element={<Dashboard />}>
             <Route index element={<Appointments />} />
+          </Route>
+          <Route path="/profile" element={<Dashboard />}>
+            <Route index element={<Profile />} />
           </Route>
         </Routes>
       </div>

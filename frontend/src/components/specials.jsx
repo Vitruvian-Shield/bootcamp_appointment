@@ -31,7 +31,7 @@ function Speciality() {
     { id: 5, name: "دندان پزشک", icon:teethicon},
     { id: 6, name: "متخصص مامایی", icon:midwiferyicon},
     { id: 7, name: "چشم پزشک", icon:eyeicon},
-    { id: 8, name: "دکتر گوش ، حلق و بینی", icon:earicon},
+    { id: 8, name: "گوش و حلق و بینی", icon:earicon},
     { id: 9, name: "دکتر متخصص گفتار درمان", icon:talkicon},
     { id: 10, name: "روانشناس", icon:psychologist},
     { id: 11, name: "متخصص ارتوپدی", icon:orthopedicsicon},
@@ -50,7 +50,7 @@ function Speciality() {
     <div className="specialties-container">
       {specialties.map((spec) => (
         <div className="specialty-item" dir="rtl">
-        <a href="/doctors" key={spec.id} className="specialty-link">
+        <a onClick={()=>{localStorage.setItem('speciality', `${spec.name}`)}}href="/doctors" key={spec.id} className="specialty-link">
             <p><b><img src={spec.icon} alt="" /> {spec.name}</b></p>            
         </a> 
         </div>
