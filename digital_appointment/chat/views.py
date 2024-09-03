@@ -12,7 +12,8 @@ class Comment(APIView, pagination.PageNumberPagination):
         if provider_id is None:
             return Response({"detail": "Provider ID is required."}, status=400)
 
-        comments = models.Comment.objects.filter(provider=provider_id).order_by('-date')
+        comments = models.Comment.objects.filter(provider=provider_id, parent__isnull=True).order_by('-date').prefetch_related('replies')
+        
         serializer = serializers.CommentSerializerGET(comments, many=True)
         print(serializer.data)
         return Response(serializer.data)
@@ -41,3 +42,21 @@ class Rate(APIView):
         serializer = serializers.Rate(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            return Response(status=status.HTTP_200_CREATED)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class Reply(APIView):
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        request.data["user"] = request.user.id
+        serializer = serializers.Reply(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_CREATED)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+

@@ -34,7 +34,7 @@ class Rate(models.Model):
 
 class Reply(models.Model):
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
-    comment =models.ForeignKey("chat.Comment", on_delete=models.CASCADE)
+    comment =models.ForeignKey("chat.Comment", on_delete=models.CASCADE, related_name="replies")
     text = models.TextField()
     rate_sum = models.PositiveIntegerField(default=0)
     rate_num = models.PositiveIntegerField(default=0)

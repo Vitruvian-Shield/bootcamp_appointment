@@ -6,9 +6,24 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Comment
         fields = ["user","provider","comment","date"]
-   
-class CommentSerializerGET(CommentSerializer):
+
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Reply
+        fields = ['id', 'user', 'comment', 'text',  'created_at'] 
+
+
+class CommentSerializerGET(serializers.ModelSerializer):
     user = serializers.CharField(source="user.username")
+    text = serializers.CharField()
+    date = serializers.DateTimeField()
+    replies = ReplySerializer(many=True)
+
+    class Meta:
+        model = models.Comment
+        fields = ['id', 'user', 'text', 'date', 'replies']
+
     
     
 
@@ -26,3 +41,5 @@ class RateSerializer(serializers.ModelSerializer):
         )
         
         return rate
+
+    
