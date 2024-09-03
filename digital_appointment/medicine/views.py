@@ -92,9 +92,48 @@ class Comment(APIView, pagination.PageNumberPagination):
     authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request,provider_id=None):
-        comments = models.Comment.objects.filter(provider=provider_id)
-        page = self.paginate_queryset(comments, request)
-        serializer = serializers.CommentSerializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
+    def get(self, request, provider_id=None):
+        if provider_id is None:
+            return Response({"detail": "Provider ID is required."}, status=400)
 
+        comments = models.Comment.objects.filter(provider=provider_id).order_by('-date')
+        serializer = serializers.CommentSerializerGET(comments, many=True)
+        print(serializer.data)
+        return Response(serializer.data)
+    
+    def post(self, request, provider_id=None):
+        if provider_id is None:
+            return Response({"detail": "Provider ID is required."}, status=400)
+        request.data["provider"] = provider_id
+        request.data["user"] = request.user.id
+        print(request.data)
+        serializer = serializers.CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            print("valid")
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        
+        
+
+class ProviderDetail(APIView):
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, provider_id):
+        print("something")
+        if provider_id is None:
+            return Response({"detail": "Provider ID is required."}, status=400)
+        try:
+            provider = models.Provider.objects.get(pk=provider_id)
+            serializer = serializers.ProviderSerializer(provider)
+            print(serializer.data)
+            return Response(serializer.data)
+            return 
+        except models.Provider.DoesNotExist:
+            return Response({"detail": "Provider not found"}, status=404)
+        
+
+        
+        

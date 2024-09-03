@@ -11,7 +11,7 @@ class Provider(models.Model):
     people_rated = models.IntegerField(default=0)  # Number of people who rated
 
     def __str__(self):
-        return self.speciality
+        return f'{self.user} - {self.speciality}'
 
     def update_rating(provider_id, new_rating):
         provider = Provider.objects.get(id=provider_id)
