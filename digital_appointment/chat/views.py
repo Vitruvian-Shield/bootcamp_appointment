@@ -37,7 +37,6 @@ class Rate(APIView):
     
     
     def post(self, request):
-        
         request.data["user"] = request.user.id
         serializer = serializers.Rate(data=request.data)
         if serializer.is_valid():
