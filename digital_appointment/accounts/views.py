@@ -51,7 +51,10 @@ def google_callback(request):
         'redirect_uri': 'http://127.0.0.1:8000/api/accounts/auth/google/callback/',
         'grant_type': 'authorization_code',
     }
-    response = requests.post(token_url, data=data)
+    try:
+        response = requests.post(token_url, data=data)
+    except ConnectionError:
+        return JsonResponse({'error': 'Connection error'}, status=400)
     response_data = response.json()
 
     access_token = response_data.get("access_token")
@@ -59,7 +62,10 @@ def google_callback(request):
         return JsonResponse({'error': 'Failed to obtain access token'}, status=400)
     """get me userinfo for every action we need it occur in database"""
     user_info_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
-    user_info_response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}'})
+    try:
+        user_info_response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}'})
+    except ConnectionError:
+        return JsonResponse({'error': 'Failed to get userinfo'}, status=400)
     user_info = user_info_response.json()
     user, created = models.User.objects.get_or_create(
         username=user_info['email'],
