@@ -30,3 +30,15 @@ class Comment(APIView, pagination.PageNumberPagination):
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
+class Rate(APIView):
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    
+    
+    def post(self, request):
+        
+        request.data["user"] = request.user.id
+        serializer = serializers.Rate(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
