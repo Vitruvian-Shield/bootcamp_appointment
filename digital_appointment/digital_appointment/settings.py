@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'dj_rest_auth',
     #api docs builder (required write in end to work)
     'drf_spectacular'
 ]
@@ -167,3 +168,6 @@ SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
+GOOGLE_CLIENT_ID = '613532340263-gkaefjjn00hoti7059faqfrqa6dpn0m3.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = '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'
