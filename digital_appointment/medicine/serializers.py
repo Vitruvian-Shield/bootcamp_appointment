@@ -31,15 +31,4 @@ class ProviderSerializer(serializers.ModelSerializer):
 class SpecialitySerializer(serializers.Serializer):
     speciality = serializers.CharField(max_length=255)
 
-class CommentSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = models.Comment
-        fields = ["user","provider","comment","date"]
-   
-class CommentSerializerGET(CommentSerializer):
-    user = serializers.CharField(source="user.username")
-    
-        
-    
     
