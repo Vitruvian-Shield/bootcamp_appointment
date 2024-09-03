@@ -56,3 +56,15 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
         page = self.paginate_queryset(specialities, request)
         serializer = serializers.ServiceSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
+
+
+class DoctorProfileView(APIView):
+    """doctor profile information"""
+
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        doctor = request.user
+        serializer = serializers.DoctorsSerializer(doctor)
+        return Response(serializer.data, status=status.HTTP_200_OK)

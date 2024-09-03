@@ -56,7 +56,7 @@ class UserDetailView(views.APIView):
         return Response({"success": True}, status=status.HTTP_200_OK)
 
 
-class ProfileView(views.APIView):
+class UserProfileView(views.APIView):
     """user profile information"""
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
