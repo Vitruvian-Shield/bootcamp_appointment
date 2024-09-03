@@ -37,3 +37,26 @@ class Appointment(views.APIView, pagination.PageNumberPagination):
             instance = serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def put(self, request):
+        """
+        Updates an appointment by ID if it belongs to the authenticated user.
+        """
+        appointment_id = request.data.get('id')
+        if not appointment_id:
+            return Response({"error": "Appointment ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            appointment = models.Appointment.objects.get(pk=appointment_id)
+        except models.Appointment.DoesNotExist:
+            return Response({"error": "Appointment not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        if appointment.user != request.user:
+            return Response({"error": "You are not authorized to update this appointment"}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = serializers.AppointmentSerializer(appointment, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
