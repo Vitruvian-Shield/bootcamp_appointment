@@ -16,6 +16,10 @@ class DoctorsView(APIView, pagination.PageNumberPagination):
     def get(self, request):
         doctors = models.DoctorsModel.objects.all()
 
+        doctor = request.query_params.get("doctor")
+        if doctor:
+            doctors = doctors.filter(last_name__icontains=doctor)
+
         speciality = request.query_params.get("speciality")
         if speciality:
             doctors = doctors.filter(speciality__icontains=speciality)

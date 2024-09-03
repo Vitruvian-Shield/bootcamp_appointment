@@ -12,6 +12,12 @@ class AppointmentView(APIView, pagination.PageNumberPagination):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
+    def get(self, request):
+        doctor_id = request.user.id
+        appointments = models.AppointmentModel.objects.filter(doctor_id=doctor_id)
+        serializer = AppointmentSerializer(appointments, many=True)
+        return self.get_paginated_response(serializer.data)
+
     def post(self, request):
         data = request.data
         serializer = AppointmentSerializer(data=data)
@@ -19,6 +25,15 @@ class AppointmentView(APIView, pagination.PageNumberPagination):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        try:
+            appointment = models.AppointmentModel.objects.get(id=pk)
+        except models.AppointmentModel.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        appointment.delete()
+        return Response({"success": True}, status=status.HTTP_200_OK)
 
 
 class CommentsView(APIView, pagination.PageNumberPagination):
