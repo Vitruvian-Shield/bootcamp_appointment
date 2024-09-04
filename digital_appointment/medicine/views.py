@@ -15,6 +15,7 @@ class Provider(APIView, pagination.PageNumberPagination):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     """save Schema of api for guide other Distributor"""
+
     @extend_schema(tags=['Provider'], responses=serializers.ProviderSerializer)
     def get(self, request):
         providers = models.Provider.objects
@@ -55,7 +56,6 @@ class Provider(APIView, pagination.PageNumberPagination):
         elif satisfaction and satisfaction == 'low':
             providers = models.Provider.objects.order_by('stars_average')
 
-
         if isinstance(providers, Manager):
             providers = providers.all()
 
@@ -75,7 +75,6 @@ class Provider(APIView, pagination.PageNumberPagination):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class ProviderDetail(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
@@ -85,6 +84,7 @@ class ProviderDetail(APIView):
         return get_object_or_404(models.Provider, pk=pk)
 
     """save Schema of api for guide other Distributor"""
+
     @extend_schema(tags=['Provider'], responses=serializers.ProviderSerializer)
     def get(self, request, pk):
         """Handle GET requests to retrieve provider details along with comments."""
@@ -105,6 +105,7 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     """save Schema of api for guide other Distributor"""
+
     @extend_schema(tags=['Specialty'], responses=serializers.SpecialitySerializer)
     def get(self, request):
         specialities = models.Provider.objects.values(
@@ -122,6 +123,7 @@ class Location(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     """save Schema of api for guide other Distributor"""
+
     @extend_schema(tags=['Location'], responses=serializers.LocationSerializer)
     def get(self, request):
         """
@@ -138,6 +140,23 @@ class Location(APIView):
         """
         data = request.data
         serializer = serializers.LocationSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class Service(APIView):
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        services = models.Service.objects.all()
+        serializer = serializers.ServiceSerializer(services, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data = request.data
+        serializer = serializers.ServiceSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
