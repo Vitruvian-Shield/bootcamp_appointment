@@ -49,7 +49,7 @@ class GoogleAuthInit(APIView):
             "&scope=openid%20email%20profile"
             "&access_type=offline"
         )
-        return redirect(google_auth_url)
+        return Response(google_auth_url)
 class GoogleCallback(APIView):
     @extend_schema(tags=['GoogleAuth'])
     def get(self, request):
@@ -72,12 +72,8 @@ class GoogleCallback(APIView):
         }
         try:
             response = requests.post(token_url, data=data)
-        except TypeError:
-            return Response({'error': 'Failed to obtain user info'}, status=400)
-        except ConnectionError as e:
+        except requests.RequestException as e:
             return Response({'error': str(e)}, status=400)
-        except Exception as e:
-            return JsonResponse({'error': e}, status=400)
         response_data = response.json()
         access_token = response_data.get("access_token")
         if not access_token:
@@ -86,12 +82,8 @@ class GoogleCallback(APIView):
         user_info_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
         try:
             user_info_response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}'})
-        except TypeError:
-            return Response({'error': 'Failed to obtain user info'}, status=400)
-        except ConnectionError as e:
+        except requests.RequestException as e:
             return Response({'error': str(e)}, status=400)
-        except Exception as e:
-            return Response({'error': e}, status=400)
         user_info = user_info_response.json()
         user, created = models.User.objects.get_or_create(
             username=user_info['email'],
