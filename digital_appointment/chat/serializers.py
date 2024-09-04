@@ -1,6 +1,6 @@
 from . import models
 from rest_framework import serializers
-
+from medicine.models import Provider
 class CommentSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -28,18 +28,17 @@ class CommentSerializerGET(serializers.ModelSerializer):
     
 
 class RateSerializer(serializers.ModelSerializer):
+    comment = serializers.PrimaryKeyRelatedField(
+        queryset=models.Comment.objects.all(), required=False, allow_null=True
+    )
+    reply = serializers.PrimaryKeyRelatedField(
+        queryset=models.Reply.objects.all(), required=False, allow_null=True
+    )
+    provider = serializers.PrimaryKeyRelatedField(
+        queryset=Provider.objects.all(), required=False, allow_null=True
+    )
+
     class Meta:
         model = models.Rate
         fields = "__all__"
-    
-    def create(self, validated_data):
-        score = validated_data.pop('score')
-        
-        rate, created = models.Rate.objects.update_or_create(
-            defaults={'score': score},
-            **validated_data
-        )
-        
-        return rate
-
     
