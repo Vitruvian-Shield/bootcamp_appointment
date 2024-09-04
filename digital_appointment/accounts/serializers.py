@@ -65,3 +65,7 @@ class UserSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
+class SmsSerializer(serializers.Serializer):
+    mobile = serializers.CharField(max_length=11)
+    code = serializers.CharField(max_length=6, required=False)
+
