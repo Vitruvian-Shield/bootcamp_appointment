@@ -149,6 +149,13 @@ class Service(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [permissions.IsAuthenticated()]
+        elif self.request.method == "POST":
+            return [permissions.IsAdminUser()]
+        return super().get_permissions()
+
     def get(self, request):
         services = models.Service.objects.all()
         serializer = serializers.ServiceSerializer(services, many=True)
