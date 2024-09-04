@@ -252,6 +252,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/Provider'
           description: ''
+  /api/medicine/Service/:
+    get:
+      operationId: medicine_Service_retrieve
+      tags:
+      - Service
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+    post:
+      operationId: medicine_Service_create
+      tags:
+      - medicine
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
   /api/medicine/locations/:
     get:
       operationId: medicine_locations_retrieve
@@ -578,6 +601,41 @@ components:
       - speciality
       - updated_date
       - user
+    Service:
+      type: object
+      description: Service model Serializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        duration:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        created_date:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_date:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_date
+      - id
+      - name
+      - price
+      - updated_date
     Sms:
       type: object
       properties:
