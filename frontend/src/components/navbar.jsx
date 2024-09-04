@@ -55,7 +55,7 @@ function Navbar() {
           </div>
         )||(
           <div className='navbar-item-login'>
-            <a onClick={()=>{localStorage.removeItem('token'); window.location.reload()}}>خروج از اکانت<img src={logoutimg} alt="User Login" /></a>
+            <a onClick={()=>{localStorage.removeItem('token'); window.location.reload(); window.location.href = "/user-login"}}>خروج از اکانت<img src={logoutimg} alt="User Login" /></a>
             <a href="/profile">پنل کاربری<img src={profileimg} alt="User Logout" /></a>
           </div>
         )}

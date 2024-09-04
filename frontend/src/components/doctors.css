@@ -9,13 +9,14 @@
     min-height: 105vh;
     direction: rtl;
     color: black;
+    padding-bottom: 50px;
 }
 
 #city {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 300px;
+    width: 350px;
     height: 100px;
     margin-bottom: 20px;
     font-size: 2rem;
@@ -30,6 +31,7 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 30px;
     width: 100%;
+    flex: 1;
 }
 
 #profile {
@@ -69,3 +71,44 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.418);
     border-color: aliceblue;
 }
+#page{
+    color: rgb(0, 0, 0);
+}
+#pagination {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff; /* Adjust the background color as needed */
+    padding: 10px 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better visibility */
+  }
+  
+  #pagination button {
+    background-color: #007bff; /* Adjust the color to match your theme */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    border-radius: 40px;
+    transition: background-color 0.3s;
+  }
+  
+  #pagination button:disabled {
+    background-color: #ccc; /* Disable button style */
+    cursor: not-allowed;
+  }
+  
+  #pagination button:not(:disabled):hover {
+    background-color: #0056b3; /* Adjust the hover color */
+  }
+  
+  #pagination span {
+    font-size: 16px;
+    margin: 0 10px;
+  }
