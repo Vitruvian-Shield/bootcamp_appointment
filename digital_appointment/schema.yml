@@ -4,6 +4,35 @@ info:
   version: 0.0.0
   description: Accepting and setting appointments for patients
 paths:
+  /api/accounts/auth/google/callback/:
+    get:
+      operationId: accounts_auth_google_callback_retrieve
+      description: |-
+        the get api for authenticate with google way
+        and do login if have exist account or signup
+        if we have an account in one api
+      tags:
+      - GoogleAuth
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/accounts/auth/google/start/:
+    post:
+      operationId: accounts_auth_google_start_create
+      description: |-
+        with this api front developer can use
+        google authenticate very easy
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
   /api/accounts/login/:
     post:
       operationId: accounts_login_create
@@ -71,6 +100,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+          description: ''
+  /api/accounts/sms/:
+    post:
+      operationId: accounts_sms_create
+      description: generate authentication code for select mobile number
+      tags:
+      - sms
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sms'
+          description: ''
+  /api/accounts/sms/verify:
+    post:
+      operationId: accounts_sms_verify_create
+      description: verify mobile number with code stored in cache
+      tags:
+      - sms
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sms'
           description: ''
   /api/accounts/user/:
     get:
@@ -511,6 +572,17 @@ components:
       - speciality
       - updated_date
       - user
+    Sms:
+      type: object
+      properties:
+        mobile:
+          type: string
+          maxLength: 11
+        code:
+          type: string
+          maxLength: 6
+      required:
+      - mobile
     Speciality:
       type: object
       properties:

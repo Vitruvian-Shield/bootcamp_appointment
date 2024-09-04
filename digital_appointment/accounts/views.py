@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from django.core.cache import cache
 from django.shortcuts import redirect
 from rest_framework.decorators import api_view
