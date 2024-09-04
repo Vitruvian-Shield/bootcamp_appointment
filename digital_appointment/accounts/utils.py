@@ -41,5 +41,6 @@ def send_quick_otp(mobile):
 
 
 def verify_sms_code(user_phone, code):
+    """for verify sms code"""
     stored_code = cache.get(user_phone)
     return stored_code == code

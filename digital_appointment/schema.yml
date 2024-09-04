@@ -33,6 +33,22 @@ paths:
       responses:
         '200':
           description: No response body
+  /api/accounts/auth/sms/:
+    post:
+      operationId: accounts_auth_sms_create
+      description: generate authentication code for select mobile number
+      tags:
+      - sms
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sms'
+          description: ''
   /api/accounts/login/:
     post:
       operationId: accounts_login_create
@@ -101,22 +117,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
           description: ''
-  /api/accounts/sms/:
-    post:
-      operationId: accounts_sms_create
-      description: generate authentication code for select mobile number
-      tags:
-      - sms
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Sms'
-          description: ''
   /api/accounts/sms/verify:
     post:
       operationId: accounts_sms_verify_create
@@ -136,6 +136,7 @@ paths:
   /api/accounts/user/:
     get:
       operationId: accounts_user_retrieve
+      description: save Schema of api for guide other Distributor
       tags:
       - User
       security:
@@ -150,6 +151,7 @@ paths:
           description: ''
     post:
       operationId: accounts_user_create
+      description: save Schema of api for guide other Distributor
       tags:
       - accounts
       security:
@@ -161,6 +163,7 @@ paths:
   /api/accounts/user/{id}/:
     get:
       operationId: accounts_user_retrieve_2
+      description: save Schema of api for guide other Distributor
       parameters:
       - in: path
         name: id
@@ -181,6 +184,7 @@ paths:
           description: ''
     put:
       operationId: accounts_user_update
+      description: save Schema of api for guide other Distributor
       parameters:
       - in: path
         name: id
@@ -197,6 +201,7 @@ paths:
           description: No response body
     delete:
       operationId: accounts_user_destroy
+      description: save Schema of api for guide other Distributor
       parameters:
       - in: path
         name: id
@@ -214,6 +219,7 @@ paths:
   /api/interaction/post_comment/:
     post:
       operationId: interaction_post_comment_create
+      description: save patient comment about provider
       tags:
       - Comments
       security:
