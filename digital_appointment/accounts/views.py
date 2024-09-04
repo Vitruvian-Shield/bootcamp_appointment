@@ -50,6 +50,7 @@ class GoogleAuthInit(APIView):
         )
         return Response(google_auth_url)
 class GoogleCallback(APIView):
+    """save Schema of api for guide other Distributor"""
     @extend_schema(tags=['GoogleAuth'])
     def get(self, request):
         """
@@ -115,7 +116,7 @@ class SmsAuthentication(APIView):
     generate authentication code for select mobile number
     """
     permission_classes = [permissions.AllowAny]
-
+    """save Schema of api for guide other Distributor"""
     @extend_schema(tags=['sms'], responses=serializers.SmsSerializer)
     def post(self, request):
         serializer_data = serializers.SmsSerializer(request.data)
@@ -133,7 +134,7 @@ class VerifyCodeSmsAuthentication(APIView):
     verify mobile number with code stored in cache
     """
     permission_classes = [permissions.AllowAny]
-
+    """save Schema of api for guide other Distributor"""
     @extend_schema(tags=['sms'], responses=serializers.SmsSerializer)
     def post(self, request):
         serializer_data = serializers.SmsSerializer(request.data)
@@ -145,7 +146,6 @@ class VerifyCodeSmsAuthentication(APIView):
                 user, created = models.User.objects.get_or_create(
                     username=mobile,
                     phone_number=mobile,
-
                 )
                 if created:
                     user.set_unusable_password()
@@ -173,6 +173,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 
 class User(views.APIView, pagination.PageNumberPagination):
+    """save Schema of api for guide other Distributor"""
     @extend_schema(tags=['User'], responses=serializers.UserSerializer)
     def get(self, request):
         users = models.User.objects.all().order_by("-created_at")
@@ -191,6 +192,7 @@ class User(views.APIView, pagination.PageNumberPagination):
 
 
 class UserDetail(views.APIView):
+    """save Schema of api for guide other Distributor"""
     @extend_schema(tags=['User'], responses=serializers.UserSerializer)
     def get(self, request, pk):
         user = models.User.objects.get(id=pk)
@@ -219,7 +221,7 @@ class UserDetail(views.APIView):
 class ProfileView(views.APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-
+    """save Schema of api for guide other Distributor"""
     @extend_schema(tags=['User'], responses=serializers.UserSerializer)
     def get(self, request):
         user = request.user
