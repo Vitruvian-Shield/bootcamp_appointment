@@ -15,7 +15,9 @@ class AppointmentView(APIView):
     """
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.JWTAuthentication]
+    """save Schema of api for guide other Distributor"""
 
+    @extend_schema(tags=['Appointment'], responses=serializers.AppointmentSerializer)
     def post(self, request):
         serializer = serializers.AppointmentSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -35,7 +37,9 @@ class AppointmentDetailView(APIView):
     """
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.JWTAuthentication]
+    """save Schema of api for guide other Distributor"""
 
+    @extend_schema(tags=['Appointment'], responses=serializers.AppointmentSerializer)
     def get(self, request, pk):
         validate_appointment = Appointment.objects.filter(
             Q(user=request.user) |
