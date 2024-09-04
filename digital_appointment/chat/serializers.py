@@ -5,13 +5,13 @@ class CommentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = models.Comment
-        fields = ["user","provider","comment","date"]
+        fields = ["id", "user","provider","text","date"]
 
 
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Reply
-        fields = ['id', 'user', 'comment', 'text',  'created_at'] 
+        fields = ['id', 'user', 'comment', 'text', "rate_sum", "rate_num",  'created_at'] 
 
 
 class CommentSerializerGET(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class CommentSerializerGET(serializers.ModelSerializer):
 
     class Meta:
         model = models.Comment
-        fields = ['id', 'user', 'text', 'date', 'replies']
+        fields = ['id', 'user', 'text', 'date', "rate_num", "rate_sum", 'replies']
 
     
     

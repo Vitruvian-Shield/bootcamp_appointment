@@ -10,17 +10,14 @@ class AppointmentAdd(APIView):
     permission_classes = [permissions.IsAuthenticated]
     
     def post(self, request):
-        data = request.data.copy()  # Work on a copy of the request data
+        data = request.data.copy() 
+        data["user"] = request.user.id
         
-        # Attach the logged-in user to the appointment
-        data["user"] = request.user.id  # Assuming 'user' is a ForeignKey to User model
-        
-        # Handle provider lookup and validation
         provider_id = data.get("provider", None)
         if provider_id:
             try:
                 provider = Provider.objects.get(pk=provider_id)
-                data["provider"] = provider.id  # Assigning the provider ID
+                data["provider"] = provider.id 
             except Provider.DoesNotExist:
                 return Response({"status": "error: provider does not exist"}, status=status.HTTP_404_NOT_FOUND)
     
@@ -39,7 +36,7 @@ class AppointmentAdd(APIView):
 
         ).exists():
             if serializer.is_valid():
-                serializer.save()  # Save the appointment with the validated data
+                serializer.save()  
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         service.delete()
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

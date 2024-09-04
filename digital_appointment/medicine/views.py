@@ -23,7 +23,7 @@ class CityListView(APIView):
 
 
 class Provider(APIView, pagination.PageNumberPagination):
-    authentication_classes = authentication[authentication.JWTAuthentication]
+    authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
