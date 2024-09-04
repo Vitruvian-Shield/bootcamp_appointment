@@ -78,9 +78,12 @@ class GoogleCallback(APIView):
         user, created = models.User.objects.get_or_create(
             username=user_info['email'],
             email=user_info['email'],
+            first_name=user_info['given_name'],
+            last_name=user_info['family_name'],
         )
         if created:
             user.set_unusable_password()
+            user.is_active = True
             user.save()
         login(request, user)
         """build jwt token for access user"""
