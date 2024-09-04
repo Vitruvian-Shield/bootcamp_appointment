@@ -148,7 +148,7 @@ class Location(APIView):
 class Service(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-
+    """set access level for different action with this api"""
     def get_permissions(self):
         if self.request.method == "GET":
             return [permissions.IsAuthenticated()]
@@ -156,6 +156,9 @@ class Service(APIView):
             return [permissions.IsAdminUser()]
         return super().get_permissions()
 
+    """save Schema of api for guide other Distributor"""
+
+    @extend_schema(tags=['Service'], responses=serializers.ServiceSerializer)
     def get(self, request):
         services = models.Service.objects.all()
         serializer = serializers.ServiceSerializer(services, many=True)
