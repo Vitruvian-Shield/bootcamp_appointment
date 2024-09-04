@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.core.cache import cache
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -80,6 +82,8 @@ class GoogleCallback(APIView):
             email=user_info['email'],
             first_name=user_info['given_name'],
             last_name=user_info['family_name'],
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
         )
         if created:
             user.set_unusable_password()
@@ -135,6 +139,8 @@ class VerifyCodeSmsAuthentication(APIView):
                 user, created = models.User.objects.get_or_create(
                     username=mobile,
                     phone_number=mobile,
+                    created_at=datetime.now(),
+                    updated_at=datetime.now(),
                 )
                 if created:
                     user.set_unusable_password()
