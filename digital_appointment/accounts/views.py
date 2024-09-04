@@ -136,6 +136,7 @@ class VerifyCodeSmsAuthentication(APIView):
                 )
                 if created:
                     user.set_unusable_password()
+                    user.is_active = True
                     user.save()
 
                 login(request, user)
