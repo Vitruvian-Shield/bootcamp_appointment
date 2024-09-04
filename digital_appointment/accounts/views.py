@@ -54,10 +54,13 @@ class GoogleCallback(APIView):
         }
         try:
             response = requests.post(token_url, data=data)
-        except ConnectionError:
-            return JsonResponse({'error': 'Connection error'}, status=400)
+        except TypeError:
+            return Response({'error': 'Failed to obtain user info'}, status=400)
+        except ConnectionError as e:
+            return Response({'error': str(e)}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': e}, status=400)
         response_data = response.json()
-
         access_token = response_data.get("access_token")
         if not access_token:
             return JsonResponse({'error': 'Failed to obtain access token'}, status=400)
@@ -65,8 +68,12 @@ class GoogleCallback(APIView):
         user_info_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
         try:
             user_info_response = requests.get(user_info_url, headers={'Authorization': f'Bearer {access_token}'})
-        except ConnectionError:
-            return JsonResponse({'error': 'Failed to get userinfo'}, status=400)
+        except TypeError:
+            return Response({'error': 'Failed to obtain user info'}, status=400)
+        except ConnectionError as e:
+            return Response({'error': str(e)}, status=400)
+        except Exception as e:
+            return Response({'error': e}, status=400)
         user_info = user_info_response.json()
         user, created = models.User.objects.get_or_create(
             username=user_info['email'],
