@@ -121,8 +121,15 @@ class Location(APIView):
     Location Api to interact with locations data
     """
     authentication_classes = [authentication.JWTAuthentication]
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
     """save Schema of api for guide other Distributor"""
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [permissions.AllowAny()]
+        elif self.request.method == "POST":
+            return [permissions.IsAdminUser()]
+        return super().get_permissions()
+
 
     @extend_schema(tags=['Location'], responses=serializers.LocationSerializer)
     def get(self, request):
