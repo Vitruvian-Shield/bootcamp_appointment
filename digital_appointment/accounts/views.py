@@ -125,8 +125,9 @@ class VerifyCodeSmsAuthentication(APIView):
 
     @extend_schema(tags=['sms'])
     def post(self, request):
-        code = request.data.get('code')
-        mobile = request.data.get('mobile')
+        serializer_data = serializers.SmsSerializer(request.data)
+        code = serializer_data.code
+        mobile = serializer_data.mobile
         if not code:
             """compare user code send with code in cache"""
             if utils.verify_sms_code(mobile, code):
