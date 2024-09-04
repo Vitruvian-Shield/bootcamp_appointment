@@ -1,12 +1,17 @@
 from . import models
 from rest_framework import views
-from rest_framework.response import Response
 from rest_framework import status
 from . import serializers
 from rest_framework import permissions, pagination
 from rest_framework_simplejwt import authentication
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
+from .serializers import LoginSerializer
+import random
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = serializers.CustomTokenObtainPairSerializer
@@ -62,3 +67,34 @@ class ProfileView(views.APIView):
         user = request.user
         serializer = serializers.UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+MyUser = get_user_model()
+
+class SendCodeView(APIView):
+    def post(self, request):
+        phone_number = request.data.get('phone_number')
+        try:
+            user = MyUser.objects.get(phone_number=phone_number)
+            # Generate a code (a random 4-digit number)
+            code = str(random.randint(1000, 9999))
+            user.code = code
+            user.save()
+            # Print the code to the console for testing
+            print(f"Verification code for {phone_number} is: {code}")
+            return Response({"success": "Code sent (check console)!"})
+        except ObjectDoesNotExist:
+            return Response({"error": "Phone number not registered."}, status=400)
+
+
+class LoginView(APIView):
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            })
+        return Response(serializer.errors, status=400)

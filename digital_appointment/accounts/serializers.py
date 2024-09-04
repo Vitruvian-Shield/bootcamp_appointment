@@ -2,6 +2,8 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from . import models
 import string
+from django.contrib.auth import authenticate
+from .models import User
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -63,5 +65,32 @@ class UserSerializer(serializers.ModelSerializer):
         if password:
             instance.set_password(password)
         return super().update(instance, validated_data)
+
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(required=False)
+    phone_number = serializers.CharField(required=False)
+    code = serializers.CharField(required=False)
+
+    def validate(self, data):
+        username = data.get('username', None)
+        password = data.get('password', None)
+        phone_number = data.get('phone_number', None)
+        code = data.get('code', None)
+
+        if username and password:
+            user = authenticate(username=username, password=password)
+        elif phone_number and code:
+            try:
+                user = User.objects.get(phone_number=phone_number, code=code)
+                if user is None:
+                    raise serializers.ValidationError('Invalid phone number or code.')
+            except User.DoesNotExist:
+                raise serializers.ValidationError('Invalid phone number or code.')
+        else:
+            raise serializers.ValidationError('Must include username and password or phone number and code.')
+
+        return {'user': user}
 
 

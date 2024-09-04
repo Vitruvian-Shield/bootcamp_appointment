@@ -17,6 +17,8 @@ class User(AbstractBaseUser):
     update_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
     expire_at = models.DateTimeField(null=True, blank=True)
+    is_phone_verified = models.BooleanField(default=False)
+    code = models.CharField(max_length=6, blank=True, null=True)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ["phone_number", "email", "first_name", "last_name"]
