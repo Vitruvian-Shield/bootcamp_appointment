@@ -106,7 +106,7 @@ class SmsAuthentication(APIView):
     """
     permission_classes = [permissions.AllowAny]
 
-    @extend_schema(tags=['sms'])
+    @extend_schema(tags=['sms'], responses=serializers.SmsSerializer)
     def post(self, request):
         serializer_data = serializers.SmsSerializer(request.data)
         mobile = serializer_data.mobile
@@ -124,7 +124,7 @@ class VerifyCodeSmsAuthentication(APIView):
     """
     permission_classes = [permissions.AllowAny]
 
-    @extend_schema(tags=['sms'])
+    @extend_schema(tags=['sms'], responses=serializers.SmsSerializer)
     def post(self, request):
         serializer_data = serializers.SmsSerializer(request.data)
         code = serializer_data.code
