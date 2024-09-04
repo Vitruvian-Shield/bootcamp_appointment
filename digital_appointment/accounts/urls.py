@@ -10,6 +10,6 @@ urlpatterns = [
     path("profile/", views.ProfileView.as_view()),
     path('auth/google/start/', views.GoogleAuthInit.as_view(), name='google_callback'),
     path('auth/google/callback/', views.GoogleCallback.as_view(), name='google_callback'),
-    path('sms/', views.SmsAuthentication.as_view(), name='sms'),
+    path('auth/sms/', views.SmsAuthentication.as_view(), name='sms'),
     path('sms/verify', views.VerifyCodeSmsAuthentication.as_view(), name='sms'),
 ]
