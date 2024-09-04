@@ -108,7 +108,8 @@ class SmsAuthentication(APIView):
 
     @extend_schema(tags=['sms'])
     def post(self, request):
-        mobile = request.data.get('mobile')
+        serializer_data = serializers.SmsSerializer(request.data)
+        mobile = serializer_data.mobile
         """send sms message with auth code"""
         response = utils.send_quick_otp(mobile)
         if response is not None:
