@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.core.cache import cache
+from django.shortcuts import redirect
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from . import models
@@ -33,7 +34,22 @@ class GoogleLogin(SocialLoginView):
     client_class = OAuth2Client
     """
 
-
+class GoogleAuthInit(APIView):
+    """
+    with this api front developer can use
+    google authenticate very easy
+    """
+    def post(self, request):
+        google_auth_url = (
+            "https://accounts.google.com/o/oauth2/v2/auth"
+            "?redirect_uri=http://127.0.0.1:8000/api/accounts/auth/google/callback/"
+            "&prompt=consent"
+            "&response_type=code"
+            "&client_id=" + settings.GOOGLE_CLIENT_ID +
+            "&scope=openid%20email%20profile"
+            "&access_type=offline"
+        )
+        return redirect(google_auth_url)
 class GoogleCallback(APIView):
     @extend_schema(tags=['GoogleAuth'])
     def get(self, request):
