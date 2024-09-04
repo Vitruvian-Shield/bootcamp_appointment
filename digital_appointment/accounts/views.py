@@ -13,6 +13,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 
 class User(views.APIView, pagination.PageNumberPagination):
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
         users = models.User.objects.all().order_by("-created_at")
 
