@@ -25,7 +25,7 @@ class Rate(models.Model):
 
     class Meta:
         db_table = "rate"
-        constraint = [
+        constraints = [
             models.UniqueConstraint(fields=["provider", "user"], name="unique_rate"),
             models.UniqueConstraint(fields=["comment", "user"], name="unique_comment_rate"),
             models.UniqueConstraint(fields=["reply","user"], name="unique_reply_rate")
