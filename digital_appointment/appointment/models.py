@@ -14,7 +14,7 @@ class Appointment(models.Model):
     patient_first_name = models.CharField(max_length=255, default="firstname")
     patient_last_name = models.CharField(max_length=255, default="lastname")
     patient_phone_number = models.CharField(max_length=20, default="1")
-    patient_national_id = models.CharField(max_length=20, default="1")
+    patient_national_id = models.CharField(max_length=13, default="1")
     patient_gender = models.CharField(max_length=10, default="gender")
     date = models.DateTimeField()
     status = models.SmallIntegerField(choices=STATUS, default=0)

@@ -79,7 +79,13 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)  # Hash the password before saving
         return super().update(instance, validated_data)
 
-
+class UserViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        exclude = ('is_superuser', 'is_staff', 'is_active', 'is_admin')
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=False)

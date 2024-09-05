@@ -46,7 +46,7 @@ class UserDetail(views.APIView):
     def put(self, request, pk):
         user = models.User.objects.get(id=pk)
         data = request.data
-        serializer = serializers.UserSerializer(user, data=data, partial=True)
+        serializer = serializers.UserViewSerializer(user, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response({"success": True}, status=status.HTTP_200_OK)
@@ -96,6 +96,8 @@ class LoginView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data['user']
             refresh = RefreshToken.for_user(user)
+            user.code = str(random.randint(1000, 9999))
+            user.save()
             return Response({
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),

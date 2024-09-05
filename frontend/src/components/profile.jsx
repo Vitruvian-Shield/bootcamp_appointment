@@ -47,6 +47,7 @@ function Profile() {
         .then(data => {
             console.log('Profile updated successfully:', data);
             setUser(data);
+            window.location.href = "/profile"
         })
         .catch(error => {
             console.error('Error:', error);
