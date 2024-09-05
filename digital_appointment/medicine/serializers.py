@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import DoctorsModel
+from .models import DoctorsModel, ServiceModel, LocationModel
 from . import models
 
 
@@ -20,20 +20,18 @@ class ServiceSerializer(serializers.Serializer):
 class DoctorsSerializer(serializers.ModelSerializer):
     """Doctors serializer: Convert data to json"""
 
-    location = LocationSerializer()
-    speciality = ServiceSerializer()
+    location = serializers.PrimaryKeyRelatedField(queryset=LocationModel.objects.all())
+    speciality = serializers.PrimaryKeyRelatedField(queryset=ServiceModel.objects.all())
 
     class Meta:
         model = models.DoctorsModel
         fields = "__all__"
 
     def create(self, validated_data):
-        location_data = validated_data.pop("location")
-        speciality_data = validated_data.pop("speciality")
-        location = LocationSerializer.create(LocationSerializer(), validated_data=location_data)
-        speciality = ServiceSerializer.create(ServiceSerializer(), validated_data=speciality_data)
-        provider = models.DoctorsModel.objects.create(location=location, speciality=speciality, **validated_data)
-        return provider
+        location = validated_data.pop("location")
+        speciality = validated_data.pop("speciality")
+        doctor = models.DoctorsModel.objects.create(location=location, speciality=speciality, **validated_data)
+        return doctor
 
 
 class DoctorTokenObtainPairSerializer(TokenObtainPairSerializer):
