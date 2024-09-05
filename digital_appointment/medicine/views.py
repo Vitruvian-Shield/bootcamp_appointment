@@ -1,17 +1,17 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions, pagination
+from rest_framework import status, permissions
 from rest_framework_simplejwt import authentication
 from django.db.models import Q
 from django.db.models.manager import Manager
 from interaction.models import Comment
 from interaction.serializers import CommentSerializer
-from . import models, serializers
+from . import models, serializers, pagination
 from drf_spectacular.utils import extend_schema
 
 
-class Provider(APIView, pagination.PageNumberPagination):
+class Provider(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     """save Schema of api for guide other Distributor"""
@@ -59,12 +59,12 @@ class Provider(APIView, pagination.PageNumberPagination):
         if isinstance(providers, Manager):
             providers = providers.all()
 
-        page = self.paginate_queryset(
+        paginator = pagination.ProviderLimitOffsetPagination()
+
+        page = paginator.paginate_queryset(
             providers.order_by("-created_date"), request)
         serializer = serializers.ProviderSerializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
-
-    permission_classes = [permissions.IsAdminUser]
+        return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
         data = request.data
@@ -101,7 +101,7 @@ class ProviderDetail(APIView):
         return Response(response_data, status=status.HTTP_200_OK)
 
 
-class SpecialtyListView(APIView, pagination.PageNumberPagination):
+class SpecialtyListView(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     """save Schema of api for guide other Distributor"""
@@ -110,10 +110,11 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
     def get(self, request):
         specialities = models.Provider.objects.values(
             'speciality').distinct()
-        page = self.paginate_queryset(specialities, request)
+        paginator = pagination.ProviderLimitOffsetPagination()
+        page = paginator.paginate_queryset(specialities, request)
 
         serializer = serializers.SpecialitySerializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
+        return paginator.get_paginated_response(serializer.data)
 
 
 class Location(APIView):
@@ -123,13 +124,13 @@ class Location(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.AllowAny]
     """save Schema of api for guide other Distributor"""
+
     def get_permissions(self):
         if self.request.method == "GET":
             return [permissions.AllowAny()]
         elif self.request.method == "POST":
             return [permissions.IsAdminUser()]
         return super().get_permissions()
-
 
     @extend_schema(tags=['Location'], responses=serializers.LocationSerializer)
     def get(self, request):
@@ -156,6 +157,7 @@ class Service(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     """set access level for different action with this api"""
+
     def get_permissions(self):
         if self.request.method == "GET":
             return [permissions.IsAuthenticated()]
