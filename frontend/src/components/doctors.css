@@ -1,0 +1,114 @@
+#doctors-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(23, 50, 90, 0.418);
+    border-radius: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    min-height: 105vh;
+    direction: rtl;
+    color: black;
+    padding-bottom: 50px;
+}
+
+#city {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    height: 100px;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #17325A;
+    background-color: aliceblue;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#doctors {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 30px;
+    width: 100%;
+    flex: 1;
+}
+
+#profile {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: fit-content;
+    text-align: center;
+    color: black;
+}
+
+#profile:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+#picture img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid rgba(23, 50, 90, 0.418);
+}
+
+#name p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+    color: #17325A;
+}
+
+button:hover {
+    color: black;
+    background-color: rgba(0, 0, 0, 0.418);
+    border-color: aliceblue;
+}
+#page{
+    color: rgb(0, 0, 0);
+}
+#pagination {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff; /* Adjust the background color as needed */
+    padding: 10px 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better visibility */
+  }
+  
+  #pagination button {
+    background-color: #007bff; /* Adjust the color to match your theme */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    border-radius: 40px;
+    transition: background-color 0.3s;
+  }
+  
+  #pagination button:disabled {
+    background-color: #ccc; /* Disable button style */
+    cursor: not-allowed;
+  }
+  
+  #pagination button:not(:disabled):hover {
+    background-color: #0056b3; /* Adjust the hover color */
+  }
+  
+  #pagination span {
+    font-size: 16px;
+    margin: 0 10px;
+  }

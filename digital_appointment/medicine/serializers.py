@@ -31,3 +31,19 @@ class ProviderSerializer(serializers.ModelSerializer):
 
 class SpecialitySerializer(serializers.Serializer):
     speciality = serializers.CharField(max_length=255)
+
+
+class ServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Service
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Comment
+        fields = ['id', 'provider', 'rating', 'name', 'email', 'body', 'created_on', 'is_active']
+        read_only_fields = ['id', 'created_on', 'is_active']
+
+    def create(self, validated_data):
+        return super().create(validated_data)

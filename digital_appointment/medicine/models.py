@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Provider(models.Model):
     user = models.OneToOneField('accounts.User', on_delete=models.CASCADE)
@@ -9,10 +9,26 @@ class Provider(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.speciality
+        return str(self.user)
 
     class Meta:
         db_table = "provider"
+
+
+class Comment(models.Model):
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    rating = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], default=1)
+    created_on = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)  # only for debugging
+
+    class Meta:
+        ordering = ['created_on']
+
+    def __str__(self):
+        return 'Comment {} by {}'.format(self.body, self.name)
 
 
 class Location(models.Model):

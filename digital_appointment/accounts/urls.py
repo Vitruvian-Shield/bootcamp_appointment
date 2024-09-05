@@ -7,5 +7,7 @@ urlpatterns = [
     path("login/refresh/", TokenRefreshView.as_view()),
     path("user/", views.User.as_view()),
     path("user/<int:pk>/", views.UserDetail.as_view()),
-    path("profile/", views.ProfileView.as_view())
+    path("profile/", views.ProfileView.as_view()),
+    path('send-code/', views.SendCodeView.as_view(), name='send-code'),
+    path('loginWithPhone/', views.LoginView.as_view(), name='login')
 ]
