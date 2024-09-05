@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from datetime import datetime
 from pathlib import Path
 import datetime
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,7 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-rzy)%wc4vz(-zh_a3u4e1+-hh&n+ni(k$e_trm4bq+hcbn_kc8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
+
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "appointment.vitruvianshield.com"]
 
@@ -43,17 +47,16 @@ INSTALLED_APPS = [
     # third party
     'rest_framework',
     'rest_framework.authtoken',
-    #google authentication login required package
+    # google authentication login required package
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'dj_rest_auth',
-    #api docs builder (required write in end to work)
+    # api docs builder (required write in end to work)
     'drf_spectacular'
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -172,7 +175,7 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "accounts.User"
 
-#google authentication config
+# google authentication config
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
