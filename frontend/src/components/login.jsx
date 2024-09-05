@@ -30,9 +30,9 @@ function Login() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert("Code sent to your phone!");
+                alert("پیامک ارسال شد!");
             } else {
-                alert("Failed to send code.");
+                alert("شماره یافت نشد!");
             }
         })
         .catch(error => {
@@ -57,7 +57,7 @@ function Login() {
                 localStorage.setItem("refresh", data.refresh);
                 window.location.href = "/successfullyLoggedIn";
             } else {
-                alert("Invalid login credentials!");
+                alert("رمز یا پسوورد غلط است... دوباره تلاش کنید!");
             }
         })
         .catch(error => {
@@ -75,15 +75,15 @@ function Login() {
                     <p id="title"><b>{UserOrDoc()}</b></p>
                     <p id="mobile-text">برای ورود لطفا اطلاعات خود را وارد کنید.</p>
                     <div>
-                        <button onClick={() => setLoginMethod('username')}>Login with Username</button>
-                        <button onClick={() => setLoginMethod('phone')}>Login with Phone</button>
+                        <button onClick={() => setLoginMethod('username')}>ورود با یوزرنیم</button>
+                        <button onClick={() => setLoginMethod('phone')}>ورود با شماره</button>
                     </div>
                     {loginMethod === 'username' ? (
                         <>
                             <input
                                 type="text"
-                                placeholder="Username"
-                                dir="ltr"
+                                placeholder="یوزرنیم"
+                                dir="rtl"
                                 id="number-input"
                                 className="user"
                                 value={username}
@@ -91,8 +91,8 @@ function Login() {
                             />
                             <input
                                 type="password"
-                                placeholder="Password"
-                                dir="ltr"
+                                placeholder="پسوورد"
+                                dir="rtl"
                                 id="number-input"
                                 className="pass"
                                 value={password}
@@ -103,8 +103,8 @@ function Login() {
                         <>
                             <input
                                 type="text"
-                                placeholder="Phone Number"
-                                dir="ltr"
+                                placeholder="شماره موبایل"
+                                dir="rtl"
                                 id="number-input"
                                 className="user"
                                 value={phoneNumber}
@@ -113,8 +113,8 @@ function Login() {
                             <button onClick={sendCode}>Send Code</button>
                             <input
                                 type="text"
-                                placeholder="Verification Code"
-                                dir="ltr"
+                                placeholder="کد ارسالی"
+                                dir="rtl"
                                 id="number-input"
                                 className="pass"
                                 value={verificationCode}
@@ -132,10 +132,13 @@ function Login() {
                         ورود با گوگل
                         <img src={googleIcon} alt="Google Icon" />
                     </button>
+                    <a href="/newUser" id="create-user">
+                        اگر اکانت نداری اینجا کلیک کن...
+                    </a>
                 </div>
             </div>
         </div>
     );
 }
-
+alert
 export default Login;

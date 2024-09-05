@@ -11,7 +11,7 @@ const SuccessLogin = () => {
     }, 2000);
   }, [navigate]);
   
-
+  
   return (
     <div style={styles.container}>
       <FaCheckCircle style={styles.icon} />

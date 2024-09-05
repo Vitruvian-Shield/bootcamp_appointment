@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useDebugValue } from 'react';
 import axios from 'axios';
 import './doctors.css';
 import docimg from '../assets/images/person-circle.svg';
@@ -8,7 +8,7 @@ function Doctors() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
-
+  const [city, setCity] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem('token'); 
@@ -30,7 +30,6 @@ function Doctors() {
           },
         });
         setData(response.data.results);
-        console.log(response);
         setTotalPages(Math.ceil(response.data.count / response.data.page_size));
 
         // Check if there is a next page
@@ -44,10 +43,17 @@ function Doctors() {
   
     fetchData();
   }, [currentPage]);
-
+useEffect(()=>{
+  if( localStorage.getItem("selectedCity")){
+    setCity(`شهر انتخابی ${localStorage.getItem("selectedCity")} `)
+  }
+  else{
+    setCity('بدون فیلتر شهر')
+  }
+}, [])
   return (
     <div id="doctors-container">
-      <input type="text" value={" شهر انتخابی " + localStorage.getItem("selectedCity")} readOnly id='city' />
+      <input type="text" value={city} readOnly id='city' />
       <button onClick={()=>{localStorage.setItem('speciality',"");localStorage.setItem('selectedCity',""); window.location.href = "/doctors";}}>بدون فیلتر</button>
       <div id="doctors">
         {Array.isArray(data) ? (

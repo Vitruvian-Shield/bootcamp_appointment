@@ -11,6 +11,7 @@ import Login from './components/login.jsx';
 import SuccessLogin from './components/successfullyLoggedIn.jsx';
 import Appointments from './components/appointment.jsx';
 import Profile from './components/profile.jsx';
+import NewUser from './components/newUser.jsx';
 
 const Dashboard = () => {
   return (
@@ -53,6 +54,9 @@ function App() {
           </Route>
           <Route path="/profile" element={<Dashboard />}>
             <Route index element={<Profile />} />
+          </Route>
+          <Route path="/newUser" element={<Dashboard />}>
+            <Route index element={<NewUser />} />
           </Route>
         </Routes>
       </div>

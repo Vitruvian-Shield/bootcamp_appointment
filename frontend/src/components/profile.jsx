@@ -17,7 +17,6 @@ function Profile() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             setUser(data);
         })
         .catch(error => {
@@ -116,6 +115,7 @@ function Profile() {
                                 <p><strong>تاریخ:</strong> {appointment.date}</p>
                                 <p><strong>کد ملی:</strong> {appointment.patient_national_id}</p>
                                 <p><strong>سرویس:</strong> {appointment.service}</p>
+                                <p><strong>وضعیت:</strong> {appointment.status===0?"طبق زمان بندی":appointment.status===1?"کنسل شده":"انجام شده"}</p>
                                 <p>-----------------------------------------------</p>
                             </li>
                         ))}

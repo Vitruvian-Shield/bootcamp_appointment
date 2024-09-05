@@ -5,6 +5,7 @@ import loginicon from '../assets/images/loginicon.svg';
 import userloginicon from '../assets/images/userloginicon.svg';
 import logoutimg from '../assets/images/logout.svg'
 import profileimg from '../assets/images/person-circle.svg'
+
 function Navbar() {
   const [checkLogin, setCheckLogin] = useState(false);
 
@@ -28,7 +29,6 @@ function Navbar() {
         setCheckLogin(true);
       })
       .catch(error => {
-        console.error('Error:', error);
         setCheckLogin(false);
       });
 

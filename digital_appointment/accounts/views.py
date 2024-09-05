@@ -20,7 +20,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 class User(views.APIView, pagination.PageNumberPagination):
     def get(self, request):
         users = models.User.objects.all().order_by("-created_at")
-
         page = self.paginate_queryset(users, request)
         serializer = serializers.UserSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -28,9 +27,13 @@ class User(views.APIView, pagination.PageNumberPagination):
     def post(self, request):
         data = request.data
         serializer = serializers.UserSerializer(data=data)
+
         if serializer.is_valid():
+            # Save the new user if validations pass
             serializer.save()
             return Response({"success": True}, status=status.HTTP_201_CREATED)
+
+        # Return validation errors
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

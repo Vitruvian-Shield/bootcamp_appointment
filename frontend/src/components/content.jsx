@@ -44,7 +44,6 @@ function Content() {
                 return response.json();
             })
             .then(cities => {
-                console.log(cities);
                 setCitiesData(cities);
             })
             .catch(error => {

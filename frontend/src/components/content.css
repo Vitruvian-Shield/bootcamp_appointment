@@ -27,6 +27,7 @@
 
 .typewriter h1, 
 .typewriter h2 {
+    color: white;
     overflow: hidden;
     border-left: .15em solid orange;
     white-space: nowrap;
