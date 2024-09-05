@@ -13,10 +13,19 @@ class AppointmentView(APIView, pagination.PageNumberPagination):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        doctor_id = request.user.id
-        appointments = models.AppointmentModel.objects.filter(doctor_id=doctor_id)
+        appointments = models.AppointmentModel.objects.all()
+
+        doctor = request.query_params.get("doctor")
+        if doctor:
+            appointments = appointments.filter(doctor__icontains=doctor)
+
+        page = self.paginate_queryset(appointments, request, view=self)
+        if page is not None:
+            serializer = AppointmentSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = AppointmentSerializer(appointments, many=True)
-        return self.get_paginated_response(serializer.data)
+        return Response(serializer.data)
 
     def post(self, request):
         data = request.data
@@ -49,9 +58,13 @@ class CommentsView(APIView, pagination.PageNumberPagination):
         if doctor:
             comments = comments.filter(doctor__icontains=doctor)
 
-        page = self.paginate_queryset(comments.order_by("-created"), request)
-        serializer = CommentSerializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
+        page = self.paginate_queryset(comments.order_by("-created"), request, view=self)
+        if page is not None:
+            serializer = CommentSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
 
     def post(self, request):
         data = request.data

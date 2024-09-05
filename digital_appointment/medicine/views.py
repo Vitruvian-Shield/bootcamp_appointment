@@ -4,6 +4,8 @@ from rest_framework import status, permissions, pagination
 from rest_framework_simplejwt import authentication
 from django.db.models import Q
 from django.db.models.manager import Manager
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import DoctorTokenObtainPairSerializer
 from . import models, serializers
 
 
@@ -72,3 +74,8 @@ class DoctorProfileView(APIView):
         doctor = request.user
         serializer = serializers.DoctorsSerializer(doctor)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class DoctorTokenObtainPairView(TokenObtainPairView):
+    """JWT view for doctors"""
+    serializer_class = DoctorTokenObtainPairSerializer
