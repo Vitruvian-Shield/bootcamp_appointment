@@ -1,8 +1,8 @@
 from . import models
+from . import serializers
 from rest_framework import views
 from rest_framework.response import Response
 from rest_framework import status
-from . import serializers
 from rest_framework import permissions, pagination
 from rest_framework_simplejwt import authentication
 from rest_framework_simplejwt.views import TokenObtainPairView

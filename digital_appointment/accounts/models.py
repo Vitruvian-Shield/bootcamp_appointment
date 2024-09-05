@@ -1,9 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from . import managers
+from PIL import Image
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class User(AbstractBaseUser):
+    profile_picture = models.ImageField(upload_to='images/', null=True, blank=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     username = models.CharField(max_length=100, unique=True)
