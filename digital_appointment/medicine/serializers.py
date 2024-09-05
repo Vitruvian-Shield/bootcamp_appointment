@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import DoctorsModel, ServiceModel, LocationModel
 from . import models
+from accounts.models import User
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -11,7 +12,7 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ServiceSerializer(serializers.Serializer):
+class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ServiceModel
         fields = '__all__'
@@ -20,6 +21,7 @@ class ServiceSerializer(serializers.Serializer):
 class DoctorsSerializer(serializers.ModelSerializer):
     """Doctors serializer: Convert data to json"""
 
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     location = serializers.PrimaryKeyRelatedField(queryset=LocationModel.objects.all())
     speciality = serializers.PrimaryKeyRelatedField(queryset=ServiceModel.objects.all())
 
@@ -28,9 +30,10 @@ class DoctorsSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
+        user = validated_data.pop("user")
         location = validated_data.pop("location")
         speciality = validated_data.pop("speciality")
-        doctor = models.DoctorsModel.objects.create(location=location, speciality=speciality, **validated_data)
+        doctor = models.DoctorsModel.objects.create(user=user, location=location, speciality=speciality, **validated_data)
         return doctor
 
 

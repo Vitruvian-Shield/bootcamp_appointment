@@ -5,7 +5,7 @@ from rest_framework_simplejwt import authentication
 from django.db.models import Q
 from django.db.models.manager import Manager
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import DoctorTokenObtainPairSerializer
+from .serializers import DoctorTokenObtainPairSerializer, ServiceSerializer
 from . import models, serializers
 
 
@@ -57,10 +57,9 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-
-        specialities = models.DoctorsModel.objects.values('speciality').distinct()
+        specialities = models.ServiceModel.objects.all().distinct()
         page = self.paginate_queryset(specialities, request)
-        serializer = serializers.ServiceSerializer(page, many=True)
+        serializer = ServiceSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
 
@@ -71,7 +70,11 @@ class DoctorProfileView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        doctor = request.user
+        user = request.user
+        doctor = models.DoctorsModel.objects.filter(user=user).first()
+        if not doctor:
+            return Response({"detail": "Doctor not found"}, status=status.HTTP_404_NOT_FOUND)
+
         serializer = serializers.DoctorsSerializer(doctor)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

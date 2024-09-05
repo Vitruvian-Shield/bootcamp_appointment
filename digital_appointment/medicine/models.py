@@ -1,5 +1,6 @@
 from django.contrib.auth.hashers import make_password
 from django.db import models
+from accounts.models import User
 
 
 class DoctorsModel(models.Model):
@@ -12,6 +13,7 @@ class DoctorsModel(models.Model):
     zip_code = models.CharField(max_length=10, unique=True)
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=128)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     speciality = models.ForeignKey('medicine.ServiceModel', on_delete=models.CASCADE)
     location = models.ForeignKey('medicine.LocationModel', on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
