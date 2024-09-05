@@ -94,11 +94,11 @@ class DoctorAppointmentView(APIView, pagination.PageNumberPagination):
     def get(self, request):
         provider = None
         try:
-            provider = request.user.provider.all().first()
+            provider = request.user.provider
         except AttributeError:
             return Response({"status":"error:you are not Authorized as a Docotr."}, status=status.HTTP_401_UNAUTHORIZED)
-        
         appointments = provider.appointments.all()
         page = self.paginate_queryset(appointments.order_by("-created_date"), request)
-        serializer = serializers.AppointmentSerializer(page, many=True)
+        serializer = serializers.AppointmentSerializerGET(page, many=True)
+        
         return self.get_paginated_response(serializer.data)
