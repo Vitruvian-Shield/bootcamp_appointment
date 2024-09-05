@@ -48,7 +48,8 @@ class AppointmentView(APIView, pagination.PageNumberPagination):
     def get(self, request):
         appointments = models.Appointment.objects.filter(user=request.user)
         page = self.paginate_queryset(appointments.order_by("-created_date"), request)
-        serializer = serializers.AppointmentSerializer(page, many=True)
+        serializer = serializers.AppointmentSerializerGET(page, many=True)
+        print(serializer.data)
         return self.get_paginated_response(serializer.data)
 
     

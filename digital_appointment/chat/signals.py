@@ -14,7 +14,7 @@ def store_original_score(sender, instance, **kwargs):
             except Rate.DoesNotExist:
                 instance._original_score = None
         else:
-            instance._original_score = None
+            instance._original_score = 0
     except:
         pass
 

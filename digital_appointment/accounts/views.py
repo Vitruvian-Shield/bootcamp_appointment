@@ -40,6 +40,11 @@ class Login(views.APIView):
             code_ = models.ConfirmCode.get_code(user)
             if code == code_:
                 data = get_tokens_for_user(user)
+                data["is_doctor"] = False
+                if user.provider.pk:
+                    data["is_doctor"] = True
+                    
+                
                 print(data)
                 return Response(data, status=status.HTTP_200_OK)
             
