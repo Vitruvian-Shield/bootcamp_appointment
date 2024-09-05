@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions, status
 from rest_framework_simplejwt import authentication
-from . import serializers
+from . import serializers, pagination
 from .models import Appointment
 from django.db.models import Q
 from drf_spectacular.utils import extend_schema
@@ -26,8 +26,11 @@ class AppointmentView(APIView):
 
     def get(self, request):
         validate_appointment = Appointment.objects.filter(user=request.user)
-        serializer = serializers.AppointmentSerializer(validate_appointment, many=True)
-        return Response(serializer.data)
+        """use customize pagination"""
+        paginator = pagination.AppointmentLimitOffsetPagination()
+        page = paginator.paginate_queryset(validate_appointment.order_by('-created_date'), request)
+        serializer = serializers.AppointmentSerializer(page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 
 class AppointmentDetailView(APIView):
