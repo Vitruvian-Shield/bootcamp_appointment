@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from django.db import models
 
 
@@ -10,7 +11,7 @@ class DoctorsModel(models.Model):
     email = models.EmailField(max_length=100)
     zip_code = models.CharField(max_length=10, unique=True)
     username = models.CharField(max_length=50, unique=True)
-    password = models.CharField(max_length=50)
+    password = models.CharField(max_length=128)
     speciality = models.ForeignKey('medicine.ServiceModel', on_delete=models.CASCADE)
     location = models.ForeignKey('medicine.LocationModel', on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -19,8 +20,10 @@ class DoctorsModel(models.Model):
     def __str__(self):
         return self.username
 
-    class Meta:
-        db_table = "Doctors"
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.password = make_password(self.password)
+        super().save(*args, **kwargs)
 
 
 class ServiceModel(models.Model):

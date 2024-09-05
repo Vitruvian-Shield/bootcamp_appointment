@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import DoctorsModel
@@ -42,6 +43,7 @@ class DoctorTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
         username = attrs.get('username', None)
+        password = attrs.get('password', None)
 
         if '@' in username:
             self.username_field = 'email'
@@ -50,12 +52,20 @@ class DoctorTokenObtainPairSerializer(TokenObtainPairSerializer):
         else:
             self.username_field = 'username'
 
-        if self.username_field != 'username':
-            username = DoctorsModel.objects.filter(
-                **{self.username_field: username}
-            ).values_list('username', flat=True).first()
-            self.username_field = 'username'
-            attrs['username'] = username
+        doctor = DoctorsModel.objects.filter(
+            **{self.username_field: username}
+        ).first()
 
-        data = super().validate(attrs)
+        if doctor is None:
+            raise serializers.ValidationError('Doctor not found.')
+
+        if not check_password(password, doctor.password):
+            raise serializers.ValidationError('Incorrect password.')
+
+        data = {}
+        refresh = self.get_token(doctor)
+
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+
         return data
