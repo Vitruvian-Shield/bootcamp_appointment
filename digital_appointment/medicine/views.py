@@ -91,14 +91,17 @@ class ProviderDetail(APIView):
         provider = self.get_object(pk)
         comments = Comment.objects.filter(provider=provider)
 
-        serializer_comment = CommentSerializer(comments, many=True)
+        paginator = pagination.ProviderLimitOffsetPagination()
+        paginated_comments = paginator.paginate_queryset(comments, request)
+
+        serializer_comment = CommentSerializer(paginated_comments, many=True)
         serializer_provider = serializers.ProviderSerializer(provider)
 
         response_data = {
             'provider': serializer_provider.data,
             'comments': serializer_comment.data,
         }
-        return Response(response_data, status=status.HTTP_200_OK)
+        return paginator.get_paginated_response(response_data)
 
 
 class SpecialtyListView(APIView):
