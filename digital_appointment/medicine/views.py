@@ -14,6 +14,14 @@ from drf_spectacular.utils import extend_schema
 class Provider(APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
+    """for Compliance with access levels"""
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [permissions.IsAuthenticated()]
+        elif self.request.method == "POST":
+            return [permissions.IsAdminUser()]
+        return super().get_permissions()
+
     """save Schema of api for guide other Distributor"""
 
     @extend_schema(tags=['Provider'], responses=serializers.ProviderSerializer)
