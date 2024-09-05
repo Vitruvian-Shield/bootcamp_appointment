@@ -36,8 +36,10 @@ class Provider(APIView, pagination.PageNumberPagination):
 
         sorting = request.query_params.get("sorting")
         if sorting:
-            if sorting == "name":
-                providers = providers.order_by("name")
+            if sorting == "user":
+                providers = providers.order_by("user")
+            elif sorting == "location":
+                providers = providers.order_by("location")    
             elif sorting == "rate":
                 providers = providers.order_by("rate")
             elif sorting == "created_date":
