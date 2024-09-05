@@ -35,6 +35,8 @@ class AppointmentView(APIView, pagination.PageNumberPagination):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class DeleteAppointmentView(APIView, pagination.PageNumberPagination):
     def delete(self, request, pk):
         try:
             appointment = models.AppointmentModel.objects.get(id=pk)
