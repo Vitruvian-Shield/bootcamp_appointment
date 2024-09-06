@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import image from "../../assets/images/contact-us.jpg";
 import {Box, Typography, Grid2, Input, Button} from '@mui/material'
 import axios from "axios";
-// import { GoTypography } from "react-icons/go";
 
 const ContactUs = () => {
   // contact us page
@@ -24,14 +23,12 @@ const ContactUs = () => {
       width:"300px",
       height:"50px",
       backgroundColor: 'azure',
-      // padding: '12px 90px',
       margin: '15px 15px',
       border: '0.5px solid rgba(70, 69, 69, 0.72)',
       borderRadius: '8px',
       textAlign: 'center',
       ":hover" :{
         border:'0.5px solid #217CE6',
-        // boxShadow: '2px 2px 5px 2px rgba(0, 0, 0, 0.2)',
       },
       "::placeholder" :{
         textAlign: 'center',
@@ -79,7 +76,6 @@ const ContactUs = () => {
         justifyContent: 'center',
         display: 'flex',
         backgroundColor:"azure",
-        // flexDirection: 'column',
         alignItems:"center"
       }}>
         <Box sx={{
@@ -88,7 +84,6 @@ const ContactUs = () => {
           marginTop: '50px',
           borderRadius: '8px',
           marginBottom: '50px',
-          // Width: '550px',
           minWidth:"400px",
           backgroundColor: 'azure',
           boxShadow: '0px 0px 5px 2px rgba(0, 0, 0, .2)',
@@ -144,7 +139,6 @@ const ContactUs = () => {
             <Grid2 item>
               <Input
                 disableUnderline
-                // type="Tel"
                 placeholder=" شماره تماس "
                 required
                 sx={inputs_style}
@@ -170,7 +164,6 @@ const ContactUs = () => {
               value={advice.body}
             />
             <Button sx={submitbuttonstyle} onClick={contactusbuttonHandler}> ارسال نظر </Button>
-            {/* <input type="submit" value=" ارسال " id="send-button" required /> */}
           </Grid2>
         </Box>
       </Box>
