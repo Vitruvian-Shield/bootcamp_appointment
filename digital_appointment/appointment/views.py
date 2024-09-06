@@ -1,11 +1,15 @@
 from . import models
 from accounts.serializers import serializers
 from medicine.models import Provider
+from .forms import AppointmentCommentForm
+from .models import Appointment, AppointmentComment
 from rest_framework import views, status
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework_simplejwt import authentication
 from . import serializers
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 class AppointmentView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -58,3 +62,20 @@ class AppointmentView(views.APIView):
 
         appointment.delete()
         return Response({"status": "deleted"}, status=status.HTTP_200_OK)
+    
+
+
+
+    @login_required
+    def comment_appointment(request, appointment_id):
+        appointment = Appointment.objects.get(id=appointment_id)
+        if request.method == 'POST':
+            form = AppointmentCommentForm(request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.appointment = appointment
+                comment.save()
+                return redirect('appointment_detail', appointment_id=appointment_id)
+        else:
+            form = AppointmentCommentForm()
+        return render(request, 'comment_appointment.html', {'form': form, 'appointment': appointment})    
