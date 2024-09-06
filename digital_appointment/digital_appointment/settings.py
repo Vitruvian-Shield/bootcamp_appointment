@@ -83,9 +83,9 @@ WSGI_APPLICATION = 'digital_appointment.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bootcamp',
-        'USER': 'mahdi',
-        'PASSWORD': 'mahdi',
+        'NAME': 'verna',
+        'USER': 'postgres',
+        'PASSWORD': 'verna',
         'HOST': 'localhost',
         'PORT': '5432',
     },

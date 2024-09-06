@@ -1,8 +1,8 @@
 from . import models
+from . import serializers
 from rest_framework import views
 from rest_framework.response import Response
 from rest_framework import status
-from . import serializers
 from rest_framework import permissions, pagination
 from rest_framework_simplejwt import authentication
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -13,6 +13,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 
 class User(views.APIView, pagination.PageNumberPagination):
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
         users = models.User.objects.all().order_by("-created_at")
 

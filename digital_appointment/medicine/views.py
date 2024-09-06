@@ -6,7 +6,6 @@ from django.db.models import Q
 from django.db.models.manager import Manager
 from . import models, serializers
 
-
 class Provider(APIView, pagination.PageNumberPagination):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
@@ -27,11 +26,31 @@ class Provider(APIView, pagination.PageNumberPagination):
                 Q(location__state__icontains=location)
             )
 
+        rate_min = request.query_params.get("rate_min")
+        if rate_min:
+            providers = providers.filter(rate__gte=rate_min)
+
+        rate_max = request.query_params.get("rate_max")
+        if rate_max:
+            providers = providers.filter(rate__lte=rate_max)
+
+        sorting = request.query_params.get("sorting")
+        if sorting:
+            if sorting == "user":
+                providers = providers.order_by("user")
+            elif sorting == "location":
+                providers = providers.order_by("location")    
+            elif sorting == "rate":
+                providers = providers.order_by("rate")
+            elif sorting == "created_date":
+                providers = providers.order_by("created_date")
+            else:
+                providers = providers.order_by("-created_date")
+
         if isinstance(providers, Manager):
             providers = providers.all()
 
-        page = self.paginate_queryset(
-            providers.order_by("-created_date"), request)
+        page = self.paginate_queryset(providers, request)
         serializer = serializers.ProviderSerializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
@@ -51,8 +70,7 @@ class SpecialtyListView(APIView, pagination.PageNumberPagination):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        specialities = models.Provider.objects.values(
-            'speciality').distinct()
+        specialities = models.Provider.objects.values('speciality').distinct()
         page = self.paginate_queryset(specialities, request)
 
         serializer = serializers.SpecialitySerializer(page, many=True)
