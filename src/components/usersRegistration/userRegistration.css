@@ -1,0 +1,6 @@
+/* user registration page css file */
+.user-registeration {
+  background: url("../../assets/images/registerbg.jpg");
+  background-size: cover;
+  background-position: center;
+}

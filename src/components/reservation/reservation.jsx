@@ -1,10 +1,7 @@
 import React, { useState , setState, useEffect} from "react";
-import "./reservation.css";
 import { FaLocationDot } from "react-icons/fa6";
 import younes from "../../assets/images/younes.jpg";
-import goldStar from "../../assets/images/gold-star.png"
 import { RiNewspaperLine } from "react-icons/ri";
-import emptyStar from "../../assets/images/empty-star.png";
 import axios from "axios";
 import { Box, Typography, Rating, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
