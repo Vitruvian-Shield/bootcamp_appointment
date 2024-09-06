@@ -79,11 +79,11 @@ class GoogleCallback(APIView):
         try:
             response = requests.post(token_url, data=data)
         except requests.RequestException as e:
-            return Response({'error': str(e)}, status=400)
+            return Response({'error': str(e),'message':'please try again now with better internet'}, status=400)
         response_data = response.json()
         access_token = response_data.get("access_token")
         if not access_token:
-            return Response({'error': 'Failed to obtain access token'}, status=400)
+            return Response({'error': 'Failed to obtain access token','message':'please try again now with better internet'}, status=400)
         """get me userinfo for every action we need it occur in database"""
         user_info_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
         try:
