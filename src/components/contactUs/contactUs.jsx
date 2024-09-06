@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./contactUs.css";
 import image from "../../assets/images/contact-us.jpg";
 import {Box, Typography, Grid2, Input, Button} from '@mui/material'
 import axios from "axios";
