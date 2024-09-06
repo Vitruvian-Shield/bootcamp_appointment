@@ -28,8 +28,8 @@ const Specialities = ()=> {
 
     const [speciality, setSpeciality] = useState({})
 
-    // useEffect(() =>
-    // axios.get(`localhost:3000/api/medicine/speciality/list/`).then(({ data }) => setSpeciality(data)).catch(err => console.log(err)),[])
+    useEffect(() =>{
+    axios.get(`localhost:3000/api/medicine/speciality/list/`).then(({ data }) => setSpeciality(data)).catch(err => console.log(err))},[])
 
 
     // data for speciality fields
