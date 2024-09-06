@@ -1,7 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 from accounts import views
-
 from rest_framework_simplejwt.views import TokenRefreshView
 
 class AccountsTestCase(SimpleTestCase):
@@ -16,7 +15,9 @@ class AccountsTestCase(SimpleTestCase):
         self.assertEqual(resolve(url).func.view_class, TokenRefreshView)
 
     def test_logout_url(self):
-        pass
+        url = reverse('logout')
+        self.assertEqual(url, '/api/accounts/logout/')
+        self.assertEqual(resolve(url).func.view_class, views.LogOutViewWithToken)
 
     def test_user_url(self):
         url = reverse('user')
@@ -46,3 +47,5 @@ class AccountsTestCase(SimpleTestCase):
         url = reverse('sms-verify')
         self.assertEqual(url, '/api/accounts/auth/sms/verify/')
         self.assertEqual(resolve(url).func.view_class, views.VerifyCodeSmsAuthentication)
+
+
