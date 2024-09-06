@@ -52,14 +52,15 @@ class AppointmentDetailView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
-        validate_appointment = Appointment.objects.filter(user=request.user, id=pk).first()
+        validate_appointment = Appointment.objects.filter(Q(user=request.user)| Q(id=pk)).first()
         serializer = serializers.AppointmentSerializer(validate_appointment, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
-        validate_appointment = Appointment.objects.filter(user=request.user, id=pk).first()
+        validate_appointment = Appointment.objects.filter(Q(user=request.user)| Q(id=pk)).first()
         if validate_appointment:
             validate_appointment.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_404_NOT_FOUND)
