@@ -37,14 +37,19 @@ class Login(views.APIView):
         code = request.data["code"]
         try:
             user = models.User.objects.get(phone_number=phone_number)
+            print(user)
+            
             code_ = models.ConfirmCode.get_code(user)
+            print(code_)
+            print(code)
             if code == code_:
                 data = get_tokens_for_user(user)
-                data["is_doctor"] = False
-                if user.provider.pk:
-                    data["is_doctor"] = True
-                    
-                
+                try:
+                    if user.provider.pk:
+                        data["is_doctor"] = True
+                except:
+                    data["is_doctor"] = False
+
                 print(data)
                 return Response(data, status=status.HTTP_200_OK)
             

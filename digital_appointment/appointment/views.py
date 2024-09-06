@@ -100,5 +100,4 @@ class DoctorAppointmentView(APIView, pagination.PageNumberPagination):
         appointments = provider.appointments.all()
         page = self.paginate_queryset(appointments.order_by("-created_date"), request)
         serializer = serializers.AppointmentSerializerGET(page, many=True)
-        
         return self.get_paginated_response(serializer.data)
