@@ -13,6 +13,7 @@ from rest_framework import permissions, pagination
 from rest_framework_simplejwt import authentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 from drf_spectacular.utils import extend_schema
 # from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 # from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
@@ -33,24 +34,29 @@ class GoogleLogin(SocialLoginView):
     client_class = OAuth2Client
     """
 
+
 class GoogleAuthInit(APIView):
     """
     with this api front developer can use
     google authenticate very easy
     """
+
     def post(self, request):
         google_auth_url = (
-            "https://accounts.google.com/o/oauth2/v2/auth"
-            "?redirect_uri=http://127.0.0.1:8000/api/accounts/auth/google/callback/"
-            "&prompt=consent"
-            "&response_type=code"
-            "&client_id=" + settings.GOOGLE_CLIENT_ID +
-            "&scope=openid%20email%20profile"
-            "&access_type=offline"
+                "https://accounts.google.com/o/oauth2/v2/auth"
+                "?redirect_uri=http://127.0.0.1:8000/api/accounts/auth/google/callback/"
+                "&prompt=consent"
+                "&response_type=code"
+                "&client_id=" + settings.GOOGLE_CLIENT_ID +
+                "&scope=openid%20email%20profile"
+                "&access_type=offline"
         )
         return Response(google_auth_url)
+
+
 class GoogleCallback(APIView):
     """save Schema of api for guide other Distributor"""
+
     @extend_schema(tags=['GoogleAuth'])
     def get(self, request):
         """
@@ -117,6 +123,7 @@ class SmsAuthentication(APIView):
     """
     permission_classes = [permissions.AllowAny]
     """save Schema of api for guide other Distributor"""
+
     @extend_schema(tags=['sms'], responses=serializers.SmsSerializer)
     def post(self, request):
         serializer_data = serializers.SmsSerializer(request.data)
@@ -135,6 +142,7 @@ class VerifyCodeSmsAuthentication(APIView):
     """
     permission_classes = [permissions.AllowAny]
     """save Schema of api for guide other Distributor"""
+
     @extend_schema(tags=['sms'], responses=serializers.SmsSerializer)
     def post(self, request):
         serializer_data = serializers.SmsSerializer(request.data)
@@ -172,8 +180,22 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = serializers.CustomTokenObtainPairSerializer
 
 
+class LogOutViewWithToken(APIView):
+    """logout class view for expire token"""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        try:
+            for token in request.user.tokens.all():
+                BlacklistedToken.objects.create(token=token)
+            return Response({'message': 'Logged out successfully'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class User(views.APIView, pagination.PageNumberPagination):
     """save Schema of api for guide other Distributor"""
+
     @extend_schema(tags=['User'], responses=serializers.UserSerializer)
     def get(self, request):
         users = models.User.objects.all().order_by("-created_at")
@@ -193,6 +215,7 @@ class User(views.APIView, pagination.PageNumberPagination):
 
 class UserDetail(views.APIView):
     """save Schema of api for guide other Distributor"""
+
     @extend_schema(tags=['User'], responses=serializers.UserSerializer)
     def get(self, request, pk):
         user = models.User.objects.get(id=pk)
@@ -222,6 +245,7 @@ class ProfileView(views.APIView):
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     """save Schema of api for guide other Distributor"""
+
     @extend_schema(tags=['User'], responses=serializers.UserSerializer)
     def get(self, request):
         user = request.user
