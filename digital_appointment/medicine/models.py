@@ -1,10 +1,11 @@
 from django.db import models
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Provider(models.Model):
     user = models.OneToOneField('accounts.User', on_delete=models.CASCADE)
     speciality = models.CharField(max_length=255)
     location = models.ForeignKey('medicine.Location', on_delete=models.CASCADE)
+    stars_average = models.IntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(5)], blank=True , null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
