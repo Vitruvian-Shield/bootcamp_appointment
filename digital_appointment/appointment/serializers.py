@@ -6,6 +6,10 @@ from accounts.models import User
 from medicine.models import *
 
 class AppointmentSerializer(serializers.ModelSerializer):
+    """
+    this type of code style is for bootcamp competition
+    but we dont need write required
+    """
     user = account_serializers.UserSerializer(read_only=True)
     provider = medicine_serializers.ProviderSerializer(read_only=True)
     service = medicine_serializers.ServiceSerializer(read_only=True)
