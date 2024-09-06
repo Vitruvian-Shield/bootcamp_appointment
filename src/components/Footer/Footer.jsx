@@ -24,7 +24,6 @@ class Footer extends React.Component{
         const acontactusstyle ={
             paddingRight: '8px',
             display: 'inline-table',
-            // width: '100px',
             position:'sticky',
             margin: 'auto',
             textDecoration: 'none',

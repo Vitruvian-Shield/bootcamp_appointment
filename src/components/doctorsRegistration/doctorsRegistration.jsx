@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./doctorsRegistration.css";
 import {Box, Typography, Input, Button} from '@mui/material'
-import { useAuth } from "../../AuthProvider";
-import bgimage from '../../assets/images/registerbg.jpg'
 
 const DoctorsRegistration = () => {
   // doctors registration page 
@@ -97,12 +95,10 @@ const DoctorsRegistration = () => {
     borderRadius: '10px',
     padding: '30px 40px',
     margin: '40px 0',
-    // justifyContent:"space-between",
   }
 
   const inputboxstyle = {
     display: 'inline-flex',
-    // position: 'relative',
     width: '45%',
     height: '50px',
     margin: '25px 20px',

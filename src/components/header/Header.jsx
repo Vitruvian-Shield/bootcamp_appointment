@@ -1,5 +1,4 @@
 import React from "react"
-// import './Header.css'
 import logo from '../../assets/images/logo.svg'
 import { Link } from "react-router-dom";
 import { FaSearch, FaHandPaper, FaPhone } from "react-icons/fa";
@@ -7,7 +6,7 @@ import { FaStethoscope } from "react-icons/fa6";
 import { RiStethoscopeFill } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
 import { ImHome3 } from "react-icons/im";
-import {Box , Typography, Grid2, Button} from '@mui/material'
+import {Box , Typography, Button} from '@mui/material'
 
 
 
@@ -21,8 +20,8 @@ const Header = () => {
     height:"35px",
     color: '#e4dfdf',
     textDecoration:"none",
-    fontSize :"18px"
-    
+    fontSize :"18px",
+    overflow:"hidden"
   }
 
   const navbarunderlinestyle = {
@@ -32,7 +31,8 @@ const Header = () => {
     color: '#e4dfdf',
     borderBottom: '2px solid white',
     textDecoration:"none",
-    fontSize:"18px"
+    fontSize:"18px",
+    overflow:"hidden"
 
   }
   const docloginbuttonstyle = {
@@ -44,7 +44,6 @@ const Header = () => {
     backgroundColor:"transparent",
     border: '2px solid #ffff',
     color: 'rgb(255, 255, 255)',
-
     ":hover" :{
       backgroundColor: 'rgb(0, 149, 255)',
       border: '3px solid #ffff',
@@ -85,7 +84,7 @@ const Header = () => {
 
           <nav style={navigationstyle}
             >
-            <a href="/" /*style={{margin:"0px 15px 10px 0px",}}*/>
+            <a href="/">
               <img style={{float: 'right' , width:"45px", marginTop:"-18px"}} src={logo} /> 
             </a>
             <a

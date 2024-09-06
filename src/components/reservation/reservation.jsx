@@ -285,8 +285,6 @@ const Reservation = () => {
     }
 
   const reservationbuttonstyle = {
-    // margin: '40px 20px 0',
-    // padding: '10px 60px',
     marginTop:"10px",
     fontSize: '17px',
     border: 'none',

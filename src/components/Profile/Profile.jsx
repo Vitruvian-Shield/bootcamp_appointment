@@ -1,13 +1,9 @@
 import { Box, Button, Grid2, MenuItem, Modal, Rating, Select, Switch, TextField, Typography } from '@mui/material'
 import React, { useState , useEffect} from 'react'
-import { useAsyncError, useParams } from 'react-router-dom'
 import Phoneicon from "../../assets/images/icons8-phone-50.png"
 import lociconblack from '../../assets/images/icons8-location-50.png'
-// import rate from '../../img/pngtree-four-star-rating-sign-png-image_8436650.png'
-import drImg from '../../assets/images/41808433_l.jpg'
 import commenticon from '../../assets/images/icons8-comment-50.png'
 import axios from 'axios'
-// import {DataPicker} from '@mui/'
 
 const Profile = () => {
 
@@ -75,8 +71,6 @@ const Profile = () => {
     // state with hook for profile and comments
     const [addedcomment , setAddedcomment] = useState({})
     const [comments, setComments] = useState([])
-    // const [commentdate, setCommentdate] = useState()
-    // const [commentrate, setCommentrate] = useState(0)
     const [doctor, setDoctor] = useState({})
     
     const appointmentdata = {
@@ -614,7 +608,6 @@ const Profile = () => {
                                                 onChange={(event) => item.setValue(event.target.value)}
                                                 type={item.type}
                                                 sx={{
-                                                    // width:`${item.value === illness ? "120%" : "100%"  }`,
                                                     borderRadius: '8px',
                                                     direction: `${item.name === 'phoneNumber' ? 'ltr' : 'rtl'}`,
                                                     "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {

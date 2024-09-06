@@ -77,7 +77,6 @@ const DoctorProfile = () =>{
         width:"100%",    
         height:"500px",
         alignItems:"center",
-        // backgroundColor:"#217CE6",
         background: `radial-gradient(rgba(0, 186, 251, 0.2) 25%,rgba(0, 186, 251, 0.5)  60%, rgba(0, 186, 251, 0.8) 80%),#217CE6` ,
 
     }
@@ -142,11 +141,8 @@ const DoctorProfile = () =>{
                 <Grid2 sx={{
                     marginX:"25px",
                     overflow:"auto",
-                    // boxShadow:"2px 2px 10px 5px rgba(0,0,0,0.4)",
-                    // border:"0.5px solid rgba(0,0,0,0.4)",
                     borderRadius:"8px",
                     padding:"25px",
-                    // backgroundColor:"azure",
                 }} container columnSpacing={8} rowGap={"25px"}> 
                 <Typography width={"100%"} color="#fff" fontSize={"24px"}> نوبت های گرفته شده </Typography>
                     {appointments.map((item,index) => (

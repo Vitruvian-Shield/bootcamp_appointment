@@ -1,12 +1,7 @@
 import React from "react"
-// import main from './main.css'
 import { FaSearch } from "react-icons/fa"
-import { Link, useNavigate } from "react-router-dom"
-// import SearchPage from "../searchpage/SpecialitySearch"
-import axios from "axios"
+import { useNavigate } from "react-router-dom"
 import {Box, Typography, Input, Button} from '@mui/material'
-
-axios.get()
 
 
 const Main = () => {
@@ -41,7 +36,6 @@ const Main = () => {
 
     const searchsectionstyle ={
         paddingTop: '200px',
-        width: 'full-screen',
         height: '700px',
         textAlign: 'right',
         paddingRight: '25px',
@@ -70,7 +64,6 @@ const Main = () => {
     }
 
     const searchbuttonstyle = {
-        // width: '0%',
         minWidth: '70px',
         height: '70px',
         marginLeft: '2px',
@@ -126,10 +119,10 @@ const Main = () => {
 
                 {/* //////// search section //////// */}
                 <Box sx={searchsectionstyle}>
-                    <Typography variant="h2" fontSize={"50px"} sx={hstyles}> فقط کافیست نام پزشک یا تخصص مورد نظر خود را در باکس جستجو وارد کنید<br></br> و از خدمات باکیفیت ما بهره‌مند شوید. </Typography>
+                    <Typography variant="h2" fontSize={"50px"} marginBottom={"45px"} sx={hstyles}> فقط کافیست نام پزشک یا تخصص مورد نظر خود را در باکس جستجو وارد کنید<br></br> و از خدمات باکیفیت ما بهره‌مند شوید. </Typography>
                     <span style={searchspanstyle} id="searchspan">
                         
-                        <Button sx={searchbuttonstyle} onClick= {<Link to={'/search'}/>} ><b>جستجو</b>
+                        <Button sx={searchbuttonstyle} onClick= {navigate('/search')} ><b>جستجو</b>
                         <FaSearch style={searchiconstyle} id="searchicon" />
                         </Button>
                         

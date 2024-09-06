@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 import { MdToys } from "react-icons/md";
@@ -29,8 +29,12 @@ const Specialities = ()=> {
     const [speciality, setSpeciality] = useState({})
 
     useEffect(() =>{
-    axios.get(`localhost:3000/api/medicine/speciality/list/`).then(({ data }) => setSpeciality(data)).catch(err => console.log(err))},[])
+    axios.get("localhost:3000/api/medicine/speciality/list/")
+    .then(({ data }) => setSpeciality(data))
+    .catch(err => console.log(err))},[])
 
+    
+    
 
     // data for speciality fields
     const state={
@@ -139,7 +143,7 @@ const Specialities = ()=> {
                 {/* ///// header ////// */}
 
                 <Box  sx={{textAlign:"center"}}>
-                    <Typography variant="h3" color={"rgb(0,0,0)"}>تخصص مد نظر خود را برای ارتباط با پزشکان و مختصصان انتخاب کنید</Typography>
+                    <Typography variant="h3" color={"rgb(0,0,0)"} marginY={"30px"}>تخصص مد نظر خود را برای ارتباط با پزشکان و مختصصان انتخاب کنید</Typography>
                 </Box>
 
                 <Grid2 container spacing={1} sx={{
@@ -156,7 +160,7 @@ const Specialities = ()=> {
                     {state.specialities.map((item, index) => {
                         return (
                              
-                                <Button onClick={() => navigate(`/search`)} sx={{
+                                <Button onClick={() => navigate(`/search/?speciality${item.name}`)} sx={{
                                     width:"30%",
                                     height:"10%",
                                     boxShadow:"1px 1px 1px rgba(171,171,171,0.5)",

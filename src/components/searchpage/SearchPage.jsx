@@ -156,17 +156,10 @@ const SearchPage = () => {
                             }}>شهر : </InputLabel>
                             <Select disableUnderline  variant='filled' autoWidth sx={{color:'black', width:"50%"}}>
                             {cities_list.map((item,index) =>{ return(
-                                
-                                // <SimpleTreeView>
-                                //     <TreeItem defaultValue={province_list[0].provinceName} label={province_list[0].provinceName}>
-                                //         <TreeItem id={index} defaultValue={item.provinceName === province_list[0].provinceName ? item.cityName : null} onClick={(e) => setLoca(e.target.value)}/>
-                                //     </TreeItem>
-                                // </SimpleTreeView>
 
                                 <MenuItem value={province[index]} style={menuitems}>{item.province}
                                 <MenuItem value={item.city} style={menuitems} onClick={e => setLoca(item.city)}>{item.city}</MenuItem>
                                 </MenuItem>
-                                
                                 )})}
                             </Select>
                             
@@ -231,7 +224,7 @@ const SearchPage = () => {
                             width:"84%",
                             height:"100%",}}>
 
-                            <Grid2 container /*key={index} */sx={{
+                            <Grid2 container sx={{
                                 marginY:"25px",
                                 backgroundColor:"white",
                                 color:"black",
@@ -267,7 +260,7 @@ const SearchPage = () => {
                                     justifyContent:"center",
                                     margin:"15px",
                                 }}>
-                                    <Grid2 /*key={item.service}*/item sx={{
+                                    <Grid2 item sx={{
                                         color:"white",
                                         backgroundColor:"black",
                                         borderRadius:"8px",

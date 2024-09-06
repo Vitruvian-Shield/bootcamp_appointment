@@ -57,7 +57,6 @@ const Login = (props) => {
           borderRadius: '40px',
           fontSize: '18px',
           color: '#fff',
-          // textAlign: 'center',
           '::placeholder':{
             color: '#fff',
             textAlign: 'center',
@@ -91,7 +90,6 @@ const Login = (props) => {
 
         const remmebermecheckboxstyle = {
           accentColor: '#fff',
-          // marginRight: '4px',
         }
 
         const loginbuttonstyle = {
