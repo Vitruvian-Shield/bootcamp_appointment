@@ -118,4 +118,19 @@ class MedicineViewTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['results'][0]['speciality'], "psyco")
 
+    def test_get_location(self):
+        response = self.client.get(self.location_url, format='json', HTTP_AUTHORIZATION=f'Bearer {self.token}')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_post_location(self):
+        location = {
+            'name': 'Sample Location',
+            'city': 'Sample City',
+            'state': 'Sample State',
+            'address': '123 Sample Address',
+            'zip_code': '12345'
+        }
+        response = self.client.post(self.location_url, data=location, format='json',
+                                    HTTP_AUTHORIZATION=f'Bearer {self.token}')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
