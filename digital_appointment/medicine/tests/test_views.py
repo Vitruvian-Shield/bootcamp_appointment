@@ -108,3 +108,14 @@ class MedicineViewTest(APITestCase):
         self.assertEqual(response.data['results']['comments'],
                          list(Comment.objects.filter(provider_id=self.provider.id)))
 
+    def test_get_speciality(self):
+        self.provider = Provider.objects.create(
+            user_id=self.user.id,
+            location_id=self.location.id,
+            speciality='psyco',
+        )
+        response = self.client.get(self.speciality, format='json', HTTP_AUTHORIZATION=f'Bearer {self.token}')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['results'][0]['speciality'], "psyco")
+
+
