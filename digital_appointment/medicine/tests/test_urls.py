@@ -4,6 +4,9 @@ from medicine import views
 
 
 class TestUrls(SimpleTestCase):
+    """this case set for medicine url
+        and test every url
+    """
     def test_provider_urls(self):
         url = reverse('provider')
         self.assertEqual(url, '/api/medicine/provider/')
