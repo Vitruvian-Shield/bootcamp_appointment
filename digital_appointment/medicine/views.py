@@ -47,10 +47,10 @@ class Provider(APIView):
         query = request.query_params.get("query")
 
         if query:
-            providers = providers.filter(Q(first_name__icontains=query) |
-                                         Q(last_name__icontains=query) |
+            providers = providers.filter(Q(user__first_name__icontains=query) |
+                                         Q(user__last_name__icontains=query) |
                                          Q(speciality__icontains=query) |
-                                         Q(location__icontains=query) |
+                                         Q(location__name__icontains=query) |
                                          Q(location__address__icontains=query) |
                                          Q(location__city__icontains=query) |
                                          Q(location__state__icontains=query))
