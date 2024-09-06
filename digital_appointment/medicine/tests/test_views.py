@@ -134,3 +134,19 @@ class MedicineViewTest(APITestCase):
                                     HTTP_AUTHORIZATION=f'Bearer {self.token}')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
+    def test_get_Service(self):
+        response = self.client.get(self.service, format='json', HTTP_AUTHORIZATION=f'Bearer {self.token}')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        print(response.data)
+        self.assertEqual(response.data, list(Service.objects.all()))
+
+    def test_post_Service(self):
+        service = {
+            'name': 'Sample Service',
+            'description': 'Sample Service Description',
+            'price': 200.25,
+            'duration': 5
+        }
+        response = self.client.post(self.service, data=service, format='json',
+                                    HTTP_AUTHORIZATION=f'Bearer {self.token}')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
