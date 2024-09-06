@@ -19,7 +19,7 @@ class AppointmentModel(models.Model):
     patient_national_id = models.CharField(max_length=20)
     patient_gender = models.CharField(max_length=10)
     date = models.DateTimeField()
-    status = models.CharField(choices=Status.choices, default=0)
+    status = models.CharField(max_length=2,choices=Status.choices, default=0)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
