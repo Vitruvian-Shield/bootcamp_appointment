@@ -1,0 +1,7 @@
+#root {
+  width:100%;
+  background-color: azure;
+  box-sizing: border-box;
+  font-family: ykan;
+  scroll-behavior:smooth;
+}

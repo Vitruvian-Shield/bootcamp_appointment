@@ -1,0 +1,89 @@
+/* doctors registration page css file */
+.doctors-registration {
+  display: flex;
+  min-height: 70vh;
+  background: url("../../assets//images//registerbg.jpg");
+  background-size: cover;
+  background-position: center;
+  justify-content: center;
+}
+
+/* .total {
+  min-width: 800px;
+  width: 60%;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(20px);
+  color: #fff;
+  border-radius: 10px;
+  padding: 30px 40px;
+  margin: 40px 0;
+} */
+
+/* .total h1 {
+  font-size: 36px;
+  text-align: center;
+}
+
+.total .input {
+  display: inline-flex;
+  position: relative;
+  width: 45%;
+  height: 50px;
+  margin: 25px 20px;
+} */
+
+#services, #address {
+  width: 94.5%;
+  
+}
+
+/* .input input {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  outline: none;
+  border-radius: 40px;
+  font-size: 19px;
+  color: #fff;
+  padding: 0 0 0 10px;
+} */
+
+/* .input input:hover {
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
+  border: 2px solid black;
+}
+
+
+.input input::placeholder {
+  color: #fff;
+  text-align: center;
+} */
+
+.icon{
+  display: flex;
+  font-size: 40px;
+
+}
+
+/* .btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn button {
+  width: 50%;
+  height: 45px;
+  border: none;
+  outline: none;
+  border-radius: 45px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  font-weight: 700;
+} */

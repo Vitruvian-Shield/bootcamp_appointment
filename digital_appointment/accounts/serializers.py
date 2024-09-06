@@ -5,6 +5,8 @@ import string
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """json web token serializer"""
+
     username_field = 'username'
 
     def validate(self, attrs):
@@ -29,6 +31,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """User model serializer: Convert data to json"""
     class Meta:
         model = models.User
         exclude = ('is_superuser', 'is_staff', 'is_active', 'is_admin')

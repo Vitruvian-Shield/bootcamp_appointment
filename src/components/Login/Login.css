@@ -1,0 +1,102 @@
+/* doctors and users login page css file */
+.login-page {
+  background-size: cover;
+  background-position: center;
+  background: url('../../assets/images/registerbg.jpg') no-repeat;
+  background-size: cover;
+}
+
+/* .login-box {
+  width: 420px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(40px);
+  color: #fff;
+  border-radius: 10px;
+  padding: 30px 40px;
+  
+} */
+
+/* .login-box h1 {
+  font-size: 36px;
+  text-align: center;
+} */
+
+/* /* .login-box .input-box {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 30px 0;
+} */
+/*.input-box input {
+  direction: ltr;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  outline: none;
+  border-radius: 40px;
+  font-size: 19px;
+  color: #fff;
+  padding: 0 0 0 10px;
+  text-align: center;
+}
+.input-box input::placeholder {
+  color: #fff;
+  text-align: center;
+}
+
+.input-box input:hover {
+  border: 2px solid rgb(1, 4, 44);
+} */
+
+/* .input-box .icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+} */
+/* .login-box .remember-forget {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14.5px;
+  margin: -15px 0 15px;
+} */
+/* .remember-forget label input {
+  accent-color: #fff;
+  margin-right: 4px;
+}
+.remember-forget a {
+  color: #fff;
+  text-decoration: none;
+}
+.remember-forget a:hover {
+  text-decoration: underline;
+} */
+/* .login-box button {
+  width: 100%;
+  height: 45px;
+  border: none;
+  outline: none;
+  border-radius: 45px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 700;
+} */
+/* .login-box .register-link {
+  font-size: 14.5px;
+  text-align: center;
+  margin: 20px 0 15px;
+} */
+/* .register-link p a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+.register-link p a:hover {
+  text-decoration: underline;
+} */

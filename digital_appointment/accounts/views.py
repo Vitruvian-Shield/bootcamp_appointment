@@ -9,10 +9,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
+    """json web token view"""
     serializer_class = serializers.CustomTokenObtainPairSerializer
 
 
-class User(views.APIView, pagination.PageNumberPagination):
+class UserView(views.APIView, pagination.PageNumberPagination):
     def get(self, request):
         users = models.User.objects.all().order_by("-created_at")
 
@@ -29,7 +30,8 @@ class User(views.APIView, pagination.PageNumberPagination):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserDetail(views.APIView):
+class UserDetailView(views.APIView):
+    """read, edit and delete users detail information"""
     def get(self, request, pk):
         user = models.User.objects.get(id=pk)
         serializer = serializers.UserSerializer(user)
@@ -54,7 +56,8 @@ class UserDetail(views.APIView):
         return Response({"success": True}, status=status.HTTP_200_OK)
 
 
-class ProfileView(views.APIView):
+class UserProfileView(views.APIView):
+    """user profile information"""
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
