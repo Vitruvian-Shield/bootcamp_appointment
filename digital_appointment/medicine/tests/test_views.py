@@ -42,7 +42,7 @@ class MedicineViewTest(APITestCase):
     def generate_jwt_token(self, user):
         """Generate a JWT token for the given user."""
         return RefreshToken.for_user(user).access_token
-
+    """provider test"""
     def test_post_provider(self):
         provider = {
             'user_id': self.user.id,
@@ -107,7 +107,7 @@ class MedicineViewTest(APITestCase):
         self.assertEqual(response.data['results']['provider']['speciality'], "psyco")
         self.assertEqual(response.data['results']['comments'],
                          list(Comment.objects.filter(provider_id=self.provider.id)))
-
+    """speciality test"""
     def test_get_speciality(self):
         self.provider = Provider.objects.create(
             user_id=self.user.id,
@@ -117,7 +117,7 @@ class MedicineViewTest(APITestCase):
         response = self.client.get(self.speciality, format='json', HTTP_AUTHORIZATION=f'Bearer {self.token}')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['results'][0]['speciality'], "psyco")
-
+    """location test"""
     def test_get_location(self):
         response = self.client.get(self.location_url, format='json', HTTP_AUTHORIZATION=f'Bearer {self.token}')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -133,7 +133,7 @@ class MedicineViewTest(APITestCase):
         response = self.client.post(self.location_url, data=location, format='json',
                                     HTTP_AUTHORIZATION=f'Bearer {self.token}')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
+    """service test"""
     def test_get_Service(self):
         response = self.client.get(self.service, format='json', HTTP_AUTHORIZATION=f'Bearer {self.token}')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
