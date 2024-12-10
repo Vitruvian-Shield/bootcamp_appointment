@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'bootcamp',
         'USER': 'postgres',
-        'PASSWORD': 'reza0011001',
+        'PASSWORD': '',
         'HOST': 'localhost',
     },
 }
